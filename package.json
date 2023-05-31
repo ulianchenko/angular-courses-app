@@ -12,7 +12,8 @@
     "e2e": "ng e2e"
   },
   "lint-staged": {
-    "*.{js,jsx}": "eslint --fix"
+    "*.{js,jsx}": "eslint --fix",
+    "*.ts": "eslint --fix"
   },
   "private": true,
   "dependencies": {
