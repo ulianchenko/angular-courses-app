@@ -51,6 +51,12 @@
       }
     },
     {
+      "env": {
+          "jasmine": true
+      },
+      "files": ["**/*.spec.js"] 
+    },
+    {
       "files": [
         "*.html"
       ],
