@@ -10,8 +10,7 @@
       ],
       "parserOptions": {
         "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
+          "tsconfig.json"
         ],
         "createDefaultProgram": true
       },
@@ -42,19 +41,16 @@
           "error",
           {
             "ignoreCase": false,
-            "ignoreDeclarationSort": false,
+            "ignoreDeclarationSort": true,
             "ignoreMemberSort": false,
             "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
             "allowSeparatedGroups": false
           }
         ]
-      }
-    },
-    {
+      },
       "env": {
           "jasmine": true
-      },
-      "files": ["**/*.spec.js"] 
+      }
     },
     {
       "files": [
