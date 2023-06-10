@@ -12,7 +12,10 @@
     "e2e": "ng e2e"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,html,css,scss}": ["npx eslint --fix", "npx prettier --write"]
+    "*.{js,jsx,ts,tsx,html,css,scss}": [
+      "npx eslint --fix",
+      "npx prettier --write"
+    ]
   },
   "private": true,
   "dependencies": {

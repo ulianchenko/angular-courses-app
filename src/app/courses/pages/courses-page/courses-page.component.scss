@@ -1,0 +1,15 @@
+.courses-page {
+  background-color: #f2f3f7;
+  padding: 20px 0;
+  &__add-course {
+    display: flex;
+    height: 50px;
+    justify-content: flex-end;
+    padding: 0 50px;
+  }
+  &__load-more {
+    background-color: #ffffff;
+    height: 50px;
+    margin: 20px 50px;
+  }
+}

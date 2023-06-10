@@ -1,0 +1,74 @@
+.log-off {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+}
+
+.search {
+  background-color: #9cc837;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  height: 35px;
+  width: 80px;
+  &:hover {
+    background-color: #76a518;
+  }
+}
+
+.add-course {
+  background-color: #36b2d5;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  height: 35px;
+  width: 100px;
+  &:hover {
+    background-color: #1a85a3;
+  }
+}
+
+.edit {
+  align-items: center;
+  background-color: #36b2d5;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 5px;
+  height: 25px;
+  justify-content: center;
+  width: 70px;
+  &:hover {
+    background-color: #1a85a3;
+  }
+}
+
+.delete {
+  align-items: center;
+  background-color: #36b2d5;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 5px;
+  height: 25px;
+  justify-content: center;
+  width: 70px;
+  &:hover {
+    background-color: #1a85a3;
+  }
+}
+
+.load-more {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  height: 50px;
+  padding: 0;
+  width: 100%;
+}

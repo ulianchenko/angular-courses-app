@@ -1,1 +1,22 @@
-<p>courses-page works!</p>
+<app-header></app-header>
+<app-breadcrumbs></app-breadcrumbs>
+<main class="courses-page">
+  <app-courses-search></app-courses-search>
+  <div class="courses-page__add-course">
+    <app-button
+      [buttonText]="addCourseButtonText"
+      [buttonClass]="addCourseButtonClass"
+    ></app-button>
+  </div>
+  <app-courses-list
+    (cardIdToBeDelete)="onClickDeleteCard($event)"
+  ></app-courses-list>
+  <div class="courses-page__load-more">
+    <app-button
+      [buttonText]="loadMoreButtonText"
+      [buttonClass]="loadMoreButtonClass"
+      (click)="onClickLoadMore()"
+    ></app-button>
+  </div>
+</main>
+<app-footer></app-footer>

@@ -1,0 +1,32 @@
+header {
+  background-color: #414453;
+  color: white;
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  padding: 0 50px;
+}
+.login {
+  align-items: center;
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+  &__user {
+    align-items: center;
+    display: flex;
+    & svg {
+      height: 16px;
+      margin-right: 10px;
+      width: 16px;
+    }
+  }
+  &__button {
+    align-items: center;
+    display: flex;
+    & svg {
+      height: 16px;
+      margin-right: 10px;
+      width: 16px;
+    }
+  }
+}

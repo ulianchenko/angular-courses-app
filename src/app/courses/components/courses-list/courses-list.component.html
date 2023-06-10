@@ -1,1 +1,8 @@
-<p>courses-list works!</p>
+<ul class="courses">
+  <app-course-card
+    *ngFor="let courseCard of courses; index as i; trackBy: trackByCards"
+    [coursesListItem]="courseCard"
+    [cardIndex]="i"
+    (clickDelete)="handleDeleteCard($event)"
+  ></app-course-card>
+</ul>

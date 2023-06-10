@@ -5,4 +5,17 @@ import { Component } from '@angular/core';
   templateUrl: './courses-page.component.html',
   styleUrls: ['./courses-page.component.scss']
 })
-export class CoursesPageComponent {}
+export class CoursesPageComponent {
+  addCourseButtonText = '+ Add course';
+  addCourseButtonClass = 'add-course';
+  loadMoreButtonText = 'LOAD MORE';
+  loadMoreButtonClass = 'load-more';
+
+  onClickLoadMore() {
+    console.log('Load more');
+  }
+
+  onClickDeleteCard(id: any) {
+    console.log(`Card ${id} was deleted`);
+  }
+}
