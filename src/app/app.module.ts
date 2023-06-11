@@ -13,7 +13,6 @@ import { CoursesPageComponent } from './courses/pages/courses-page/courses-page.
 import { CoursesSearchComponent } from './courses/components/courses-search/courses-search.component';
 import { CoursesListComponent } from './courses/components/courses-list/courses-list.component';
 import { CourseCardComponent } from './courses/components/course-card/course-card.component';
-import { ButtonComponent } from './shared/components/button/button.component';
 
 @NgModule({
   declarations: [
@@ -25,8 +24,7 @@ import { ButtonComponent } from './shared/components/button/button.component';
     CoursesSearchComponent,
     CoursesListComponent,
     BreadcrumbsComponent,
-    CourseCardComponent,
-    ButtonComponent
+    CourseCardComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule, CommonModule],
   providers: [],

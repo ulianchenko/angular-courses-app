@@ -5,7 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-  logOffButtonText = 'Log off';
-  logOffButtonClass = 'log-off';
-}
+export class HeaderComponent {}

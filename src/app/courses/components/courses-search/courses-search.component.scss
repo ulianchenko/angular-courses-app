@@ -13,7 +13,18 @@
       outline: none;
     }
   }
-  & svg {
+  &__button {
+    background-color: #9cc837;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    height: 35px;
+    width: 80px;
+    &:hover {
+      background-color: #76a518;
+    }
+  }
+  & img {
     position: absolute;
     left: 60px;
   }

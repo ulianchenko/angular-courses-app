@@ -1,46 +1,37 @@
-<li class="courses__card">
+<li *ngIf="coursesListItem" class="courses__card">
   <div class="courses__card_header">
-    <h2 class="courses__card_header_title">{{ card.title }}</h2>
+    <h2 class="courses__card_header_title">
+      Video course{{ cardIndex + 1 }}:
+      {{
+        coursesListItem.name.slice(0, 1).toUpperCase() +
+          coursesListItem.name.slice(1)
+      }}
+    </h2>
     <div class="courses__card_header_info">
       <div class="courses__card_header_info_duration">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="1em"
-          viewBox="0 0 512 512"
-        >
-          <path
-            d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
-          />
-        </svg>
-        {{ card.duration }}
+        <img src="assets/icons/duration.svg" alt="duration" />
+        {{ math.floor(coursesListItem.length / 60) }}h
+        {{ coursesListItem.length % 60 }}min
       </div>
       <div class="courses__card_header_info_date">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="1em"
-          viewBox="0 0 448 512"
-        >
-          <path
-            d="M152 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H64C28.7 64 0 92.7 0 128v16 48V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V192 144 128c0-35.3-28.7-64-64-64H344V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H152V24zM48 192h80v56H48V192zm0 104h80v64H48V296zm128 0h96v64H176V296zm144 0h80v64H320V296zm80-48H320V192h80v56zm0 160v40c0 8.8-7.2 16-16 16H320V408h80zm-128 0v56H176V408h96zm-144 0v56H64c-8.8 0-16-7.2-16-16V408h80zM272 248H176V192h96v56z"
-          />
-        </svg>
-        {{ card.creationDate }}
+        <img src="assets/icons/creation-date.svg" alt="creation date" />
+        {{ coursesListItem.date | date : 'd MMM, y' }}
       </div>
     </div>
   </div>
   <div class="courses__card_main">
-    <div class="courses__card_main_description">{{ card.description }}</div>
+    <div class="courses__card_main_description">
+      {{ coursesListItem.description }}
+    </div>
     <div class="courses__card_main_buttons">
-      <app-button
-        [buttonText]="editButtonText"
-        [buttonClass]="editButtonClass"
-        (click)="editCard(card.id)"
-      ></app-button>
-      <app-button
-        [buttonText]="deleteButtonText"
-        [buttonClass]="deleteButtonClass"
-        (click)="deleteCard(card.id)"
-      ></app-button>
+      <button (click)="editCard(coursesListItem.id)">
+        <img src="assets/icons/edit.svg" alt="edit" />
+        Edit
+      </button>
+      <button (click)="deleteCard(coursesListItem.id)">
+        <img src="assets/icons/delete.svg" alt="delete" />
+        Delete
+      </button>
     </div>
   </div>
 </li>

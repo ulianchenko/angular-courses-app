@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { mockedCoursesList } from '../../../core/constants/mockedConstants';
+import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-courses-list',
@@ -7,23 +8,7 @@ import { mockedCoursesList } from '../../../core/constants/mockedConstants';
   styleUrls: ['./courses-list.component.scss']
 })
 export class CoursesListComponent implements OnInit {
-  courses = [
-    {
-      id: 0,
-      name: '',
-      description: '',
-      isTopRated: false,
-      date: '',
-      length: 157,
-      authors: [
-        {
-          id: 0,
-          name: '',
-          lastName: ''
-        }
-      ]
-    }
-  ];
+  courses: Course[] = [];
   @Output() cardIdToBeDelete = new EventEmitter();
 
   ngOnInit() {
@@ -31,11 +16,11 @@ export class CoursesListComponent implements OnInit {
     this.courses = mockedCoursesList;
   }
 
-  handleDeleteCard(id: any) {
+  handleDeleteCard(id: number) {
     this.cardIdToBeDelete.emit(id);
   }
 
-  trackByCards(index: number, card: { id: number }): number {
+  trackByCards(index: number, card: Course): number {
     return card.id;
   }
 }

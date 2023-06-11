@@ -6,9 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./courses-search.component.scss']
 })
 export class CoursesSearchComponent {
-  placeholderText: string = 'Text to search';
-  searchButtonText: string = 'Search';
-  searchButtonClass: string = 'search';
   inputText: string = '';
   showIcon: string = 'inline-block';
 
@@ -17,7 +14,7 @@ export class CoursesSearchComponent {
     this.inputText = '';
   }
   onFocusInput() {
-    this.showIcon = 'none';
+    this.showIcon = '';
   }
   onBlurInput() {
     this.showIcon = 'inline-block';

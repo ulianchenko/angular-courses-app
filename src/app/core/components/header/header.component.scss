@@ -14,7 +14,7 @@ header {
   &__user {
     align-items: center;
     display: flex;
-    & svg {
+    & img {
       height: 16px;
       margin-right: 10px;
       width: 16px;
@@ -23,10 +23,18 @@ header {
   &__button {
     align-items: center;
     display: flex;
-    & svg {
+    & img {
       height: 16px;
       margin-right: 10px;
       width: 16px;
+    }
+    & button {
+      background-color: transparent;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
     }
   }
 }

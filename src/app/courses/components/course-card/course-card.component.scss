@@ -17,6 +17,12 @@
     &_info {
       display: flex;
       gap: 20px;
+      &_duration {
+        width: 120px;
+      }
+      &_date {
+        width: 120px;
+      }
     }
   }
   &_main {
@@ -29,6 +35,21 @@
     &_buttons {
       display: flex;
       gap: 5px;
+      & button {
+        align-items: center;
+        background-color: #36b2d5;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        display: inline-flex;
+        gap: 5px;
+        height: 25px;
+        justify-content: center;
+        width: 70px;
+        &:hover {
+          background-color: #1a85a3;
+        }
+      }
     }
   }
 }
