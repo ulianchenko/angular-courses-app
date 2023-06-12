@@ -7,16 +7,16 @@ import { Component } from '@angular/core';
 })
 export class CoursesSearchComponent {
   inputText: string = '';
-  showIcon: string = 'inline-block';
+  showIcon: boolean = true;
 
   onClickSearch() {
     console.log(this.inputText);
     this.inputText = '';
   }
   onFocusInput() {
-    this.showIcon = '';
+    this.showIcon = false;
   }
   onBlurInput() {
-    this.showIcon = 'inline-block';
+    this.showIcon = true;
   }
 }
