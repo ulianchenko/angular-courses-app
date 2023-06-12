@@ -1,8 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { mockedCoursesList } from '../../../core/constants/mockedConstants';
+import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss']
 })
-export class CoursesListComponent {}
+export class CoursesListComponent implements OnInit {
+  courses: Course[] = [];
+  @Output() cardIdToBeDelete = new EventEmitter();
+
+  ngOnInit() {
+    console.log('ngOnInit hook works');
+    this.courses = mockedCoursesList;
+  }
+
+  handleDeleteCard(id: number) {
+    this.cardIdToBeDelete.emit(id);
+  }
+
+  trackByCards(index: number, card: Course): number {
+    return card.id;
+  }
+}

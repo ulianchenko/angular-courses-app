@@ -1,0 +1,12 @@
+<div class="search">
+  <img *ngIf="showIcon" src="assets/icons/search.svg" alt="search" />
+  <input
+    type="search"
+    class="search__input"
+    placeholder="Text to search"
+    [(ngModel)]="inputText"
+    (input)="onFocusInput()"
+    (blur)="onBlurInput()"
+  />
+  <button class="search__button" (click)="onClickSearch()">Search</button>
+</div>
