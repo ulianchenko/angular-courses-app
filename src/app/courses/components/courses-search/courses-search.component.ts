@@ -13,6 +13,9 @@ export class CoursesSearchComponent {
     console.log(this.inputText);
     this.inputText = '';
   }
+  onInput(event: any) {
+    this.inputText = event.target.value;
+  }
   onFocusInput() {
     this.showIcon = false;
   }

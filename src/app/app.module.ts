@@ -26,7 +26,7 @@ import { CourseCardComponent } from './courses/components/course-card/course-car
     BreadcrumbsComponent,
     CourseCardComponent
   ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule, CommonModule],
+  imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })

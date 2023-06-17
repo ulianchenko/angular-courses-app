@@ -1,8 +1,10 @@
 footer {
   background-color: #414453;
   color: white;
+  display: flex;
   font-size: 12px;
   height: 50px;
+  justify-content: space-between;
   line-height: 50px;
   padding: 0 50px;
   text-align: right;
