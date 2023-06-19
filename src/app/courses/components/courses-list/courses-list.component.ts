@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { mockedCoursesList } from '../../../core/constants/mockedConstants';
+import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
 import { Course } from '../../models/course.model';
 
 @Component({
@@ -13,7 +13,7 @@ export class CoursesListComponent implements OnInit {
 
   ngOnInit() {
     console.log('ngOnInit hook works');
-    this.courses = mockedCoursesList;
+    this.courses = getMockedCoursesList();
   }
 
   handleDeleteCard(id: number) {

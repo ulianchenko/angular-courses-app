@@ -1,3 +1,5 @@
+import { Course } from 'src/app/courses/models/course.model';
+
 const mockedCoursesList = [
   {
     id: 8693,
@@ -741,4 +743,5 @@ const mockedCoursesList = [
   }
 ];
 
-export { mockedCoursesList };
+const getMockedCoursesList = (): Course[] => mockedCoursesList;
+export { mockedCoursesList, getMockedCoursesList };

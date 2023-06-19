@@ -6,7 +6,7 @@ import {
   tick
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { mockedCoursesList } from 'src/app/core/constants/mockedConstants';
+import { getMockedCoursesList } from 'src/app/core/constants/mockedConstants';
 import { CourseCardComponent } from './course-card.component';
 
 @Component({
@@ -19,7 +19,7 @@ import { CourseCardComponent } from './course-card.component';
   </ul>`
 })
 class TestHostComponent {
-  course = mockedCoursesList[0];
+  course = getMockedCoursesList()[0];
   cardIdToBeDelete: number | undefined;
   handleDeleteCard(id: number) {
     this.cardIdToBeDelete = id;
@@ -45,7 +45,7 @@ describe('CourseCardComponent', () => {
 
   it('should emit the course card id to delete (as a class testing)', () => {
     const comp = new CourseCardComponent();
-    const course = mockedCoursesList[0];
+    const course = getMockedCoursesList()[0];
     comp.coursesListItem = course;
 
     comp.cardToDelete.subscribe((deletedCourse: number) =>
@@ -56,7 +56,7 @@ describe('CourseCardComponent', () => {
   });
 
   it('should display course description (stand alone testing)', () => {
-    const expectedCourse = mockedCoursesList[0];
+    const expectedCourse = getMockedCoursesList()[0];
     component.coursesListItem = expectedCourse;
     fixture.detectChanges();
 
@@ -70,7 +70,7 @@ describe('CourseCardComponent', () => {
   });
 
   it('should emit the course card id to delete (stand alone testing)', () => {
-    const courseId = mockedCoursesList[0].id;
+    const courseId = getMockedCoursesList()[0].id;
     spyOn(component.cardToDelete, 'emit');
 
     component.deleteCard(courseId);
@@ -79,7 +79,7 @@ describe('CourseCardComponent', () => {
   });
 
   it('should log to console "Card ${id} was edited"', () => {
-    const courseId = mockedCoursesList[0].id;
+    const courseId = getMockedCoursesList()[0].id;
     spyOn(console, 'log');
 
     component.editCard(courseId);
@@ -112,7 +112,7 @@ describe('CourseCardComponent', () => {
 
   it('should emit the course card id to delete (test host testing)', fakeAsync(() => {
     const button = fixture.debugElement.nativeElement.querySelector(
-      '[data-buttonFunction="delete"]'
+      '[data-button-function="delete"]'
     );
     button.click();
     tick();

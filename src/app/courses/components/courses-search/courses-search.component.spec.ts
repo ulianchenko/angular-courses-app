@@ -23,7 +23,7 @@ describe('CourseSearchComponent', () => {
   it('should call onClickSearch', () => {
     spyOn(component, 'onClickSearch');
     const button = fixture.debugElement.nativeElement.querySelector(
-      '[data-buttonFunction="search"]'
+      '[data-button-function="search"]'
     );
     button.click();
     expect(component.onClickSearch).toHaveBeenCalled();
@@ -32,13 +32,13 @@ describe('CourseSearchComponent', () => {
   it('should log to console input value', () => {
     spyOn(console, 'log');
     const input = fixture.debugElement.query(
-      By.css('[data-inputFunction="search"]')
+      By.css('[data-input-function="search"]')
     );
 
     input.nativeElement.value = 'trigger input event';
     input.triggerEventHandler('input', { target: input.nativeElement });
     const button = fixture.debugElement.nativeElement.querySelector(
-      '[data-buttonFunction="search"]'
+      '[data-button-function="search"]'
     );
     button.click();
     expect(console.log).toHaveBeenCalledWith('trigger input event');
@@ -47,7 +47,7 @@ describe('CourseSearchComponent', () => {
   it('should call onInput', () => {
     spyOn(component, 'onInput');
     const input = fixture.debugElement.query(
-      By.css('[data-inputFunction="search"]')
+      By.css('[data-input-function="search"]')
     );
     input.nativeElement.value = 'trigger input event';
     input.triggerEventHandler('input', { target: input.nativeElement });
@@ -58,7 +58,7 @@ describe('CourseSearchComponent', () => {
   it('should call onFocusInput', () => {
     spyOn(component, 'onFocusInput');
     const input = fixture.debugElement.query(
-      By.css('[data-inputFunction="search"]')
+      By.css('[data-input-function="search"]')
     );
     input.nativeElement.value = 'trigger input event';
     input.triggerEventHandler('input', { target: input.nativeElement });
@@ -69,7 +69,7 @@ describe('CourseSearchComponent', () => {
   it('should call onBlurInput', () => {
     spyOn(component, 'onBlurInput');
     const input = fixture.debugElement.query(
-      By.css('[data-inputFunction="search"]')
+      By.css('[data-input-function="search"]')
     );
     input.nativeElement.value = 'trigger input event';
     input.triggerEventHandler('input', { target: input.nativeElement });

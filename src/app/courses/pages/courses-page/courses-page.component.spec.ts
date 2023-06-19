@@ -14,7 +14,7 @@ import { CoursesSearchComponent } from '../../components/courses-search/courses-
 import { CoursesListComponent } from '../../components/courses-list/courses-list.component';
 import { CourseCardComponent } from '../../components/course-card/course-card.component';
 
-import { mockedCoursesList } from '../../../core/constants/mockedConstants';
+import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
 
 describe('CoursesPageComponent', () => {
   let component: CoursesPageComponent;
@@ -57,7 +57,7 @@ describe('CoursesPageComponent', () => {
     spyOn(component, 'onClickDeleteCard');
 
     let button = fixture.debugElement.nativeElement.querySelector(
-      '[data-buttonFunction="delete"]'
+      '[data-button-function="delete"]'
     );
     button.click();
     tick();
@@ -68,12 +68,12 @@ describe('CoursesPageComponent', () => {
     spyOn(console, 'log');
 
     let button = fixture.debugElement.nativeElement.querySelector(
-      '[data-buttonFunction="delete"]'
+      '[data-button-function="delete"]'
     );
     button.click();
     tick();
     expect(console.log).toHaveBeenCalledWith(
-      `Card ${mockedCoursesList[0].id} was deleted`
+      `Card ${getMockedCoursesList()[0].id} was deleted`
     );
   }));
 });

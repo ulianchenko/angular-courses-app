@@ -6,7 +6,7 @@ import {
 } from '@angular/core/testing';
 import { CoursesListComponent } from './courses-list.component';
 import { CourseCardComponent } from '../course-card/course-card.component';
-import { mockedCoursesList } from '../../../core/constants/mockedConstants';
+import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
 import { By } from '@angular/platform-browser';
 
 describe('CoursesListComponent', () => {
@@ -29,7 +29,7 @@ describe('CoursesListComponent', () => {
   it('should call handleDeleteCard', fakeAsync(() => {
     spyOn(component, 'handleDeleteCard');
     const button = fixture.debugElement.nativeElement.querySelector(
-      '[data-buttonFunction="delete"]'
+      '[data-button-function="delete"]'
     );
     button.click();
     tick();
@@ -46,11 +46,11 @@ describe('CoursesListComponent', () => {
   it('should courses cards number be equal mockedCoursesList length', () => {
     let coursesCards =
       fixture.debugElement.nativeElement.querySelectorAll('.courses__card');
-    expect(coursesCards.length).toBe(mockedCoursesList.length);
+    expect(coursesCards.length).toBe(getMockedCoursesList().length);
   });
 
   it('should bind course data to child component with @Input', () => {
-    const courseCard = mockedCoursesList[0];
+    const courseCard = getMockedCoursesList()[0];
     component.courses = [courseCard];
     fixture.detectChanges();
 
