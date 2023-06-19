@@ -10,13 +10,13 @@ export class CourseCardComponent {
   math = Math;
   @Input() coursesListItem?: Course;
   @Input() cardIndex: number = 1;
-  @Output() clickDelete = new EventEmitter();
+  @Output() cardToDelete = new EventEmitter();
 
   editCard(id: number) {
     console.log(`Card ${id} was edited`);
   }
 
   deleteCard(id: number) {
-    this.clickDelete.emit(id);
+    this.cardToDelete.emit(id);
   }
 }

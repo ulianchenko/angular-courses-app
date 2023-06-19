@@ -4,9 +4,17 @@
     type="search"
     class="search__input"
     placeholder="Text to search"
-    [(ngModel)]="inputText"
+    [value]="inputText"
     (input)="onFocusInput()"
+    (input)="onInput($event)"
     (blur)="onBlurInput()"
+    data-input-function="search"
   />
-  <button class="search__button" (click)="onClickSearch()">Search</button>
+  <button
+    class="search__button"
+    data-button-function="search"
+    (click)="onClickSearch()"
+  >
+    Search
+  </button>
 </div>

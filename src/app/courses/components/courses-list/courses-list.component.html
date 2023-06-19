@@ -3,6 +3,6 @@
     *ngFor="let courseCard of courses; index as i; trackBy: trackByCards"
     [coursesListItem]="courseCard"
     [cardIndex]="i"
-    (clickDelete)="handleDeleteCard($event)"
+    (cardToDelete)="handleDeleteCard($event)"
   ></app-course-card>
 </ul>

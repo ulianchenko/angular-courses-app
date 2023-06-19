@@ -24,11 +24,17 @@
       {{ coursesListItem.description }}
     </div>
     <div class="courses__card_main_buttons">
-      <button (click)="editCard(coursesListItem.id)">
+      <button
+        data-button-function="edit"
+        (click)="editCard(coursesListItem.id)"
+      >
         <img src="assets/icons/edit.svg" alt="edit" />
         Edit
       </button>
-      <button (click)="deleteCard(coursesListItem.id)">
+      <button
+        data-button-function="delete"
+        (click)="deleteCard(coursesListItem.id)"
+      >
         <img src="assets/icons/delete.svg" alt="delete" />
         Delete
       </button>
