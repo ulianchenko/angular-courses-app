@@ -1,8 +1,16 @@
-<ul class="courses">
+<div *ngIf="courses.length === 0" class="courses__no-data">
+  NO DATA. FEEL FREE TO ADD NEW COURSE
+</div>
+<ul *ngIf="courses.length > 0" class="courses">
   <app-course-card
-    *ngFor="let courseCard of courses; index as i; trackBy: trackByCards"
+    *ngFor="
+      let courseCard of courses | orderByCreationDate;
+      index as i;
+      trackBy: trackByCards
+    "
     [coursesListItem]="courseCard"
-    [cardIndex]="i"
+    [cardIndex]="i + 1"
+    [topRated]="courseCard.isTopRated"
     (cardToDelete)="handleDeleteCard($event)"
   ></app-course-card>
 </ul>

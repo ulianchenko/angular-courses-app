@@ -1,5 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Course } from '../../models/course.model';
 
 @Component({
@@ -7,14 +6,9 @@ import { Course } from '../../models/course.model';
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss']
 })
-export class CoursesListComponent implements OnInit {
-  courses: Course[] = [];
+export class CoursesListComponent {
+  @Input() courses: Course[] = [];
   @Output() cardIdToBeDelete = new EventEmitter();
-
-  ngOnInit() {
-    console.log('ngOnInit hook works');
-    this.courses = getMockedCoursesList();
-  }
 
   handleDeleteCard(id: number) {
     this.cardIdToBeDelete.emit(id);
