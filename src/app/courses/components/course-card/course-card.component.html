@@ -1,21 +1,24 @@
-<li *ngIf="coursesListItem" class="courses__card">
+<li
+  *ngIf="coursesListItem"
+  class="courses__card"
+  [appBorderColor]="coursesListItem.creationDate"
+  [ngClass]="topRated ? 'courses__card_top-rated' : ''"
+>
   <div class="courses__card_header">
     <h2 class="courses__card_header_title">
-      Video course{{ cardIndex + 1 }}:
       {{
-        coursesListItem.name.slice(0, 1).toUpperCase() +
-          coursesListItem.name.slice(1)
+        'Video course ' + cardIndex + ': ' + coursesListItem.name | uppercase
       }}
+      <span *ngIf="topRated" class="courses__card_top-rated__star">★</span>
     </h2>
     <div class="courses__card_header_info">
       <div class="courses__card_header_info_duration">
         <img src="assets/icons/duration.svg" alt="duration" />
-        {{ math.floor(coursesListItem.length / 60) }}h
-        {{ coursesListItem.length % 60 }}min
+        {{ coursesListItem.length | duration }}
       </div>
       <div class="courses__card_header_info_date">
         <img src="assets/icons/creation-date.svg" alt="creation date" />
-        {{ coursesListItem.date | date : 'd MMM, y' }}
+        {{ coursesListItem.creationDate | date : 'd MMM, y' }}
       </div>
     </div>
   </div>

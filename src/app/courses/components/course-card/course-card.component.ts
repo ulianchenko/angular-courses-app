@@ -8,8 +8,9 @@ import { Course } from '../../models/course.model';
 })
 export class CourseCardComponent {
   math = Math;
+  @Input() topRated: boolean = false;
   @Input() coursesListItem?: Course;
-  @Input() cardIndex: number = 1;
+  @Input() cardIndex?: number;
   @Output() cardToDelete = new EventEmitter();
 
   editCard(id: number) {

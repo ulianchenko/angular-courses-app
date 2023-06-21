@@ -7,7 +7,7 @@ import {
 
 import { CoursesPageComponent } from './courses-page.component';
 import { HeaderComponent } from '../../../core/components/header/header.component';
-import { LogoComponent } from 'src/app/core/components/header/logo/logo.component';
+import { LogoComponent } from '../../../core/components/header/logo/logo.component';
 import { BreadcrumbsComponent } from '../../../core/components/breadcrumbs/breadcrumbs.component';
 import { FooterComponent } from '../../../core/components/footer/footer.component';
 import { CoursesSearchComponent } from '../../components/courses-search/courses-search.component';
@@ -15,6 +15,10 @@ import { CoursesListComponent } from '../../components/courses-list/courses-list
 import { CourseCardComponent } from '../../components/course-card/course-card.component';
 
 import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
+import { FilterByNamePipe } from '../../../shared/pipes/filter-by-name.pipe';
+import { OrderByCreationDatePipe } from '../../../shared/pipes/order-by-creation-date.pipe';
+import { DurationPipe } from '../../../shared/pipes/duration.pipe';
+import { BorderColorDirective } from '../../../shared/directives/border-color.directive';
 
 describe('CoursesPageComponent', () => {
   let component: CoursesPageComponent;
@@ -30,8 +34,13 @@ describe('CoursesPageComponent', () => {
         CoursesSearchComponent,
         CoursesListComponent,
         CourseCardComponent,
-        FooterComponent
-      ]
+        FooterComponent,
+        OrderByCreationDatePipe,
+        DurationPipe,
+        FilterByNamePipe,
+        BorderColorDirective
+      ],
+      providers: [OrderByCreationDatePipe, DurationPipe, FilterByNamePipe]
     });
     fixture = TestBed.createComponent(CoursesPageComponent);
     component = fixture.componentInstance;

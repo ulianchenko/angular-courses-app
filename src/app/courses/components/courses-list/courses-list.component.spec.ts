@@ -8,6 +8,10 @@ import { CoursesListComponent } from './courses-list.component';
 import { CourseCardComponent } from '../course-card/course-card.component';
 import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
 import { By } from '@angular/platform-browser';
+import { OrderByCreationDatePipe } from '../../../shared/pipes/order-by-creation-date.pipe';
+import { DurationPipe } from '../../../shared/pipes/duration.pipe';
+import { FilterByNamePipe } from '../../../shared/pipes/filter-by-name.pipe';
+import { BorderColorDirective } from '../../../shared/directives/border-color.directive';
 
 describe('CoursesListComponent', () => {
   let component: CoursesListComponent;
@@ -15,7 +19,15 @@ describe('CoursesListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CoursesListComponent, CourseCardComponent]
+      declarations: [
+        CoursesListComponent,
+        CourseCardComponent,
+        OrderByCreationDatePipe,
+        DurationPipe,
+        FilterByNamePipe,
+        BorderColorDirective
+      ],
+      providers: [OrderByCreationDatePipe, DurationPipe, FilterByNamePipe]
     });
     fixture = TestBed.createComponent(CoursesListComponent);
     component = fixture.componentInstance;
@@ -28,6 +40,8 @@ describe('CoursesListComponent', () => {
 
   it('should call handleDeleteCard', fakeAsync(() => {
     spyOn(component, 'handleDeleteCard');
+    component.courses = getMockedCoursesList();
+    fixture.detectChanges();
     const button = fixture.debugElement.nativeElement.querySelector(
       '[data-button-function="delete"]'
     );
@@ -37,13 +51,9 @@ describe('CoursesListComponent', () => {
     expect(button.textContent).toBe(' Delete ');
   }));
 
-  it('should log "ngOnInit hook works"', () => {
-    spyOn(console, 'log');
-    component.ngOnInit();
-    expect(console.log).toHaveBeenCalledWith('ngOnInit hook works');
-  });
-
   it('should courses cards number be equal mockedCoursesList length', () => {
+    component.courses = getMockedCoursesList();
+    fixture.detectChanges();
     let coursesCards =
       fixture.debugElement.nativeElement.querySelectorAll('.courses__card');
     expect(coursesCards.length).toBe(getMockedCoursesList().length);
