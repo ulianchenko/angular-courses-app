@@ -22,7 +22,7 @@ export class CoursesPageComponent implements OnInit {
     console.log(`Card ${id} was deleted`);
   }
 
-  handlesearchCourses(courses: Course[] | []) {
+  handlesearchCourses(courses: Course[]) {
     this.courses = courses;
   }
 }

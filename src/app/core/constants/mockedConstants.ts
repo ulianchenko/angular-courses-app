@@ -1,6 +1,6 @@
 import { Course } from 'src/app/courses/models/course.model';
 
-const mockedCoursesList: Course[] | [] = [
+const mockedCoursesList: Course[] = [
   {
     id: 8693,
     name: 'duis mollit reprehenderit ad',
@@ -743,5 +743,5 @@ const mockedCoursesList: Course[] | [] = [
   }
 ];
 
-const getMockedCoursesList = (): Course[] | [] => mockedCoursesList;
+const getMockedCoursesList = (): Course[] => mockedCoursesList;
 export { mockedCoursesList, getMockedCoursesList };

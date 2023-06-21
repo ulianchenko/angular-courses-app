@@ -35,7 +35,7 @@ import { FilterByNamePipe } from './shared/pipes/filter-by-name.pipe';
     FilterByNamePipe
   ],
   imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule],
-  providers: [],
+  providers: [FilterByNamePipe, OrderByCreationDatePipe, DurationPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

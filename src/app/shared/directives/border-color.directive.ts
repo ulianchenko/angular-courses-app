@@ -16,10 +16,10 @@ export class BorderColorDirective implements OnChanges {
 
     if (date < currentDate && date >= fourteenDaysAgo) {
       this.el.nativeElement.style.boxShadow =
-        '0 0 10px 3px rgba(118, 165, 24, 1)';
+        '0 0 10px 3px rgba(118, 165, 24, 0.9)';
     } else if (date > currentDate) {
       this.el.nativeElement.style.boxShadow =
-        '0 0 10px 3px rgba(26, 133, 163, 1)';
+        '0 0 10px 3px rgba(26, 133, 163, 0.9)';
     } else {
       this.el.nativeElement.style.boxShadow = '0 0 10px 3px rgba(0, 0, 0, 0.4)';
     }

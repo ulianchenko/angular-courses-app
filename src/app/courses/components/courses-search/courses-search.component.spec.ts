@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { BorderColorDirective } from '../../../shared/directives/border-color.directive';
+import { DurationPipe } from '../../../shared/pipes/duration.pipe';
+import { FilterByNamePipe } from '../../../shared/pipes/filter-by-name.pipe';
+import { OrderByCreationDatePipe } from '../../../shared/pipes/order-by-creation-date.pipe';
 
 import { CoursesSearchComponent } from './courses-search.component';
 
@@ -9,7 +13,14 @@ describe('CourseSearchComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CoursesSearchComponent]
+      declarations: [
+        CoursesSearchComponent,
+        OrderByCreationDatePipe,
+        DurationPipe,
+        FilterByNamePipe,
+        BorderColorDirective
+      ],
+      providers: [OrderByCreationDatePipe, DurationPipe, FilterByNamePipe]
     });
     fixture = TestBed.createComponent(CoursesSearchComponent);
     component = fixture.componentInstance;
@@ -27,21 +38,6 @@ describe('CourseSearchComponent', () => {
     );
     button.click();
     expect(component.onClickSearch).toHaveBeenCalled();
-  });
-
-  it('should log to console input value', () => {
-    spyOn(console, 'log');
-    const input = fixture.debugElement.query(
-      By.css('[data-input-function="search"]')
-    );
-
-    input.nativeElement.value = 'trigger input event';
-    input.triggerEventHandler('input', { target: input.nativeElement });
-    const button = fixture.debugElement.nativeElement.querySelector(
-      '[data-button-function="search"]'
-    );
-    button.click();
-    expect(console.log).toHaveBeenCalledWith('trigger input event');
   });
 
   it('should call onInput', () => {

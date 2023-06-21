@@ -10,6 +10,10 @@ import { LogoComponent } from './core/components/header/logo/logo.component';
 import { CoursesSearchComponent } from './courses/components/courses-search/courses-search.component';
 import { CoursesListComponent } from './courses/components/courses-list/courses-list.component';
 import { CourseCardComponent } from './courses/components/course-card/course-card.component';
+import { FilterByNamePipe } from './shared/pipes/filter-by-name.pipe';
+import { OrderByCreationDatePipe } from './shared/pipes/order-by-creation-date.pipe';
+import { DurationPipe } from './shared/pipes/duration.pipe';
+import { BorderColorDirective } from './shared/directives/border-color.directive';
 
 describe('AppComponent', () => {
   beforeEach(() =>
@@ -24,8 +28,13 @@ describe('AppComponent', () => {
         LogoComponent,
         CoursesSearchComponent,
         CoursesListComponent,
-        CourseCardComponent
-      ]
+        CourseCardComponent,
+        FilterByNamePipe,
+        OrderByCreationDatePipe,
+        DurationPipe,
+        BorderColorDirective
+      ],
+      providers: [FilterByNamePipe, OrderByCreationDatePipe, DurationPipe]
     })
   );
 

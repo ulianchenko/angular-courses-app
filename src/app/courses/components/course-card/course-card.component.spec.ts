@@ -6,7 +6,11 @@ import {
   tick
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { getMockedCoursesList } from 'src/app/core/constants/mockedConstants';
+import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
+import { DurationPipe } from '../../../shared/pipes/duration.pipe';
+import { FilterByNamePipe } from '../../../shared/pipes/filter-by-name.pipe';
+import { OrderByCreationDatePipe } from '../../../shared/pipes/order-by-creation-date.pipe';
+import { BorderColorDirective } from '../../../shared/directives/border-color.directive';
 import { CourseCardComponent } from './course-card.component';
 
 @Component({
@@ -32,7 +36,14 @@ describe('CourseCardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CourseCardComponent]
+      declarations: [
+        CourseCardComponent,
+        BorderColorDirective,
+        DurationPipe,
+        FilterByNamePipe,
+        OrderByCreationDatePipe
+      ],
+      providers: [DurationPipe, FilterByNamePipe, OrderByCreationDatePipe]
     });
     fixture = TestBed.createComponent(CourseCardComponent);
     component = fixture.componentInstance;
@@ -94,7 +105,15 @@ describe('CourseCardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CourseCardComponent, TestHostComponent]
+      declarations: [
+        CourseCardComponent,
+        TestHostComponent,
+        FilterByNamePipe,
+        DurationPipe,
+        OrderByCreationDatePipe,
+        BorderColorDirective
+      ],
+      providers: [FilterByNamePipe, DurationPipe, OrderByCreationDatePipe]
     });
     fixture = TestBed.createComponent(TestHostComponent);
     testHost = fixture.componentInstance;
