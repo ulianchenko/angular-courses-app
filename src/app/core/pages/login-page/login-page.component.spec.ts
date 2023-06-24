@@ -33,8 +33,9 @@ describe('LoginPageComponent', () => {
   });
 
   it('should onClickLogin change isAuth to true', () => {
+    spyOn(component.loginClicked, 'emit');
     component.onClickLogin();
-    expect(component.isAuth).toBeTrue();
+    expect(component.loginClicked.emit).toHaveBeenCalled();
   });
 
   it('should call onInputEmail', () => {
@@ -53,7 +54,6 @@ describe('LoginPageComponent', () => {
     const input = fixture.debugElement.query(
       By.css('.login__container_password input')
     );
-    console.log(input);
     input.nativeElement.value = 'trigger password input event';
     fixture.detectChanges();
     input.triggerEventHandler('input', { target: input.nativeElement });

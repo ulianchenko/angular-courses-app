@@ -26,7 +26,6 @@ export class CoursesSearchComponent {
   onClickSearch() {
     this.filteredCourses.emit(
       this.filterByNamePipe.transform(this.fullCoursesList, this.inputText)
-      // this.filterByNamePipe.transform(this.courses, this.inputText)
     );
     this.inputText = '';
   }

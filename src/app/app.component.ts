@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserEntity } from './core/models/user.model';
 import { AuthenticationService } from './core/services/authentication.service';
 
 @Component({
@@ -9,18 +10,22 @@ import { AuthenticationService } from './core/services/authentication.service';
 export class AppComponent implements OnInit {
   title = 'angular-courses-app';
   isAuth: boolean = false;
+  user?: UserEntity;
   // eslint-disable-next-line no-unused-vars
   constructor(private authService: AuthenticationService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isAuth = this.authService.isAuthenticated();
   }
 
-  handleLoginClick() {
+  handleLoginClick(): void {
     this.isAuth = true;
+    this.authService.login();
+    this.user = this.authService.getUserInfo();
   }
 
-  handleLogoutClick() {
+  handleLogoutClick(): void {
     this.isAuth = false;
+    this.authService.logout();
   }
 }

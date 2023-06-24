@@ -7,7 +7,6 @@ import { getMockedCoursesList } from '../../core/constants/mockedConstants';
   template: `<div [appBorderColor]="course?.creationDate">Some test text</div>`
 })
 class TestHostComponent {
-  // course = getMockedCoursesList().find((course) => course.id === 4980);
   course = getMockedCoursesList()[0];
 }
 describe('BorderColorDirective', () => {

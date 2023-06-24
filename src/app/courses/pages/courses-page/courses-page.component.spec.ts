@@ -73,17 +73,4 @@ describe('CoursesPageComponent', () => {
     tick();
     expect(component.onClickDeleteCard).toHaveBeenCalled();
   }));
-
-  // it('should log to console message about deleting the course card', fakeAsync(() => {
-  //   spyOn(console, 'log');
-
-  //   let button = fixture.debugElement.nativeElement.querySelector(
-  //     '[data-button-function="delete"]'
-  //   );
-  //   button.click();
-  //   tick();
-  //   expect(console.log).toHaveBeenCalledWith(
-  //     `Card ${getMockedCoursesList()[0].id} was deleted`
-  //   );
-  // }));
 });

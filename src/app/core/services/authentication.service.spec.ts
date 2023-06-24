@@ -34,7 +34,7 @@ describe('AuthenticationService', () => {
 
   it('should return the isAuth user info', () => {
     service.login();
-    const user = JSON.parse(service.getUserInfo() || '');
+    const user = service.getUserInfo();
     expect(user.firstName).toBe('Jon');
   });
 });

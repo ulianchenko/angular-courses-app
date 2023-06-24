@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login-page',
@@ -9,14 +8,9 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class LoginPageComponent {
   emailInputText: string = '';
   passwordInputText: string = '';
-  isAuth: boolean = false;
   @Output() loginClicked = new EventEmitter();
-  // eslint-disable-next-line no-unused-vars
-  constructor(private authService: AuthenticationService) {}
 
   onClickLogin() {
-    this.authService.login();
-    this.isAuth = true;
     this.loginClicked.emit();
   }
 

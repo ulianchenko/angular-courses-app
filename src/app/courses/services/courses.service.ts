@@ -828,23 +828,23 @@ export class CoursesService {
 
   constructor() {}
 
-  getCoursesList() {
+  getCoursesList(): Course[] {
     return this.courses;
   }
 
-  createCourse(course: Course) {
+  createCourse(course: Course): void {
     console.log(`Course ${course.name} was successfully created`);
   }
 
-  getCourse(id: number) {
+  getCourse(id: number): void {
     console.log(`Course id: ${id}`);
   }
 
-  updateCourse(id: number) {
+  updateCourse(id: number): void {
     console.log(`Course ${id} was successfully updated`);
   }
 
-  removeCourse(id: number) {
+  removeCourse(id: number): Course[] {
     this.courses = this.courses.filter((course) => course.id !== id);
     return this.courses;
   }

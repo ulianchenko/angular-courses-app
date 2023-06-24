@@ -11,23 +11,23 @@ export class AuthenticationService {
 
   constructor() {}
 
-  login() {
+  login(): void {
     localStorage.setItem('user', JSON.stringify(this.user));
     localStorage.setItem('token', this.fakeToken);
     this.isAuth = true;
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.isAuth = false;
   }
 
-  isAuthenticated() {
+  isAuthenticated(): boolean {
     return this.isAuth;
   }
 
-  getUserInfo() {
-    return localStorage.getItem('user');
+  getUserInfo(): UserEntity {
+    return JSON.parse(localStorage.getItem('user') ?? '');
   }
 }

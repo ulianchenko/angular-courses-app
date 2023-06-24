@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
@@ -5,9 +6,7 @@ import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 })
 export class IfAuthenticatedDirective {
   constructor(
-    // eslint-disable-next-line no-unused-vars
     private templateRef: TemplateRef<any>,
-    // eslint-disable-next-line no-unused-vars
     private viewContainer: ViewContainerRef
   ) {}
 
