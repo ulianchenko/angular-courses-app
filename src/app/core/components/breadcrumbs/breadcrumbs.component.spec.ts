@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BreadcrumbsComponent } from './breadcrumbs.component';
+import { IfAuthenticatedDirective } from '../../../shared/directives/if-authenticated.directive';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
@@ -8,7 +9,7 @@ describe('BreadcrumbsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BreadcrumbsComponent]
+      declarations: [BreadcrumbsComponent, IfAuthenticatedDirective]
     });
     fixture = TestBed.createComponent(BreadcrumbsComponent);
     component = fixture.componentInstance;

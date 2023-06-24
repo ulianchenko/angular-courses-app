@@ -1,5 +1,5 @@
-<app-header></app-header>
-<app-breadcrumbs></app-breadcrumbs>
+<app-header (logoutClicked)="onClickLogout()"></app-header>
+<!-- <app-breadcrumbs></app-breadcrumbs> -->
 <main class="courses-page">
   <app-courses-search
     [courses]="courses"

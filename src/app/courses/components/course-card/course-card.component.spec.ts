@@ -12,6 +12,7 @@ import { FilterByNamePipe } from '../../../shared/pipes/filter-by-name.pipe';
 import { OrderByCreationDatePipe } from '../../../shared/pipes/order-by-creation-date.pipe';
 import { BorderColorDirective } from '../../../shared/directives/border-color.directive';
 import { CourseCardComponent } from './course-card.component';
+import { IfAuthenticatedDirective } from '../../../shared/directives/if-authenticated.directive';
 
 @Component({
   template: `<ul class="courses">
@@ -41,7 +42,8 @@ describe('CourseCardComponent', () => {
         BorderColorDirective,
         DurationPipe,
         FilterByNamePipe,
-        OrderByCreationDatePipe
+        OrderByCreationDatePipe,
+        IfAuthenticatedDirective
       ],
       providers: [DurationPipe, FilterByNamePipe, OrderByCreationDatePipe]
     });
@@ -111,7 +113,8 @@ describe('CourseCardComponent', () => {
         FilterByNamePipe,
         DurationPipe,
         OrderByCreationDatePipe,
-        BorderColorDirective
+        BorderColorDirective,
+        IfAuthenticatedDirective
       ],
       providers: [FilterByNamePipe, DurationPipe, OrderByCreationDatePipe]
     });

@@ -1,1 +1,10 @@
-<app-courses-page class="container"></app-courses-page>
+<app-login-page
+  (loginClicked)="handleLoginClick()"
+  *appIfAuthenticated="!isAuth"
+  class="container"
+></app-login-page>
+<app-courses-page
+  (logoutWasClicked)="handleLogoutClick()"
+  *appIfAuthenticated="isAuth"
+  class="container"
+></app-courses-page>

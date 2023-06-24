@@ -1,0 +1,35 @@
+<app-header></app-header>
+<main class="login-page">
+  <div class="login__container">
+    <h1 class="login__container_title">Login</h1>
+    <div class="login__container_email">
+      <div class="login__container_email_title">
+        <span class="email">Email:</span>
+        <span class="required">*required</span>
+      </div>
+      <input
+        type="text"
+        placeholder="Enter email"
+        (input)="onInputEmail($event)"
+      />
+    </div>
+    <div class="login__container_password">
+      <div class="login__container_password_title">
+        <span class="password">Password:</span>
+        <span class="required">*required</span>
+      </div>
+      <input
+        type="text"
+        placeholder="Enter password"
+        (input)="onInputPassword($event)"
+      />
+    </div>
+    <div class="login__container_button">
+      <a href="#" class="login__container_button_forgot-password"
+        >Forgot password?</a
+      >
+      <button (click)="onClickLogin()">Login</button>
+    </div>
+  </div>
+</main>
+<app-footer></app-footer>
