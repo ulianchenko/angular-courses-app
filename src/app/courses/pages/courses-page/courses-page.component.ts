@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
 import { Course } from '../../models/course.model';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-courses-page',
@@ -9,20 +9,28 @@ import { Course } from '../../models/course.model';
 })
 export class CoursesPageComponent implements OnInit {
   courses: Course[] = [];
+  deleteCourseConfirmation: boolean = false;
+
+  // eslint-disable-next-line no-unused-vars
+  constructor(private coursesService: CoursesService) {}
 
   ngOnInit() {
-    this.courses = getMockedCoursesList();
+    this.courses = this.coursesService.getCoursesList();
   }
 
-  onClickLoadMore() {
+  onClickLoadMore(): void {
     console.log('Load more');
   }
 
-  onClickDeleteCard(id: any) {
+  onClickDeleteCard(id: number): void {
     console.log(`Card ${id} was deleted`);
+    this.deleteCourseConfirmation = confirm(
+      'Do you really want to delete this course? Yes/No'
+    );
+    this.courses = this.coursesService.removeCourse(id);
   }
 
-  handlesearchCourses(courses: Course[]) {
+  handlesearchCourses(courses: Course[]): void {
     this.courses = courses;
   }
 }

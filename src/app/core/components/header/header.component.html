@@ -1,13 +1,16 @@
 <header>
   <app-logo></app-logo>
-  <div class="login">
+  <div *appIfAuthenticated="isAuth" class="login">
     <div class="login__user">
       <img src="assets/icons/login.svg" alt="login" />
-      <span class="login__user-text">User login</span>
+      <span class="login__user-text"
+        >{{ user?.firstName }} {{ user?.lastName }}</span
+      >
     </div>
-    <div class="login__button">
+    <div *appIfAuthenticated="isAuth" class="login__button">
       <img src="assets/icons/log-off.svg" alt="log-off" />
-      <button>Log off</button>
+      <button (click)="onClickLogOut()">Log off</button>
     </div>
   </div>
 </header>
+<app-breadcrumbs *appIfAuthenticated="isAuth"></app-breadcrumbs>

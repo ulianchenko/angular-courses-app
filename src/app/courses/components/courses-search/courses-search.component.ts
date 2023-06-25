@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Course } from '../../models/course.model';
 import { FilterByNamePipe } from '../../../shared/pipes/filter-by-name.pipe';
-import { getMockedCoursesList } from 'src/app/core/constants/mockedConstants';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-courses-search',
@@ -12,9 +12,13 @@ export class CoursesSearchComponent {
   inputText: string = '';
   showIcon: boolean = true;
   fullCoursesList: Course[];
-  // eslint-disable-next-line no-unused-vars
-  constructor(private filterByNamePipe: FilterByNamePipe) {
-    this.fullCoursesList = getMockedCoursesList();
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private filterByNamePipe: FilterByNamePipe,
+    // eslint-disable-next-line no-unused-vars
+    private coursesService: CoursesService
+  ) {
+    this.fullCoursesList = this.coursesService.getCoursesList();
   }
   @Input() courses: Course[] = [];
   @Output() filteredCourses = new EventEmitter();

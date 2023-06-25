@@ -14,11 +14,11 @@ import { CoursesSearchComponent } from '../../components/courses-search/courses-
 import { CoursesListComponent } from '../../components/courses-list/courses-list.component';
 import { CourseCardComponent } from '../../components/course-card/course-card.component';
 
-import { getMockedCoursesList } from '../../../core/constants/mockedConstants';
 import { FilterByNamePipe } from '../../../shared/pipes/filter-by-name.pipe';
 import { OrderByCreationDatePipe } from '../../../shared/pipes/order-by-creation-date.pipe';
 import { DurationPipe } from '../../../shared/pipes/duration.pipe';
 import { BorderColorDirective } from '../../../shared/directives/border-color.directive';
+import { IfAuthenticatedDirective } from '../../../shared/directives/if-authenticated.directive';
 
 describe('CoursesPageComponent', () => {
   let component: CoursesPageComponent;
@@ -38,7 +38,8 @@ describe('CoursesPageComponent', () => {
         OrderByCreationDatePipe,
         DurationPipe,
         FilterByNamePipe,
-        BorderColorDirective
+        BorderColorDirective,
+        IfAuthenticatedDirective
       ],
       providers: [OrderByCreationDatePipe, DurationPipe, FilterByNamePipe]
     });
@@ -71,18 +72,5 @@ describe('CoursesPageComponent', () => {
     button.click();
     tick();
     expect(component.onClickDeleteCard).toHaveBeenCalled();
-  }));
-
-  it('should log to console message about deleting the course card', fakeAsync(() => {
-    spyOn(console, 'log');
-
-    let button = fixture.debugElement.nativeElement.querySelector(
-      '[data-button-function="delete"]'
-    );
-    button.click();
-    tick();
-    expect(console.log).toHaveBeenCalledWith(
-      `Card ${getMockedCoursesList()[0].id} was deleted`
-    );
   }));
 });

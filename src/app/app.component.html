@@ -1,1 +1,15 @@
-<app-courses-page class="container"></app-courses-page>
+<app-header
+  [isAuth]="isAuth"
+  [user]="user"
+  (logoutClicked)="handleLogoutClick()"
+></app-header>
+<app-login-page
+  (loginClicked)="handleLoginClick()"
+  *appIfAuthenticated="!isAuth"
+  class="container"
+></app-login-page>
+<app-courses-page
+  *appIfAuthenticated="isAuth"
+  class="container"
+></app-courses-page>
+<app-footer></app-footer>
