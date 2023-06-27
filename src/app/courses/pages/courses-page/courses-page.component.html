@@ -1,13 +1,14 @@
 <main class="courses-page">
   <app-courses-search
     [courses]="courses"
-    (filteredCourses)="handlesearchCourses($event)"
+    (filteredCourses)="handleSearchCourses($event)"
   ></app-courses-search>
   <div class="courses-page__add-course">
-    <button>+ Add course</button>
+    <button (click)="onClickAddCourse()">+ Add course</button>
   </div>
   <app-courses-list
-    (cardIdToBeDelete)="onClickDeleteCard($event)"
+    (cardIdToBeEdited)="onClickEditCard($event)"
+    (cardIdToBeDeleted)="onClickDeleteCard($event)"
     [courses]="courses"
   ></app-courses-list>
   <button class="courses-page__load-more" (click)="onClickLoadMore()">

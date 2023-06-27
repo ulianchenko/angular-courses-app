@@ -1,0 +1,5 @@
+<div class="duration-edit">
+  <p class="duration-edit__text">Duration:</p>
+  <input type="text" value="{{ duration }}" (input)="onInput($event)" />
+  <span>{{ duration || 0 | duration }}</span>
+</div>

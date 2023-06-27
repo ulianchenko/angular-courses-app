@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
 
@@ -10,6 +10,7 @@ import { CoursesService } from '../../services/courses.service';
 export class CoursesPageComponent implements OnInit {
   courses: Course[] = [];
   deleteCourseConfirmation: boolean = false;
+  @Output() cardToEdit = new EventEmitter();
 
   // eslint-disable-next-line no-unused-vars
   constructor(private coursesService: CoursesService) {}
@@ -18,19 +19,28 @@ export class CoursesPageComponent implements OnInit {
     this.courses = this.coursesService.getCoursesList();
   }
 
+  onClickAddCourse(): void {
+    const course = this.coursesService.getCourse();
+    this.cardToEdit.emit(course);
+  }
+
   onClickLoadMore(): void {
     console.log('Load more');
   }
 
+  onClickEditCard(id: number): void {
+    const course = this.coursesService.getCourse(id);
+    this.cardToEdit.emit(course);
+  }
+
   onClickDeleteCard(id: number): void {
-    console.log(`Card ${id} was deleted`);
     this.deleteCourseConfirmation = confirm(
       'Do you really want to delete this course? Yes/No'
     );
     this.courses = this.coursesService.removeCourse(id);
   }
 
-  handlesearchCourses(courses: Course[]): void {
+  handleSearchCourses(courses: Course[]): void {
     this.courses = courses;
   }
 }

@@ -25,6 +25,10 @@ import { FilterByNamePipe } from './shared/pipes/filter-by-name.pipe';
 import { CoursesService } from './courses/services/courses.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { IfAuthenticatedDirective } from './shared/directives/if-authenticated.directive';
+import { AddCoursePageComponent } from './courses/pages/add-course-page/add-course-page.component';
+import { DateEditComponent } from './courses/components/date-edit/date-edit.component';
+import { DurationEditComponent } from './courses/components/duration-edit/duration-edit.component';
+import { AuthorsEditComponent } from './courses/components/authors-edit/authors-edit.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,11 @@ import { IfAuthenticatedDirective } from './shared/directives/if-authenticated.d
     OrderByCreationDatePipe,
     FilterByNamePipe,
     LoginPageComponent,
-    IfAuthenticatedDirective
+    IfAuthenticatedDirective,
+    AddCoursePageComponent,
+    DateEditComponent,
+    DurationEditComponent,
+    AuthorsEditComponent
   ],
   imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule],
   providers: [

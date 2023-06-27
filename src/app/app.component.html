@@ -5,11 +5,18 @@
 ></app-header>
 <app-login-page
   (loginClicked)="handleLoginClick()"
-  *appIfAuthenticated="!isAuth"
+  *appIfAuthenticated="!isAuth && !isEditCourse"
   class="container"
 ></app-login-page>
 <app-courses-page
-  *appIfAuthenticated="isAuth"
+  *appIfAuthenticated="isAuth && !isEditCourse"
+  (cardToEdit)="handleEditCard($event)"
   class="container"
 ></app-courses-page>
+<app-add-course-page
+  *ngIf="isEditCourse"
+  (saveCourse)="handleSaveCourse()"
+  (cancelEdit)="handleCancelEdit()"
+  [course]="courseToEdit"
+></app-add-course-page>
 <app-footer></app-footer>

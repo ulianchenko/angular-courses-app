@@ -826,6 +826,16 @@ export class CoursesService {
     }
   ];
 
+  emptyCourse: Course = {
+    id: 0,
+    name: '',
+    description: '',
+    isTopRated: false,
+    creationDate: '',
+    authors: [],
+    length: 0
+  };
+
   constructor() {}
 
   getCoursesList(): Course[] {
@@ -836,8 +846,11 @@ export class CoursesService {
     console.log(`Course ${course.name} was successfully created`);
   }
 
-  getCourse(id: number): void {
+  getCourse(id?: number): Course | undefined {
     console.log(`Course id: ${id}`);
+    return id
+      ? this.courses.find((course) => course.id === id)
+      : this.emptyCourse;
   }
 
   updateCourse(id: number): void {

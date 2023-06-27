@@ -11,6 +11,7 @@
     [coursesListItem]="courseCard"
     [cardIndex]="i + 1"
     [topRated]="courseCard.isTopRated"
+    (cardToEdit)="handleEditCard($event)"
     (cardToDelete)="handleDeleteCard($event)"
   ></app-course-card>
 </ul>
