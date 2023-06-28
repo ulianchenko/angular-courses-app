@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -29,6 +29,15 @@ class TestHostComponent {
   handleDeleteCard(id: number) {
     this.cardIdToBeDelete = id;
   }
+}
+
+async function runOnPushChangeDetection(
+  fixture: ComponentFixture<any>
+): Promise<void> {
+  const changeDetectorRef =
+    fixture.debugElement.injector.get<ChangeDetectorRef>(ChangeDetectorRef);
+  changeDetectorRef.detectChanges();
+  return fixture.whenStable();
 }
 
 describe('CourseCardComponent', () => {
@@ -68,10 +77,10 @@ describe('CourseCardComponent', () => {
     comp.deleteCard(course.id);
   });
 
-  it('should display course description (stand alone testing)', () => {
+  it('should display course description (stand alone testing with helper function for onPush change detection strategy)', async () => {
     const expectedCourse = getMockedCoursesList()[0];
     component.coursesListItem = expectedCourse;
-    fixture.detectChanges();
+    await runOnPushChangeDetection(fixture);
 
     const courseDescriptionDe = fixture.debugElement.query(
       By.css('.courses__card_main_description')

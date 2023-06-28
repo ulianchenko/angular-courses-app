@@ -8,10 +8,15 @@ import { Course } from '../../models/course.model';
 })
 export class CoursesListComponent {
   @Input() courses: Course[] = [];
-  @Output() cardIdToBeDelete = new EventEmitter();
+  @Output() cardIdToBeEdited = new EventEmitter();
+  @Output() cardIdToBeDeleted = new EventEmitter();
+
+  handleEditCard(id: number) {
+    this.cardIdToBeEdited.emit(id);
+  }
 
   handleDeleteCard(id: number) {
-    this.cardIdToBeDelete.emit(id);
+    this.cardIdToBeDeleted.emit(id);
   }
 
   trackByCards(index: number, card: Course): number {

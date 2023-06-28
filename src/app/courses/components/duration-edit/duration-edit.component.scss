@@ -1,0 +1,9 @@
+.duration-edit {
+  &__text {
+    margin: 0 0 10px 0;
+  }
+  & input {
+    box-sizing: border-box;
+    width: 20%;
+  }
+}

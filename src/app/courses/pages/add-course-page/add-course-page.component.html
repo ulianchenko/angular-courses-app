@@ -1,0 +1,46 @@
+<main class="add-course-page">
+  <div class="add-course__container">
+    <div class="add-course__container_title">
+      <label for="course-edit-title" class="add-course__container_title_text"
+        >Title:</label
+      >
+      <input
+        id="course-edit-title"
+        type="text"
+        value="{{ title }}"
+        (input)="onInputTitle($event)"
+      />
+    </div>
+    <div class="add-course__container_description">
+      <label
+        for="course-edit-description"
+        class="add-course__container_description_text"
+        >Description:</label
+      >
+      <textarea
+        name="description"
+        id="course-edit-description"
+        cols="30"
+        rows="10"
+        (input)="onInputDescription($event)"
+        >{{ description }}</textarea
+      >
+    </div>
+    <app-date-edit [date]="course?.creationDate"></app-date-edit>
+    <app-duration-edit [duration]="course?.length"></app-duration-edit>
+    <div class="add-course__container_authors">
+      <p class="add-course__container_authors_text">Authors:</p>
+      <div class="add-course__container_authors_list">
+        <app-authors-edit
+          *ngFor="let authorItem of course?.authors"
+          [author]="authorItem"
+          (authorToDelete)="handleDeleteAuthor()"
+        ></app-authors-edit>
+      </div>
+    </div>
+    <div class="add-course__container_buttons">
+      <button (click)="onClickSave()">Save</button>
+      <button (click)="onClickCancel()">Cancel</button>
+    </div>
+  </div>
+</main>
