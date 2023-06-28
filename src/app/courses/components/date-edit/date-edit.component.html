@@ -1,4 +1,9 @@
 <div class="date-edit">
-  <p class="date-edit__text">Date:</p>
-  <input type="text" value="{{ date }}" (input)="onInput($event)" />
+  <label for="course-edit-date" class="date-edit__text">Date:</label>
+  <input
+    id="course-edit-date"
+    type="text"
+    value="{{ date }}"
+    (input)="onInput($event)"
+  />
 </div>

@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component
-} from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -153,44 +149,4 @@ describe('CourseCardComponent', () => {
     tick();
     expect(testHost.cardIdToBeDelete).toBe(testHost.course.id);
   }));
-});
-
-describe('CourseCardComponent', () => {
-  let component: CourseCardComponent;
-  let fixture: ComponentFixture<CourseCardComponent>;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        CourseCardComponent,
-        FilterByNamePipe,
-        DurationPipe,
-        OrderByCreationDatePipe,
-        BorderColorDirective,
-        IfAuthenticatedDirective
-      ],
-      providers: [FilterByNamePipe, DurationPipe, OrderByCreationDatePipe]
-    })
-      .overrideComponent(CourseCardComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default }
-      })
-      .compileComponents();
-    fixture = TestBed.createComponent(CourseCardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should display course description (stand alone testing with change detection strategy changed from onPush to default for testing)', () => {
-    const expectedCourse = getMockedCoursesList()[0];
-    component.coursesListItem = expectedCourse;
-    fixture.detectChanges();
-
-    const courseDescriptionDe = fixture.debugElement.query(
-      By.css('.courses__card_main_description')
-    );
-
-    const courseDescriptionEl = courseDescriptionDe.nativeElement;
-    const expectedPipedDescription = expectedCourse.description;
-    expect(courseDescriptionEl.textContent).toContain(expectedPipedDescription);
-  });
 });

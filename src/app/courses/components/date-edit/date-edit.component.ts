@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./date-edit.component.scss']
 })
 export class DateEditComponent {
-  @Input() date: string | undefined = '';
+  @Input() date?: string;
 
   onInput(event: any) {
     this.date = event.target.value;

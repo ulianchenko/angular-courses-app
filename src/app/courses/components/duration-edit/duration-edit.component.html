@@ -1,5 +1,12 @@
 <div class="duration-edit">
-  <p class="duration-edit__text">Duration:</p>
-  <input type="text" value="{{ duration }}" (input)="onInput($event)" />
+  <label for="course-edit-duration" class="duration-edit__text"
+    >Duration:</label
+  >
+  <input
+    id="course-edit-duration"
+    type="text"
+    value="{{ duration }}"
+    (input)="onInput($event)"
+  />
   <span>{{ duration || 0 | duration }}</span>
 </div>

@@ -1,14 +1,25 @@
 <main class="add-course-page">
   <div class="add-course__container">
     <div class="add-course__container_title">
-      <p class="add-course__container_title_text">Title:</p>
-      <input type="text" value="{{ title }}" (input)="onInputTitle($event)" />
+      <label for="course-edit-title" class="add-course__container_title_text"
+        >Title:</label
+      >
+      <input
+        id="course-edit-title"
+        type="text"
+        value="{{ title }}"
+        (input)="onInputTitle($event)"
+      />
     </div>
     <div class="add-course__container_description">
-      <p class="add-course__container_description_text">Description:</p>
+      <label
+        for="course-edit-description"
+        class="add-course__container_description_text"
+        >Description:</label
+      >
       <textarea
         name="description"
-        id=""
+        id="course-edit-description"
         cols="30"
         rows="10"
         (input)="onInputDescription($event)"
