@@ -39,7 +39,7 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
     this.description = this.course?.description;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routeSub.unsubscribe();
   }
 

@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { BreadCrumb } from '../../core/models/breadcrumb.model';
 import { Course } from '../models/course.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
-  breadcrumbs: BreadCrumb[] = [];
-  breadcrumbChange: Subject<BreadCrumb[]> = new Subject<BreadCrumb[]>();
   private courses: Course[] = [
     {
       id: 8693,
@@ -840,11 +836,7 @@ export class CoursesService {
     length: 0
   };
 
-  constructor() {
-    this.breadcrumbChange.subscribe((breadcrumbsArr: BreadCrumb[]) => {
-      this.breadcrumbs = breadcrumbsArr;
-    });
-  }
+  constructor() {}
 
   getCoursesList(): Course[] {
     return this.courses;
@@ -867,35 +859,5 @@ export class CoursesService {
   removeCourse(id: number): Course[] {
     this.courses = this.courses.filter((course) => course.id !== id);
     return this.courses;
-  }
-
-  setBreadcrumb(breadcrumb: string): void {
-    let breadcrumbUrl: string = '';
-    let breadcrumbLabel: string = '';
-    let courseName: string = '';
-    let courseById: Course | undefined;
-    const breadcrumbsArr = breadcrumb
-      .slice(1)
-      .split('/')
-      .map((breadcrumbItem) => {
-        breadcrumbUrl += `/${breadcrumbItem}`;
-        courseById = this.getCoursesList().find(
-          (course: Course) => course.id === Number(breadcrumbItem)
-        );
-        courseName = courseById
-          ? `Video course ${courseById.id}: ${courseById.name}`
-          : '';
-
-        breadcrumbLabel =
-          courseName.length > 0
-            ? courseName
-            : `${breadcrumbItem[0].toUpperCase()}${breadcrumbItem.slice(1)}`;
-
-        return {
-          url: breadcrumbUrl,
-          label: breadcrumbLabel
-        };
-      });
-    this.breadcrumbChange.next(breadcrumbsArr);
   }
 }

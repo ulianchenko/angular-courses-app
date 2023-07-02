@@ -1,24 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BreadCrumb } from '../../models/breadcrumb.model';
-import { CoursesService } from '../../../courses/services/courses.service';
+import { Subscription } from 'rxjs';
+import { BreadcrumbService } from '../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss']
 })
-export class BreadcrumbsComponent {
+export class BreadcrumbsComponent implements OnInit, OnDestroy {
   breadcrumbs?: BreadCrumb[];
+  breadcrumbSub!: Subscription;
 
   constructor(
     // eslint-disable-next-line no-unused-vars
-    private coursesService: CoursesService
-  ) {
-    this.breadcrumbs = this.coursesService.breadcrumbs;
-    this.coursesService.breadcrumbChange.subscribe(
+    private breadcrumbService: BreadcrumbService
+  ) {}
+
+  ngOnInit(): void {
+    this.breadcrumbs = this.breadcrumbService.breadcrumbs;
+    this.breadcrumbSub = this.breadcrumbService.breadcrumbChange.subscribe(
       (breadcrumb: BreadCrumb[]) => {
         this.breadcrumbs = breadcrumb;
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.breadcrumbSub.unsubscribe();
   }
 }

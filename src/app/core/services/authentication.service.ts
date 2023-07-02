@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserEntity } from '../models/user.model';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -15,16 +15,13 @@ export class AuthenticationService {
   private fakeToken: string = 'some token';
   isAuth: boolean = false;
   authChange: Subject<boolean> = new Subject<boolean>();
+  authSub!: Subscription;
 
   redirectUrl: string | null = '/courses';
 
   // eslint-disable-next-line no-unused-vars
   constructor(private router: Router) {
     this.isAuth = !!localStorage.getItem('token');
-
-    this.authChange.subscribe((auth: boolean) => {
-      this.isAuth = auth;
-    });
   }
 
   login(): void {

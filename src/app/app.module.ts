@@ -32,6 +32,7 @@ import { AuthorsEditComponent } from './courses/components/authors-edit/authors-
 import { PageNotFoundComponent } from './core/pages/page-not-found/page-not-found.component';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { CustomReuseStrategy } from './app-custom-route-reuse-strategy';
+import { BreadcrumbService } from './core/services/breadcrumb.service';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { CustomReuseStrategy } from './app-custom-route-reuse-strategy';
     DurationPipe,
     CoursesService,
     AuthenticationService,
+    BreadcrumbService,
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }
   ],
   bootstrap: [AppComponent]
