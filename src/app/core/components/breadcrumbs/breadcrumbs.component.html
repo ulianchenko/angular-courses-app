@@ -1,1 +1,13 @@
-<div class="breadcrumbs">Courses</div>
+<div class="breadcrumbs">
+  <ul class="breadcrumbs__list">
+    <li
+      class="breadcrumbs__list_item"
+      *ngFor="let breadcrumb of breadcrumbs; index as i"
+    >
+      <a *ngIf="i !== breadcrumbs!.length - 1" [routerLink]="breadcrumb.url"
+        >{{ breadcrumb.label }}➜</a
+      >
+      <span *ngIf="i === breadcrumbs!.length - 1">{{ breadcrumb.label }}</span>
+    </li>
+  </ul>
+</div>

@@ -5,6 +5,7 @@ import {
   Input,
   Output
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Course } from '../../models/course.model';
 
 @Component({
@@ -20,10 +21,13 @@ export class CourseCardComponent {
   @Input() cardIndex?: number;
   @Output() cardToDelete = new EventEmitter();
   @Output() cardToEdit = new EventEmitter();
+  // eslint-disable-next-line no-unused-vars
+  constructor(private router: Router) {}
 
   editCard(id: number) {
     console.log(`Card ${id} was edited`);
     this.cardToEdit.emit(id);
+    this.router.navigateByUrl(`/courses/${id}`);
   }
 
   deleteCard(id: number) {

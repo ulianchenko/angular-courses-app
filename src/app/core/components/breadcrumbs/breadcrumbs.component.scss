@@ -4,4 +4,17 @@
   font-weight: bold;
   height: 50px;
   padding: 0 50px;
+  &__list {
+    display: flex;
+    list-style-type: none;
+    &_item {
+      align-items: center;
+      display: flex;
+      margin-right: 5px;
+      & a {
+        line-height: 18px;
+        text-decoration: none;
+      }
+    }
+  }
 }

@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-login-page',
@@ -9,9 +11,18 @@ export class LoginPageComponent {
   emailInputText: string = '';
   passwordInputText: string = '';
   @Output() loginClicked = new EventEmitter();
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private authService: AuthenticationService,
+    // eslint-disable-next-line no-unused-vars
+    private router: Router
+  ) {}
 
   onClickLogin() {
-    this.loginClicked.emit();
+    this.authService.login();
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate([this.authService.redirectUrl]);
+    }
   }
 
   onInputEmail(event: any) {
