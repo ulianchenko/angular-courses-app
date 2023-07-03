@@ -19,11 +19,11 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.breadcrumbs = this.breadcrumbService.breadcrumbs;
-    this.breadcrumbSub = this.breadcrumbService.breadcrumbChange.subscribe(
-      (breadcrumb: BreadCrumb[]) => {
-        this.breadcrumbs = breadcrumb;
-      }
-    );
+    this.breadcrumbSub = this.breadcrumbService
+      .getBreadcrumbs()
+      .subscribe((breadcrumbsArr: BreadCrumb[]) => {
+        this.breadcrumbs = breadcrumbsArr;
+      });
   }
 
   ngOnDestroy(): void {

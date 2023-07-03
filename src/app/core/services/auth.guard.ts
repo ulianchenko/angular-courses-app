@@ -6,11 +6,11 @@ import { BreadcrumbService } from './breadcrumb.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthenticationService);
-  const coursesService = inject(BreadcrumbService);
+  const breadcrumbService = inject(BreadcrumbService);
   const router = inject(Router);
 
   if (authService.isAuthenticated()) {
-    coursesService.setBreadcrumb(state.url);
+    breadcrumbService.setBreadcrumb(state.url);
     return true;
   }
   return router.parseUrl('/login');
