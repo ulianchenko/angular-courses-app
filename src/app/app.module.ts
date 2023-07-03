@@ -29,6 +29,10 @@ import { AddCoursePageComponent } from './courses/pages/add-course-page/add-cour
 import { DateEditComponent } from './courses/components/date-edit/date-edit.component';
 import { DurationEditComponent } from './courses/components/duration-edit/duration-edit.component';
 import { AuthorsEditComponent } from './courses/components/authors-edit/authors-edit.component';
+import { PageNotFoundComponent } from './core/pages/page-not-found/page-not-found.component';
+import { RouteReuseStrategy, RouterModule } from '@angular/router';
+import { CustomReuseStrategy } from './app-custom-route-reuse-strategy';
+import { BreadcrumbService } from './core/services/breadcrumb.service';
 
 @NgModule({
   declarations: [
@@ -50,15 +54,24 @@ import { AuthorsEditComponent } from './courses/components/authors-edit/authors-
     AddCoursePageComponent,
     DateEditComponent,
     DurationEditComponent,
-    AuthorsEditComponent
+    AuthorsEditComponent,
+    PageNotFoundComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    CommonModule,
+    FormsModule,
+    RouterModule
+  ],
   providers: [
     FilterByNamePipe,
     OrderByCreationDatePipe,
     DurationPipe,
     CoursesService,
-    AuthenticationService
+    AuthenticationService,
+    BreadcrumbService,
+    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }
   ],
   bootstrap: [AppComponent]
 })

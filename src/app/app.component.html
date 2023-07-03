@@ -1,22 +1,3 @@
-<app-header
-  [isAuth]="isAuth"
-  [user]="user"
-  (logoutClicked)="handleLogoutClick()"
-></app-header>
-<app-login-page
-  (loginClicked)="handleLoginClick()"
-  *appIfAuthenticated="!isAuth && !isEditCourse"
-  class="container"
-></app-login-page>
-<app-courses-page
-  *appIfAuthenticated="isAuth && !isEditCourse"
-  (cardToEdit)="handleEditCard($event)"
-  class="container"
-></app-courses-page>
-<app-add-course-page
-  *ngIf="isEditCourse"
-  (saveCourse)="handleSaveCourse()"
-  (cancelEdit)="handleCancelEdit()"
-  [course]="courseToEdit"
-></app-add-course-page>
+<app-header (logoutClicked)="handleLogoutClick()"></app-header>
+<router-outlet></router-outlet>
 <app-footer></app-footer>

@@ -12,7 +12,7 @@ export class CoursesService {
       description:
         'Est minim ea aute sunt laborum minim eu excepteur. Culpa sint exercitation mollit enim ad culpa aliquip laborum cillum. Dolor officia culpa labore ex eiusmod ut est ea voluptate ea nostrud.',
       isTopRated: false,
-      creationDate: '2023-06-17T04:39:24+00:00',
+      creationDate: '2023-07-01T04:39:24+00:00',
       authors: [
         {
           id: 1370,
@@ -847,7 +847,6 @@ export class CoursesService {
   }
 
   getCourse(id?: number): Course | undefined {
-    console.log(`Course id: ${id}`);
     return id
       ? this.courses.find((course) => course.id === id)
       : this.emptyCourse;

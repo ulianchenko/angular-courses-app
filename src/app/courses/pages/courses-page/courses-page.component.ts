@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
 
@@ -13,7 +14,7 @@ export class CoursesPageComponent implements OnInit {
   @Output() cardToEdit = new EventEmitter();
 
   // eslint-disable-next-line no-unused-vars
-  constructor(private coursesService: CoursesService) {}
+  constructor(private coursesService: CoursesService, private router: Router) {}
 
   ngOnInit() {
     this.courses = this.coursesService.getCoursesList();
@@ -22,6 +23,7 @@ export class CoursesPageComponent implements OnInit {
   onClickAddCourse(): void {
     const course = this.coursesService.getCourse();
     this.cardToEdit.emit(course);
+    this.router.navigateByUrl(`/courses/new`);
   }
 
   onClickLoadMore(): void {
