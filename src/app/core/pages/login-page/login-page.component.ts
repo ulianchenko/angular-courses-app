@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
@@ -7,9 +8,11 @@ import { AuthenticationService } from '../../services/authentication.service';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnDestroy {
   emailInputText: string = '';
   passwordInputText: string = '';
+  authSub!: Subscription;
+
   @Output() loginClicked = new EventEmitter();
   constructor(
     // eslint-disable-next-line no-unused-vars
@@ -19,10 +22,16 @@ export class LoginPageComponent {
   ) {}
 
   onClickLogin() {
-    this.authService.login();
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate([this.authService.redirectUrl]);
-    }
+    this.authService.login(this.emailInputText, this.passwordInputText);
+    this.authSub = this.authService.isAuthenticated().subscribe((auth) => {
+      if (auth) {
+        this.router.navigate([this.authService.redirectUrl]);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.authSub.unsubscribe();
   }
 
   onInputEmail(event: any) {

@@ -28,9 +28,9 @@ export class BreadcrumbService {
       .split('/')
       .map((breadcrumbItem) => {
         breadcrumbUrl += `/${breadcrumbItem}`;
-        courseById = this.coursesService
-          .getCoursesList()
-          .find((course: Course) => course.id === Number(breadcrumbItem));
+        courseById = this.coursesService.courses.find(
+          (course: Course) => course.id === Number(breadcrumbItem)
+        );
         courseName = courseById
           ? `Video course ${courseById.id}: ${courseById.name}`
           : '';

@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuth!: boolean;
   user?: UserEntity;
   authSub!: Subscription;
+  userSub!: Subscription;
   @Output() logoutClicked = new EventEmitter();
   constructor(
     // eslint-disable-next-line no-unused-vars
@@ -28,15 +29,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.isAuth = this.authService.isAuthenticated();
-    this.authSub = this.authService.authChange.subscribe((auth) => {
+    this.isAuth = this.authService.isAuth;
+    this.authSub = this.authService.isAuthenticated().subscribe((auth) => {
       this.isAuth = auth;
-      this.user = this.authService.getUserInfo();
+      if (auth) {
+        this.userSub = this.authService.getUserInfo().subscribe((data: any) => {
+          this.user = data;
+          if (this.user) {
+            this.authService.setUser(this.user);
+          }
+        });
+      }
     });
+    if (this.isAuth) {
+      this.userSub = this.authService.getUserInfo().subscribe((data: any) => {
+        this.user = data;
+        this.authService.setUser(data);
+      });
+    }
   }
 
   ngOnDestroy(): void {
     this.authSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
 
   onClickLogOut() {

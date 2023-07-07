@@ -13,6 +13,7 @@ import { CoursesService } from '../../services/courses.service';
 export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
   title: string | undefined;
   description: string | undefined;
+  duration: number = 0;
   routeSub!: Subscription;
   @Input() course?: Course;
   constructor(
@@ -44,6 +45,22 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onClickSave(): void {
+    const courseForAdding = {
+      id: Date.now(),
+      name: this.title ?? '',
+      date: new Date().toString(),
+      length: this.duration,
+      authors: [
+        {
+          id: Number(Date.now()) + 1,
+          name: `${this.authService.user.name.first} ${this.authService.user.name.last}`,
+          lastName: ''
+        }
+      ],
+      isTopRated: true,
+      description: this.description ?? ''
+    };
+    this.coursesService.createCourse(courseForAdding);
     this.router.navigate([this.authService.redirectUrl]);
   }
 
@@ -56,10 +73,14 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onInputTitle(event: any) {
-    this.course!.name = event.target.value;
+    this.title = event.target.value;
   }
 
   onInputDescription(event: any) {
     this.description = event.target.value;
+  }
+
+  onInputDuration(duration: string) {
+    this.duration = Number(duration);
   }
 }

@@ -1,7 +1,7 @@
 <main class="courses-page">
   <app-courses-search
     [courses]="courses"
-    (filteredCourses)="handleSearchCourses($event)"
+    (searchText)="handleSearchCourses($event)"
   ></app-courses-search>
   <div class="courses-page__add-course">
     <button (click)="onClickAddCourse()">+ Add course</button>
