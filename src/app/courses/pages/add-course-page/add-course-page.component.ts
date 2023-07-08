@@ -14,6 +14,7 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
   title: string | undefined;
   description: string | undefined;
   duration: number = 0;
+  isEdit: boolean = false;
   routeSub!: Subscription;
   @Input() course?: Course;
   constructor(
@@ -29,9 +30,22 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSub = this.route.params.subscribe((params) => {
-      this.course = this.coursesService.getCourse(Number(params['id']));
-      this.title = this.course?.name;
-      this.description = this.course?.description;
+      if (Number(params['id'])) {
+        this.coursesService
+          .getCourse(Number(params['id']))
+          .subscribe((data: any) => {
+            this.course = data;
+            this.title = data.name;
+            this.description = data.description;
+            this.duration = data.length ?? 0;
+            this.isEdit = true;
+          });
+      } else {
+        this.title = '';
+        this.description = '';
+        this.duration = 0;
+        this.isEdit = false;
+      }
     });
   }
 
@@ -46,21 +60,27 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
 
   onClickSave(): void {
     const courseForAdding = {
-      id: Date.now(),
+      id: this.isEdit ? this.course!.id : Date.now(),
       name: this.title ?? '',
-      date: new Date().toString(),
+      date: this.isEdit ? this.course!.date : new Date().toString(),
       length: this.duration,
-      authors: [
-        {
-          id: Number(Date.now()) + 1,
-          name: `${this.authService.user.name.first} ${this.authService.user.name.last}`,
-          lastName: ''
-        }
-      ],
-      isTopRated: true,
+      authors: this.isEdit
+        ? this.course!.authors
+        : [
+            {
+              id: Number(Date.now()) + 1,
+              name: `${this.authService.user.name.first} ${this.authService.user.name.last}`,
+              lastName: ''
+            }
+          ],
+      isTopRated: this.isEdit ? this.course!.isTopRated : true,
       description: this.description ?? ''
     };
-    this.coursesService.createCourse(courseForAdding);
+    if (this.isEdit) {
+      this.coursesService.updateCourse(courseForAdding);
+    } else {
+      this.coursesService.createCourse(courseForAdding);
+    }
     this.router.navigate([this.authService.redirectUrl]);
   }
 

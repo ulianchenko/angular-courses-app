@@ -19,6 +19,8 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
   deleteCourseConfirmation: boolean = false;
   coursesSub!: Subscription;
+  coursesUpdateSub!: Subscription;
+  coursesCreateSub!: Subscription;
   @Output() cardToEdit = new EventEmitter();
 
   // eslint-disable-next-line no-unused-vars
@@ -30,14 +32,24 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         this.courses = data;
       });
+
+    this.coursesUpdateSub = this.coursesService
+      .getUpdatedCourses()
+      .subscribe(() => {
+        this.coursesService.getCoursesList().subscribe((data: any) => {
+          this.courses = data;
+        });
+      });
   }
 
   ngOnDestroy(): void {
     this.coursesSub.unsubscribe();
+    this.coursesUpdateSub.unsubscribe();
+    this.coursesCreateSub.unsubscribe();
   }
 
   onClickAddCourse(): void {
-    const course = this.coursesService.getCourse();
+    const course = this.coursesService.emptyCourse;
     this.cardToEdit.emit(course);
     this.router.navigateByUrl(`/courses/new`);
   }
@@ -50,8 +62,9 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   }
 
   onClickEditCard(id: number): void {
-    const course = this.coursesService.getCourse(id);
-    this.cardToEdit.emit(course);
+    this.coursesService.getCourse(id).subscribe((data: any) => {
+      this.cardToEdit.emit(data);
+    });
   }
 
   onClickDeleteCard(id: number): void {

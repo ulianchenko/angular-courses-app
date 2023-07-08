@@ -26,18 +26,12 @@
         >{{ description }}</textarea
       >
     </div>
-    <app-date-edit
-      *ngIf="course!.date!.length > 0"
-      [date]="course?.date"
-    ></app-date-edit>
+    <app-date-edit *ngIf="isEdit" [date]="course?.date"></app-date-edit>
     <app-duration-edit
-      [duration]="course?.length"
+      [duration]="duration"
       (durationInput)="onInputDuration($event)"
     ></app-duration-edit>
-    <div
-      *ngIf="course!.authors!.length > 0"
-      class="add-course__container_authors"
-    >
+    <div *ngIf="isEdit" class="add-course__container_authors">
       <p class="add-course__container_authors_text">Authors:</p>
       <div class="add-course__container_authors_list">
         <app-authors-edit
