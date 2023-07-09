@@ -1,4 +1,4 @@
-import { Name } from './name';
+import { Name } from './name.model';
 export interface UserEntity {
   id: number;
   fakeToken: string;

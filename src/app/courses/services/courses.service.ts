@@ -849,7 +849,7 @@ export class CoursesService {
 
   getCoursesList(): Observable<Object> {
     return this.http.get(
-      `${urls.base}${urls.courses}?start=0&count=${this.coursesLoadStep}`
+      `${urls.base}/courses?start=0&count=${this.coursesLoadStep}`
     );
   }
 
@@ -859,20 +859,20 @@ export class CoursesService {
 
   getFilteredCoursesList() {
     return this.http.get(
-      `${urls.base}${urls.courses}?textFragment=${this.textFragment}`
+      `${urls.base}/courses?textFragment=${this.textFragment}`
     );
   }
 
   getCourse(id?: number): Observable<Object> {
-    return this.http.get(`${urls.base}${urls.courses}/${id}`);
+    return this.http.get(`${urls.base}/courses/${id}`);
   }
 
   createCourse(course: Course): Observable<Object> {
-    return this.http.post(`${urls.base}${urls.courses}`, { ...course });
+    return this.http.post(`${urls.base}/courses`, { ...course });
   }
 
   updateCourse(course: Course): Observable<Object> {
-    return this.http.patch(`${urls.base}${urls.courses}/${course.id}`, {
+    return this.http.patch(`${urls.base}/courses/${course.id}`, {
       ...course
     });
   }
@@ -882,6 +882,6 @@ export class CoursesService {
   }
 
   removeCourse(id: number): Observable<Object> {
-    return this.http.delete(`${urls.base}${urls.courses}/${id}`);
+    return this.http.delete(`${urls.base}/courses/${id}`);
   }
 }

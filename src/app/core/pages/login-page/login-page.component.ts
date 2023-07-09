@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Login } from '../../models/login.model';
 import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class LoginPageComponent implements OnDestroy {
   emailInputText: string = '';
   passwordInputText: string = '';
-  authSub!: Subscription;
+  subscriptions: Subscription[] = [];
 
   @Output() loginClicked = new EventEmitter();
   constructor(
@@ -22,25 +23,26 @@ export class LoginPageComponent implements OnDestroy {
   ) {}
 
   onClickLogin() {
-    this.authService
+    const loginSub = this.authService
       .login(this.emailInputText, this.passwordInputText)
-      .subscribe((data: any) => {
-        this.authService.setAuthToken(data.token);
+      .subscribe((data: Object) => {
+        this.authService.setAuthToken((<Login>data).token);
         this.router.navigate([this.authService.redirectUrl]);
       });
+    this.subscriptions?.push(loginSub);
     this.emailInputText = '';
     this.passwordInputText = '';
   }
 
   ngOnDestroy(): void {
-    this.authSub.unsubscribe();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe);
   }
 
-  onInputEmail(event: any) {
-    this.emailInputText = event.target.value;
+  onInputEmail(event: Event) {
+    this.emailInputText = (<HTMLInputElement>event.target).value;
   }
 
-  onInputPassword(event: any) {
-    this.passwordInputText = event.target.value;
+  onInputPassword(event: Event) {
+    this.passwordInputText = (<HTMLInputElement>event.target).value;
   }
 }

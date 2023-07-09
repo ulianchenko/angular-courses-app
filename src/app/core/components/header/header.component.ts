@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, filter, switchMap, tap } from 'rxjs';
-import { urls } from '../../environment';
 import { UserEntity } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -18,7 +17,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuth!: boolean;
-  user?: UserEntity;
+  user!: UserEntity;
   subscriptions?: Subscription[];
   authSub!: Subscription;
   userSub!: Subscription;
@@ -32,23 +31,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isAuth = this.authService.isAuthenticated();
-    this.authSub = this.authService
+    this.authService
       .getAuthChange()
       .pipe(
         tap((auth) => (this.isAuth = auth)),
         filter((auth) => auth === true),
         switchMap(() => this.authService.getUserInfo())
       )
-      .subscribe((user: any) => {
-        this.user = user;
+      .subscribe((user: Object) => {
+        this.user = <UserEntity>user;
         this.authService.setUser(user);
       });
     if (this.isAuth) {
-      this.userSub = this.authService.getUserInfo().subscribe((data: any) => {
-        this.user = data;
-        this.authService.setUser(data);
+      this.authService.getUserInfo().subscribe((data: Object) => {
+        this.user = <UserEntity>data;
+        this.authService.setUser(<UserEntity>data);
       });
-      this.subscriptions?.push(this.userSub);
     }
   }
 
@@ -59,7 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onClickLogOut() {
     this.authService.logout();
     if (!this.isAuth) {
-      this.router.navigate([urls.login]);
+      this.router.navigate(['/login']);
     }
   }
 }

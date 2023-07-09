@@ -3,8 +3,8 @@
   <div *appIfAuthenticated="isAuth" class="login">
     <div class="login__user">
       <img src="assets/icons/login.svg" alt="login" />
-      <span class="login__user-text"
-        >{{ user?.name?.first }} {{ user?.name?.last }}</span
+      <span *ngIf="user" class="login__user-text"
+        >{{ user.name.first }} {{ user.name.last }}</span
       >
     </div>
     <div *appIfAuthenticated="isAuth" class="login__button">

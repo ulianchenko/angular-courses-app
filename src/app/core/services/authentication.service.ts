@@ -11,9 +11,9 @@ import { urls } from '../environment';
 export class AuthenticationService {
   isAuth: boolean = false;
   private authChange: Subject<boolean> = new Subject<boolean>();
-  user!: UserEntity;
+  user!: Object | UserEntity;
 
-  redirectUrl: string | null = urls.courses;
+  redirectUrl: string | null = '/courses';
 
   // eslint-disable-next-line no-unused-vars
   constructor(private router: Router, private http: HttpClient) {
@@ -21,7 +21,7 @@ export class AuthenticationService {
   }
 
   login(emailStr: string, passwordStr: string): Observable<Object> {
-    return this.http.post(`${urls.base}${urls.auth}${urls.login}`, {
+    return this.http.post(`${urls.base}/auth/login`, {
       login: emailStr,
       password: passwordStr
     });
@@ -47,13 +47,13 @@ export class AuthenticationService {
     return this.isAuth;
   }
 
-  getUserInfo(): Observable<Object> {
-    return this.http.post(`${urls.base}${urls.auth}${urls.user}`, {
+  getUserInfo(): Observable<Object | UserEntity> {
+    return this.http.post(`${urls.base}/auth/userinfo`, {
       token: localStorage.getItem('token')
     });
   }
 
-  setUser(user: UserEntity): void {
-    this.user = user;
+  setUser(user: Object): void {
+    this.user = <UserEntity>user;
   }
 }
