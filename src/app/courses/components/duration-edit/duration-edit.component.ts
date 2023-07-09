@@ -10,7 +10,8 @@ export class DurationEditComponent {
   @Output() durationInput = new EventEmitter();
 
   onInput(event: Event) {
-    this.durationInput.emit((<HTMLInputElement>event.target).value);
-    this.duration = Number((<HTMLInputElement>event.target).value) || 0;
+    const value = (event.target as HTMLInputElement).value;
+    this.durationInput.emit(value);
+    this.duration = Number(value) || 0;
   }
 }

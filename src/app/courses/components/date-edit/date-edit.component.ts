@@ -9,6 +9,6 @@ export class DateEditComponent {
   @Input() date?: string;
 
   onInput(event: Event) {
-    this.date = (<HTMLInputElement>event.target).value;
+    this.date = (event.target as HTMLInputElement).value;
   }
 }

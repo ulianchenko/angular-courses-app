@@ -87,11 +87,11 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
   }
 
   onInputTitle(event: Event) {
-    this.course!.name = (<HTMLInputElement>event.target).value;
+    this.course!.name = (event.target as HTMLInputElement).value;
   }
 
   onInputDescription(event: Event) {
-    this.course!.description = (<HTMLInputElement>event.target).value;
+    this.course!.description = (event.target as HTMLInputElement).value;
   }
 
   onInputDuration(duration: string) {

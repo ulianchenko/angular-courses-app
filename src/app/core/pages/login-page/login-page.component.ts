@@ -39,10 +39,10 @@ export class LoginPageComponent implements OnDestroy {
   }
 
   onInputEmail(event: Event) {
-    this.emailInputText = (<HTMLInputElement>event.target).value;
+    this.emailInputText = (event.target as HTMLInputElement).value;
   }
 
   onInputPassword(event: Event) {
-    this.passwordInputText = (<HTMLInputElement>event.target).value;
+    this.passwordInputText = (event.target as HTMLInputElement).value;
   }
 }

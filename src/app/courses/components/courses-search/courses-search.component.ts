@@ -25,7 +25,7 @@ export class CoursesSearchComponent {
     this.inputText = '';
   }
   onInput(event: Event): void {
-    this.inputText = (<HTMLInputElement>event.target).value;
+    this.inputText = (event.target as HTMLInputElement).value;
   }
   onFocusInput(): void {
     this.showIcon = false;
