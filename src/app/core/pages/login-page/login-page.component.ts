@@ -22,12 +22,14 @@ export class LoginPageComponent implements OnDestroy {
   ) {}
 
   onClickLogin() {
-    this.authService.login(this.emailInputText, this.passwordInputText);
-    this.authSub = this.authService.isAuthenticated().subscribe((auth) => {
-      if (auth) {
+    this.authService
+      .login(this.emailInputText, this.passwordInputText)
+      .subscribe((data: any) => {
+        this.authService.setAuthToken(data.token);
         this.router.navigate([this.authService.redirectUrl]);
-      }
-    });
+      });
+    this.emailInputText = '';
+    this.passwordInputText = '';
   }
 
   ngOnDestroy(): void {

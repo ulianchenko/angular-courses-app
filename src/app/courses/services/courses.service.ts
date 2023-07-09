@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { urls } from '../../core/environment';
 import { Course } from '../models/course.model';
 
 @Injectable({
@@ -840,46 +841,47 @@ export class CoursesService {
 
   coursesLoadStep: number = 4;
   textFragment: string = '';
-  courseUpdate: boolean = false;
-  private courseUpdateChange: Subject<boolean> = new Subject<boolean>();
-  private coursesUrl = 'http://localhost:3004/courses';
+  courseUpdated?: Course;
+  private courseUpdatedChange: Subject<Course> = new Subject<Course>();
 
   // eslint-disable-next-line no-unused-vars
   constructor(private http: HttpClient) {}
 
   getCoursesList(): Observable<Object> {
     return this.http.get(
-      `${this.coursesUrl}?start=0&count=${this.coursesLoadStep}`
+      `${urls.base}${urls.courses}?start=0&count=${this.coursesLoadStep}`
     );
   }
 
-  getUpdatedCourses(): Observable<boolean> {
-    return this.courseUpdateChange.asObservable();
+  getUpdatedCourses(): Observable<Course> {
+    return this.courseUpdatedChange.asObservable();
   }
 
   getFilteredCoursesList() {
     return this.http.get(
-      `${this.coursesUrl}?textFragment=${this.textFragment}`
+      `${urls.base}${urls.courses}?textFragment=${this.textFragment}`
     );
   }
 
-  createCourse(course: Course): void {
-    this.http.post(`${this.coursesUrl}`, { ...course }).subscribe();
-    this.courseUpdateChange.next(true);
-  }
-
   getCourse(id?: number): Observable<Object> {
-    return this.http.get(`${this.coursesUrl}/${id}`);
+    return this.http.get(`${urls.base}${urls.courses}/${id}`);
   }
 
-  updateCourse(course: Course): void {
-    this.http
-      .patch(`${this.coursesUrl}/${course.id}`, { ...course })
-      .subscribe();
-    this.courseUpdateChange.next(true);
+  createCourse(course: Course): Observable<Object> {
+    return this.http.post(`${urls.base}${urls.courses}`, { ...course });
+  }
+
+  updateCourse(course: Course): Observable<Object> {
+    return this.http.patch(`${urls.base}${urls.courses}/${course.id}`, {
+      ...course
+    });
+  }
+
+  setUpdatedCourse(course: Course): void {
+    this.courseUpdatedChange.next(course);
   }
 
   removeCourse(id: number): Observable<Object> {
-    return this.http.delete(`${this.coursesUrl}/${id}`);
+    return this.http.delete(`${urls.base}${urls.courses}/${id}`);
   }
 }

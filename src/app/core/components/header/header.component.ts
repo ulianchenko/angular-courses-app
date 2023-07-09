@@ -6,7 +6,8 @@ import {
   Output
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, filter, switchMap, tap } from 'rxjs';
+import { urls } from '../../environment';
 import { UserEntity } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -18,6 +19,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuth!: boolean;
   user?: UserEntity;
+  subscriptions?: Subscription[];
   authSub!: Subscription;
   userSub!: Subscription;
   @Output() logoutClicked = new EventEmitter();
@@ -29,35 +31,35 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.isAuth = this.authService.isAuth;
-    this.authSub = this.authService.isAuthenticated().subscribe((auth) => {
-      this.isAuth = auth;
-      if (auth) {
-        this.userSub = this.authService.getUserInfo().subscribe((data: any) => {
-          this.user = data;
-          if (this.user) {
-            this.authService.setUser(this.user);
-          }
-        });
-      }
-    });
+    this.isAuth = this.authService.isAuthenticated();
+    this.authSub = this.authService
+      .getAuthChange()
+      .pipe(
+        tap((auth) => (this.isAuth = auth)),
+        filter((auth) => auth === true),
+        switchMap(() => this.authService.getUserInfo())
+      )
+      .subscribe((user: any) => {
+        this.user = user;
+        this.authService.setUser(user);
+      });
     if (this.isAuth) {
       this.userSub = this.authService.getUserInfo().subscribe((data: any) => {
         this.user = data;
         this.authService.setUser(data);
       });
+      this.subscriptions?.push(this.userSub);
     }
   }
 
   ngOnDestroy(): void {
-    this.authSub.unsubscribe();
-    this.userSub.unsubscribe();
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe);
   }
 
   onClickLogOut() {
     this.authService.logout();
     if (!this.isAuth) {
-      this.router.navigate(['/login']);
+      this.router.navigate([urls.login]);
     }
   }
 }

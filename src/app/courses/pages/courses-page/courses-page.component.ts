@@ -6,7 +6,8 @@ import {
   Output
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
+import { urls } from '../../../core/environment';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
 
@@ -18,9 +19,9 @@ import { CoursesService } from '../../services/courses.service';
 export class CoursesPageComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
   deleteCourseConfirmation: boolean = false;
+  subscriptions?: Subscription[];
   coursesSub!: Subscription;
   coursesUpdateSub!: Subscription;
-  coursesCreateSub!: Subscription;
   @Output() cardToEdit = new EventEmitter();
 
   // eslint-disable-next-line no-unused-vars
@@ -32,26 +33,23 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
       .subscribe((data: any) => {
         this.courses = data;
       });
+    this.subscriptions?.push(this.coursesSub);
 
     this.coursesUpdateSub = this.coursesService
       .getUpdatedCourses()
-      .subscribe(() => {
-        this.coursesService.getCoursesList().subscribe((data: any) => {
-          this.courses = data;
-        });
-      });
+      .pipe(switchMap(() => this.coursesService.getCoursesList()))
+      .subscribe((courses: any) => (this.courses = courses));
+    this.subscriptions?.push(this.coursesUpdateSub);
   }
 
   ngOnDestroy(): void {
-    this.coursesSub.unsubscribe();
-    this.coursesUpdateSub.unsubscribe();
-    this.coursesCreateSub.unsubscribe();
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe);
   }
 
   onClickAddCourse(): void {
     const course = this.coursesService.emptyCourse;
     this.cardToEdit.emit(course);
-    this.router.navigateByUrl(`/courses/new`);
+    this.router.navigateByUrl(`${urls.courses}${urls.new}`);
   }
 
   onClickLoadMore(): void {

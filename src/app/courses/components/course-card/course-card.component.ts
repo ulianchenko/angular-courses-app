@@ -6,6 +6,7 @@ import {
   Output
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { urls } from '../../../core/environment';
 import { Course } from '../../models/course.model';
 
 @Component({
@@ -27,7 +28,7 @@ export class CourseCardComponent {
   editCard(id: number) {
     console.log(`Card ${id} was edited`);
     this.cardToEdit.emit(id);
-    this.router.navigateByUrl(`/courses/${id}`);
+    this.router.navigateByUrl(`${urls.courses}/${id}`);
   }
 
   deleteCard(id: number) {

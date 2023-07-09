@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { createCourse } from '../../helpers/createCourse';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
 
@@ -35,15 +36,10 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
           .getCourse(Number(params['id']))
           .subscribe((data: any) => {
             this.course = data;
-            this.title = data.name;
-            this.description = data.description;
-            this.duration = data.length ?? 0;
             this.isEdit = true;
           });
       } else {
-        this.title = '';
-        this.description = '';
-        this.duration = 0;
+        this.course = this.coursesService.emptyCourse;
         this.isEdit = false;
       }
     });
@@ -59,27 +55,23 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onClickSave(): void {
-    const courseForAdding = {
-      id: this.isEdit ? this.course!.id : Date.now(),
-      name: this.title ?? '',
-      date: this.isEdit ? this.course!.date : new Date().toString(),
-      length: this.duration,
-      authors: this.isEdit
-        ? this.course!.authors
-        : [
-            {
-              id: Number(Date.now()) + 1,
-              name: `${this.authService.user.name.first} ${this.authService.user.name.last}`,
-              lastName: ''
-            }
-          ],
-      isTopRated: this.isEdit ? this.course!.isTopRated : true,
-      description: this.description ?? ''
-    };
+    const courseForAdding = createCourse(
+      this.isEdit,
+      this.course!,
+      this.authService.user
+    );
     if (this.isEdit) {
-      this.coursesService.updateCourse(courseForAdding);
+      this.coursesService
+        .updateCourse(courseForAdding)
+        .subscribe((data: any) => {
+          this.coursesService.setUpdatedCourse(data);
+        });
     } else {
-      this.coursesService.createCourse(courseForAdding);
+      this.coursesService
+        .createCourse(courseForAdding)
+        .subscribe((data: any) => {
+          this.coursesService.setUpdatedCourse(data);
+        });
     }
     this.router.navigate([this.authService.redirectUrl]);
   }
@@ -93,14 +85,14 @@ export class AddCoursePageComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   onInputTitle(event: any) {
-    this.title = event.target.value;
+    this.course!.name = event.target.value;
   }
 
   onInputDescription(event: any) {
-    this.description = event.target.value;
+    this.course!.description = event.target.value;
   }
 
   onInputDuration(duration: string) {
-    this.duration = Number(duration);
+    this.course!.length = Number(duration);
   }
 }
