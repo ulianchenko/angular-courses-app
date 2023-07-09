@@ -22,11 +22,11 @@ export class LoginPageComponent implements OnDestroy {
     private router: Router
   ) {}
 
-  onClickLogin() {
+  onClickLogin(): void {
     const loginSub = this.authService
       .login(this.emailInputText, this.passwordInputText)
-      .subscribe((data: Object) => {
-        this.authService.setAuthToken((<Login>data).token);
+      .subscribe((data: Login) => {
+        this.authService.setAuthToken(data.token);
         this.router.navigate([this.authService.redirectUrl]);
       });
     this.subscriptions?.push(loginSub);
@@ -35,7 +35,7 @@ export class LoginPageComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   onInputEmail(event: Event) {

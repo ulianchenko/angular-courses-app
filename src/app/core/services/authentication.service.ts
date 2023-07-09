@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { urls } from '../environment';
+import { Login } from '../models/login.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { urls } from '../environment';
 export class AuthenticationService {
   isAuth: boolean = false;
   private authChange: Subject<boolean> = new Subject<boolean>();
-  user!: Object | UserEntity;
+  user!: UserEntity;
 
   redirectUrl: string | null = '/courses';
 
@@ -20,8 +21,8 @@ export class AuthenticationService {
     this.isAuth = !!localStorage.getItem('token');
   }
 
-  login(emailStr: string, passwordStr: string): Observable<Object> {
-    return this.http.post(`${urls.base}/auth/login`, {
+  login(emailStr: string, passwordStr: string): Observable<Login> {
+    return this.http.post<Login>(`${urls.base}/auth/login`, {
       login: emailStr,
       password: passwordStr
     });
@@ -47,13 +48,13 @@ export class AuthenticationService {
     return this.isAuth;
   }
 
-  getUserInfo(): Observable<Object | UserEntity> {
-    return this.http.post(`${urls.base}/auth/userinfo`, {
+  getUserInfo(): Observable<UserEntity> {
+    return this.http.post<UserEntity>(`${urls.base}/auth/userinfo`, {
       token: localStorage.getItem('token')
     });
   }
 
-  setUser(user: Object): void {
-    this.user = <UserEntity>user;
+  setUser(user: UserEntity): void {
+    this.user = user;
   }
 }

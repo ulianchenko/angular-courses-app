@@ -18,9 +18,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuth!: boolean;
   user!: UserEntity;
-  subscriptions?: Subscription[];
-  authSub!: Subscription;
-  userSub!: Subscription;
+  subscriptions: Subscription[] = [];
   @Output() logoutClicked = new EventEmitter();
   constructor(
     // eslint-disable-next-line no-unused-vars
@@ -31,27 +29,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isAuth = this.authService.isAuthenticated();
-    this.authService
+    const getAuthChangeSub = this.authService
       .getAuthChange()
       .pipe(
         tap((auth) => (this.isAuth = auth)),
         filter((auth) => auth === true),
         switchMap(() => this.authService.getUserInfo())
       )
-      .subscribe((user: Object) => {
-        this.user = <UserEntity>user;
+      .subscribe((user: UserEntity) => {
+        this.user = user;
         this.authService.setUser(user);
       });
+    this.subscriptions?.push(getAuthChangeSub);
     if (this.isAuth) {
-      this.authService.getUserInfo().subscribe((data: Object) => {
-        this.user = <UserEntity>data;
-        this.authService.setUser(<UserEntity>data);
-      });
+      const getUserInfoSub = this.authService
+        .getUserInfo()
+        .subscribe((data: UserEntity) => {
+          this.user = data;
+          this.authService.setUser(data);
+        });
+      this.subscriptions?.push(getUserInfoSub);
     }
   }
 
   ngOnDestroy(): void {
-    this.subscriptions?.forEach((subscription) => subscription.unsubscribe);
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
   }
 
   onClickLogOut() {

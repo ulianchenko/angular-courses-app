@@ -27,20 +27,20 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const getCoursesListSub = this.coursesService
       .getCoursesList()
-      .subscribe((data: Object) => {
-        this.courses = <Course[]>data;
+      .subscribe((data: Course[]) => {
+        this.courses = data;
       });
     this.subscriptions?.push(getCoursesListSub);
 
     const getUpdatedCoursesSub = this.coursesService
       .getUpdatedCourses()
       .pipe(switchMap(() => this.coursesService.getCoursesList()))
-      .subscribe((courses: Object) => (this.courses = <Course[]>courses));
+      .subscribe((courses: Course[]) => (this.courses = courses));
     this.subscriptions?.push(getUpdatedCoursesSub);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions?.forEach((subscription) => subscription.unsubscribe);
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
   }
 
   onClickAddCourse(): void {
@@ -53,15 +53,15 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
     this.coursesService.coursesLoadStep += 4;
     const getCoursesListSub = this.coursesService
       .getCoursesList()
-      .subscribe((data: Object) => (this.courses = <Course[]>data));
+      .subscribe((data: Course[]) => (this.courses = data));
     this.subscriptions?.push(getCoursesListSub);
   }
 
   onClickEditCard(id: number): void {
     const getCourseSub = this.coursesService
       .getCourse(id)
-      .subscribe((data: Object) => {
-        this.cardToEdit.emit(<Course>data);
+      .subscribe((data: Course) => {
+        this.cardToEdit.emit(data);
       });
     this.subscriptions?.push(getCourseSub);
   }
@@ -73,8 +73,8 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
     const getCoursesListSub = this.coursesService
       .removeCourse(id)
       .pipe(switchMap(() => this.coursesService.getCoursesList()))
-      .subscribe((data: Object) => {
-        this.courses = <Course[]>data;
+      .subscribe((data: Course[]) => {
+        this.courses = data;
       });
     this.subscriptions?.push(getCoursesListSub);
   }
@@ -83,8 +83,8 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
     this.coursesService.textFragment = searchText;
     const getFilteredCoursesListSub = this.coursesService
       .getFilteredCoursesList()
-      .subscribe((data: Object) => {
-        this.courses = <Course[]>data;
+      .subscribe((data: Course[]) => {
+        this.courses = data;
       });
     this.subscriptions?.push(getFilteredCoursesListSub);
   }

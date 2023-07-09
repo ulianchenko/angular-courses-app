@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, of, switchMap, tap } from 'rxjs';
-import { UserEntity } from 'src/app/core/models/user.model';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { createCourse } from '../../helpers/createCourse';
 import { Course } from '../../models/course.model';
@@ -33,8 +32,8 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
         switchMap((params) => {
           if (Number(params['id'])) {
             return this.coursesService.getCourse(Number(params['id'])).pipe(
-              tap((data: Object) => {
-                this.course = <Course>data;
+              tap((data: Course) => {
+                this.course = data;
                 this.isEdit = true;
               })
             );
@@ -50,27 +49,27 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe);
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   onClickSave(): void {
     const courseForAdding = createCourse(
       this.isEdit,
       this.course!,
-      <UserEntity>this.authService.user
+      this.authService.user
     );
     if (this.isEdit) {
       const updateCourseSub = this.coursesService
         .updateCourse(courseForAdding)
-        .subscribe((data: Object) => {
-          this.coursesService.setUpdatedCourse(<Course>data);
+        .subscribe((data: Course) => {
+          this.coursesService.setUpdatedCourse(data);
         });
       this.subscriptions.push(updateCourseSub);
     } else {
       const createCourseSub = this.coursesService
         .createCourse(courseForAdding)
-        .subscribe((data: Object) => {
-          this.coursesService.setUpdatedCourse(<Course>data);
+        .subscribe((data: Course) => {
+          this.coursesService.setUpdatedCourse(data);
         });
       this.subscriptions.push(createCourseSub);
       this.course = this.coursesService.emptyCourse;

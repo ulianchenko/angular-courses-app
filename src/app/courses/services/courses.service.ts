@@ -847,8 +847,8 @@ export class CoursesService {
   // eslint-disable-next-line no-unused-vars
   constructor(private http: HttpClient) {}
 
-  getCoursesList(): Observable<Object> {
-    return this.http.get(
+  getCoursesList(): Observable<Course[]> {
+    return this.http.get<Course[]>(
       `${urls.base}/courses?start=0&count=${this.coursesLoadStep}`
     );
   }
@@ -857,22 +857,22 @@ export class CoursesService {
     return this.courseUpdatedChange.asObservable();
   }
 
-  getFilteredCoursesList() {
-    return this.http.get(
+  getFilteredCoursesList(): Observable<Course[]> {
+    return this.http.get<Course[]>(
       `${urls.base}/courses?textFragment=${this.textFragment}`
     );
   }
 
-  getCourse(id?: number): Observable<Object> {
-    return this.http.get(`${urls.base}/courses/${id}`);
+  getCourse(id?: number): Observable<Course> {
+    return this.http.get<Course>(`${urls.base}/courses/${id}`);
   }
 
-  createCourse(course: Course): Observable<Object> {
-    return this.http.post(`${urls.base}/courses`, { ...course });
+  createCourse(course: Course): Observable<Course> {
+    return this.http.post<Course>(`${urls.base}/courses`, { ...course });
   }
 
-  updateCourse(course: Course): Observable<Object> {
-    return this.http.patch(`${urls.base}/courses/${course.id}`, {
+  updateCourse(course: Course): Observable<Course> {
+    return this.http.patch<Course>(`${urls.base}/courses/${course.id}`, {
       ...course
     });
   }

@@ -20,17 +20,17 @@ export class CoursesSearchComponent {
   @Input() courses: Course[] = [];
   @Output() searchText = new EventEmitter();
 
-  onClickSearch() {
+  onClickSearch(): void {
     this.searchText.emit(this.inputText);
     this.inputText = '';
   }
-  onInput(event: Event) {
+  onInput(event: Event): void {
     this.inputText = (<HTMLInputElement>event.target).value;
   }
-  onFocusInput() {
+  onFocusInput(): void {
     this.showIcon = false;
   }
-  onBlurInput() {
+  onBlurInput(): void {
     this.showIcon = true;
   }
 }
