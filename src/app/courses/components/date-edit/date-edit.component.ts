@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class DateEditComponent {
   @Input() date?: string;
 
-  onInput(event: any) {
-    this.date = event.target.value;
+  onInput(event: Event) {
+    this.date = (event.target as HTMLInputElement).value;
   }
 }

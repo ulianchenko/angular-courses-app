@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Course } from '../../models/course.model';
-import { FilterByNamePipe } from '../../../shared/pipes/filter-by-name.pipe';
 import { CoursesService } from '../../services/courses.service';
 
 @Component({
@@ -14,28 +13,24 @@ export class CoursesSearchComponent {
   fullCoursesList: Course[];
   constructor(
     // eslint-disable-next-line no-unused-vars
-    private filterByNamePipe: FilterByNamePipe,
-    // eslint-disable-next-line no-unused-vars
     private coursesService: CoursesService
   ) {
-    this.fullCoursesList = this.coursesService.getCoursesList();
+    this.fullCoursesList = this.coursesService.courses;
   }
   @Input() courses: Course[] = [];
-  @Output() filteredCourses = new EventEmitter();
+  @Output() searchText = new EventEmitter();
 
-  onClickSearch() {
-    this.filteredCourses.emit(
-      this.filterByNamePipe.transform(this.fullCoursesList, this.inputText)
-    );
+  onClickSearch(): void {
+    this.searchText.emit(this.inputText);
     this.inputText = '';
   }
-  onInput(event: any) {
-    this.inputText = event.target.value;
+  onInput(event: Event): void {
+    this.inputText = (event.target as HTMLInputElement).value;
   }
-  onFocusInput() {
+  onFocusInput(): void {
     this.showIcon = false;
   }
-  onBlurInput() {
+  onBlurInput(): void {
     this.showIcon = true;
   }
 }

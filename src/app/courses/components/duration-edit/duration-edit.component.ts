@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-duration-edit',
@@ -7,8 +7,11 @@ import { Component, Input } from '@angular/core';
 })
 export class DurationEditComponent {
   @Input() duration?: number;
+  @Output() durationInput = new EventEmitter();
 
-  onInput(event: any) {
-    this.duration = event.target.value;
+  onInput(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.durationInput.emit(value);
+    this.duration = Number(value) || 0;
   }
 }

@@ -6,7 +6,7 @@ import {
   Output
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, filter, switchMap, tap } from 'rxjs';
 import { UserEntity } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -17,8 +17,8 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuth!: boolean;
-  user?: UserEntity;
-  authSub!: Subscription;
+  user!: UserEntity;
+  subscriptions: Subscription[] = [];
   @Output() logoutClicked = new EventEmitter();
   constructor(
     // eslint-disable-next-line no-unused-vars
@@ -29,17 +29,34 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isAuth = this.authService.isAuthenticated();
-    this.authSub = this.authService.authChange.subscribe((auth) => {
-      this.isAuth = auth;
-      this.user = this.authService.getUserInfo();
-    });
+    const getAuthChangeSub = this.authService
+      .getAuthChange()
+      .pipe(
+        tap((auth) => (this.isAuth = auth)),
+        filter((auth) => auth === true),
+        switchMap(() => this.authService.getUserInfo())
+      )
+      .subscribe((user: UserEntity) => {
+        this.user = user;
+        this.authService.setUser(user);
+      });
+    this.subscriptions?.push(getAuthChangeSub);
+    if (this.isAuth) {
+      const getUserInfoSub = this.authService
+        .getUserInfo()
+        .subscribe((data: UserEntity) => {
+          this.user = data;
+          this.authService.setUser(data);
+        });
+      this.subscriptions?.push(getUserInfoSub);
+    }
   }
 
   ngOnDestroy(): void {
-    this.authSub.unsubscribe();
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
   }
 
-  onClickLogOut() {
+  onClickLogOut(): void {
     this.authService.logout();
     if (!this.isAuth) {
       this.router.navigate(['/login']);

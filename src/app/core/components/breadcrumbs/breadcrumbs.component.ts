@@ -10,6 +10,7 @@ import { BreadcrumbService } from '../../services/breadcrumb.service';
 })
 export class BreadcrumbsComponent implements OnInit, OnDestroy {
   breadcrumbs?: BreadCrumb[];
+  subscriptions?: Subscription[];
   breadcrumbSub!: Subscription;
 
   constructor(
@@ -19,14 +20,15 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.breadcrumbs = this.breadcrumbService.breadcrumbs;
-    this.breadcrumbSub = this.breadcrumbService
+    const breadcrumbSub = this.breadcrumbService
       .getBreadcrumbs()
       .subscribe((breadcrumbsArr: BreadCrumb[]) => {
         this.breadcrumbs = breadcrumbsArr;
       });
+    this.subscriptions?.push(breadcrumbSub);
   }
 
   ngOnDestroy(): void {
-    this.breadcrumbSub.unsubscribe();
+    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
   }
 }

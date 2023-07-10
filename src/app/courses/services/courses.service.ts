@@ -1,18 +1,21 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { urls } from '../../core/environment';
 import { Course } from '../models/course.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
-  private courses: Course[] = [
+  courses: Course[] = [
     {
       id: 8693,
       name: 'duis mollit reprehenderit ad',
       description:
         'Est minim ea aute sunt laborum minim eu excepteur. Culpa sint exercitation mollit enim ad culpa aliquip laborum cillum. Dolor officia culpa labore ex eiusmod ut est ea voluptate ea nostrud.',
       isTopRated: false,
-      creationDate: '2023-07-01T04:39:24+00:00',
+      date: '2023-07-01T04:39:24+00:00',
       authors: [
         {
           id: 1370,
@@ -28,7 +31,7 @@ export class CoursesService {
       description:
         'Sunt culpa officia minim commodo eiusmod irure sunt nostrud. Mollit aliquip id occaecat officia proident anim dolor officia qui voluptate consectetur laborum. Duis incididunt culpa aliqua mollit do fugiat ea dolor mollit irure Lorem tempor.',
       isTopRated: false,
-      creationDate: '2023-07-19T02:02:36+00:00',
+      date: '2023-07-19T02:02:36+00:00',
       authors: [
         {
           id: 8413,
@@ -54,7 +57,7 @@ export class CoursesService {
       description:
         'Commodo id sunt sunt adipisicing et aliquip voluptate laborum consectetur. Occaecat nisi sint exercitation ullamco adipisicing irure est in consectetur aute voluptate. Ea pariatur dolor anim ea reprehenderit ut non occaecat magna adipisicing exercitation nisi consequat.',
       isTopRated: true,
-      creationDate: '2017-03-25T12:57:37+00:00',
+      date: '2017-03-25T12:57:37+00:00',
       authors: [
         {
           id: 3618,
@@ -75,7 +78,7 @@ export class CoursesService {
       description:
         'Consectetur veniam non nulla in laboris minim ipsum. Dolor aliqua irure sint do irure magna tempor culpa quis. Deserunt amet occaecat velit sit.',
       isTopRated: true,
-      creationDate: '2016-03-18T06:36:07+00:00',
+      date: '2016-03-18T06:36:07+00:00',
       authors: [
         {
           id: 9926,
@@ -101,7 +104,7 @@ export class CoursesService {
       description:
         'Est consequat deserunt officia fugiat culpa in aliquip consectetur. Est nostrud occaecat cillum elit officia officia ea magna et minim officia commodo sunt. Deserunt duis minim magna nostrud enim enim commodo sit elit nostrud cillum aliquip est qui.',
       isTopRated: true,
-      creationDate: '2017-01-18T19:10:51+00:00',
+      date: '2017-01-18T19:10:51+00:00',
       authors: [
         {
           id: 21,
@@ -132,7 +135,7 @@ export class CoursesService {
       description:
         'Laborum reprehenderit tempor do cillum ipsum consequat deserunt. In enim amet laboris occaecat sit cillum. Voluptate tempor consequat incididunt non pariatur eiusmod sint duis est.',
       isTopRated: false,
-      creationDate: '2017-06-06T00:07:32+00:00',
+      date: '2017-06-06T00:07:32+00:00',
       authors: [
         {
           id: 1167,
@@ -158,7 +161,7 @@ export class CoursesService {
       description:
         'Commodo excepteur velit in consectetur sit esse Lorem occaecat labore laboris et. Deserunt fugiat ea aliquip labore culpa fugiat labore incididunt. Duis ex mollit quis aliquip eiusmod.',
       isTopRated: false,
-      creationDate: '2016-11-03T04:24:34+00:00',
+      date: '2016-11-03T04:24:34+00:00',
       authors: [
         {
           id: 612,
@@ -184,7 +187,7 @@ export class CoursesService {
       description:
         'Fugiat velit aliquip quis veniam culpa consequat fugiat voluptate magna exercitation eiusmod sit qui. Dolor nostrud enim commodo non eu ut nostrud aliquip aute anim ex veniam eiusmod esse. Eu nulla non dolore et voluptate labore ipsum est sit nisi qui.',
       isTopRated: true,
-      creationDate: '2017-07-07T10:38:59+00:00',
+      date: '2017-07-07T10:38:59+00:00',
       authors: [
         {
           id: 5524,
@@ -210,7 +213,7 @@ export class CoursesService {
       description:
         'Aute anim dolore duis quis ut reprehenderit dolore nostrud duis est cupidatat consequat. Ea ipsum duis esse est ullamco nulla sunt culpa. Proident Lorem ipsum Lorem incididunt deserunt dolore.',
       isTopRated: false,
-      creationDate: '2016-04-30T18:46:36+00:00',
+      date: '2016-04-30T18:46:36+00:00',
       authors: [
         {
           id: 8318,
@@ -226,7 +229,7 @@ export class CoursesService {
       description:
         'Ut aliqua exercitation in sit non adipisicing amet. Occaecat et fugiat minim officia ut in non et nulla. Nisi incididunt culpa ad magna do laboris.',
       isTopRated: true,
-      creationDate: '2017-02-18T22:01:43+00:00',
+      date: '2017-02-18T22:01:43+00:00',
       authors: [
         {
           id: 4441,
@@ -257,7 +260,7 @@ export class CoursesService {
       description:
         'Duis aliquip ut et irure. Ad excepteur elit quis non aliquip tempor voluptate cillum. Reprehenderit proident sint enim consectetur ad duis velit aute cillum ullamco dolore nostrud magna amet.',
       isTopRated: false,
-      creationDate: '2016-09-09T12:00:31+00:00',
+      date: '2016-09-09T12:00:31+00:00',
       authors: [
         {
           id: 3509,
@@ -288,7 +291,7 @@ export class CoursesService {
       description:
         'Quis tempor eiusmod esse id minim anim. Ut ipsum deserunt non mollit excepteur laborum ex occaecat labore dolore cupidatat elit. Incididunt fugiat sint eu Lorem culpa tempor nisi nostrud nisi.',
       isTopRated: false,
-      creationDate: '2017-11-18T09:06:11+00:00',
+      date: '2017-11-18T09:06:11+00:00',
       authors: [
         {
           id: 9364,
@@ -314,7 +317,7 @@ export class CoursesService {
       description:
         'Quis laboris laboris nostrud cupidatat sit labore sint amet ipsum elit deserunt in tempor. Excepteur dolor elit enim nostrud consequat eu ullamco ullamco pariatur consectetur duis voluptate. Irure laborum occaecat id veniam culpa aliqua dolor cupidatat enim sunt fugiat.',
       isTopRated: true,
-      creationDate: '2017-07-14T10:57:08+00:00',
+      date: '2017-07-14T10:57:08+00:00',
       authors: [
         {
           id: 1416,
@@ -330,7 +333,7 @@ export class CoursesService {
       description:
         'Enim commodo elit fugiat deserunt labore deserunt qui. Qui velit tempor quis eu irure qui adipisicing magna cupidatat ad ea ex tempor minim. Voluptate enim laboris aute nulla quis nisi sint esse.',
       isTopRated: false,
-      creationDate: '2017-10-27T01:46:08+00:00',
+      date: '2017-10-27T01:46:08+00:00',
       authors: [
         {
           id: 5907,
@@ -361,7 +364,7 @@ export class CoursesService {
       description:
         'Do enim consequat nisi elit nostrud laborum et. Excepteur minim eu eiusmod minim ullamco aute in velit officia enim. Proident incididunt quis ex nulla amet nisi deserunt fugiat.',
       isTopRated: false,
-      creationDate: '2016-12-11T18:16:42+00:00',
+      date: '2016-12-11T18:16:42+00:00',
       authors: [
         {
           id: 4165,
@@ -377,7 +380,7 @@ export class CoursesService {
       description:
         'Amet mollit duis et excepteur. Esse amet non et nisi velit esse ex aute do excepteur reprehenderit. Ipsum voluptate cupidatat quis et exercitation irure elit sint amet.',
       isTopRated: false,
-      creationDate: '2016-03-21T19:22:57+00:00',
+      date: '2016-03-21T19:22:57+00:00',
       authors: [
         {
           id: 4290,
@@ -408,7 +411,7 @@ export class CoursesService {
       description:
         'Cupidatat eu aliquip magna anim do nulla duis cillum aliquip pariatur cupidatat. Tempor voluptate eu ipsum voluptate do deserunt tempor excepteur Lorem ipsum incididunt incididunt. Mollit incididunt amet tempor dolor tempor commodo ea laboris laborum exercitation occaecat ex.',
       isTopRated: false,
-      creationDate: '2016-11-13T19:23:11+00:00',
+      date: '2016-11-13T19:23:11+00:00',
       authors: [
         {
           id: 1980,
@@ -429,7 +432,7 @@ export class CoursesService {
       description:
         'Fugiat tempor commodo laboris duis voluptate sint tempor in. Adipisicing enim Lorem sint enim ipsum adipisicing velit amet qui labore voluptate tempor nulla. Aliqua sit cillum ea officia.',
       isTopRated: false,
-      creationDate: '2016-08-13T02:14:40+00:00',
+      date: '2016-08-13T02:14:40+00:00',
       authors: [
         {
           id: 3455,
@@ -460,7 +463,7 @@ export class CoursesService {
       description:
         'Laborum elit ut amet ut ea eu est nisi qui esse deserunt deserunt. Ipsum duis deserunt velit et sunt deserunt cillum duis esse cupidatat adipisicing exercitation excepteur fugiat. Voluptate veniam ipsum deserunt minim labore qui aliquip laboris irure magna nisi.',
       isTopRated: false,
-      creationDate: '2017-05-13T09:35:20+00:00',
+      date: '2017-05-13T09:35:20+00:00',
       authors: [
         {
           id: 248,
@@ -481,7 +484,7 @@ export class CoursesService {
       description:
         'Ullamco veniam ea eu ad laborum nisi tempor qui ullamco. Irure officia labore irure in id fugiat sint labore esse. Officia reprehenderit ut ea dolore excepteur do.',
       isTopRated: true,
-      creationDate: '2017-03-18T16:27:27+00:00',
+      date: '2017-03-18T16:27:27+00:00',
       authors: [
         {
           id: 7827,
@@ -512,7 +515,7 @@ export class CoursesService {
       description:
         'Nostrud cupidatat aliquip pariatur incididunt irure proident cillum officia ex elit veniam est et officia. Consectetur ad adipisicing exercitation cillum excepteur voluptate dolor enim quis irure non. Est tempor sit et mollit adipisicing nisi enim labore proident veniam labore Lorem nulla labore.',
       isTopRated: false,
-      creationDate: '2016-05-29T11:05:03+00:00',
+      date: '2016-05-29T11:05:03+00:00',
       authors: [
         {
           id: 3343,
@@ -528,7 +531,7 @@ export class CoursesService {
       description:
         'Nostrud incididunt veniam consectetur cillum. Pariatur culpa dolor esse elit aliqua duis. Adipisicing exercitation nostrud ullamco occaecat ut et.',
       isTopRated: true,
-      creationDate: '2017-09-08T19:51:30+00:00',
+      date: '2017-09-08T19:51:30+00:00',
       authors: [
         {
           id: 441,
@@ -544,7 +547,7 @@ export class CoursesService {
       description:
         'Tempor aute enim qui irure. Culpa elit ut nulla qui dolore eiusmod eiusmod incididunt commodo ipsum. Anim quis exercitation sint officia laborum officia.',
       isTopRated: false,
-      creationDate: '2017-08-15T15:27:05+00:00',
+      date: '2017-08-15T15:27:05+00:00',
       authors: [
         {
           id: 9101,
@@ -565,7 +568,7 @@ export class CoursesService {
       description:
         'Est veniam cupidatat culpa quis in. Nulla dolor duis culpa eiusmod duis ea irure laboris mollit proident. Eu minim esse cillum eu incididunt minim.',
       isTopRated: false,
-      creationDate: '2017-11-05T23:17:58+00:00',
+      date: '2017-11-05T23:17:58+00:00',
       authors: [
         {
           id: 8781,
@@ -586,7 +589,7 @@ export class CoursesService {
       description:
         'Velit irure ut do dolore aliquip fugiat qui labore irure do officia ullamco. Excepteur quis tempor eu sint dolor occaecat. Nulla aliquip labore ad ut occaecat id.',
       isTopRated: false,
-      creationDate: '2017-11-01T00:46:22+00:00',
+      date: '2017-11-01T00:46:22+00:00',
       authors: [
         {
           id: 7987,
@@ -617,7 +620,7 @@ export class CoursesService {
       description:
         'Amet nostrud fugiat consequat mollit adipisicing pariatur incididunt. Eiusmod magna sit ea sunt officia anim consequat incididunt non minim non. Aute tempor proident veniam duis ex consequat dolor Lorem aliquip nulla veniam consectetur.',
       isTopRated: false,
-      creationDate: '2016-05-23T19:39:12+00:00',
+      date: '2016-05-23T19:39:12+00:00',
       authors: [
         {
           id: 3121,
@@ -648,7 +651,7 @@ export class CoursesService {
       description:
         'Fugiat anim eu duis nulla. Consectetur tempor sint nisi ex laborum. Et voluptate nulla est nostrud velit ipsum minim nostrud proident aliquip exercitation commodo quis.',
       isTopRated: true,
-      creationDate: '2016-12-03T04:50:39+00:00',
+      date: '2016-12-03T04:50:39+00:00',
       authors: [
         {
           id: 1861,
@@ -679,7 +682,7 @@ export class CoursesService {
       description:
         'Deserunt nulla nisi tempor ea tempor officia qui occaecat consectetur aliqua esse occaecat. Cillum anim veniam pariatur sint. Lorem Lorem aute anim culpa duis commodo officia labore laborum eiusmod qui irure amet pariatur.',
       isTopRated: true,
-      creationDate: '2017-10-07T09:23:08+00:00',
+      date: '2017-10-07T09:23:08+00:00',
       authors: [
         {
           id: 2700,
@@ -710,7 +713,7 @@ export class CoursesService {
       description:
         'Irure aliqua culpa ea Lorem ea laboris enim exercitation excepteur ex nulla minim ut. Est cupidatat quis officia occaecat enim reprehenderit mollit nisi. Elit proident consectetur laboris sit anim minim occaecat pariatur aute culpa duis deserunt culpa eiusmod.',
       isTopRated: false,
-      creationDate: '2017-04-14T08:15:30+00:00',
+      date: '2017-04-14T08:15:30+00:00',
       authors: [
         {
           id: 5653,
@@ -726,7 +729,7 @@ export class CoursesService {
       description:
         'Consequat do labore nisi ut amet pariatur fugiat ullamco minim velit irure. Excepteur labore incididunt sint ea nulla culpa aliqua non. Deserunt commodo cupidatat ex nostrud officia quis eu consequat voluptate.',
       isTopRated: false,
-      creationDate: '2017-09-19T18:41:40+00:00',
+      date: '2017-09-19T18:41:40+00:00',
       authors: [
         {
           id: 2148,
@@ -752,7 +755,7 @@ export class CoursesService {
       description:
         'Test-1: Consequat do labore nisi ut amet pariatur fugiat ullamco minim velit irure. Excepteur labore incididunt sint ea nulla culpa aliqua non. Deserunt commodo cupidatat ex nostrud officia quis eu consequat voluptate.',
       isTopRated: false,
-      creationDate: '2015-09-19T18:41:40+00:00',
+      date: '2015-09-19T18:41:40+00:00',
       authors: [
         {
           id: 2148,
@@ -778,7 +781,7 @@ export class CoursesService {
       description:
         'Test-2: Consequat do labore nisi ut amet pariatur fugiat ullamco minim velit irure. Excepteur labore incididunt sint ea nulla culpa aliqua non. Deserunt commodo cupidatat ex nostrud officia quis eu consequat voluptate.',
       isTopRated: false,
-      creationDate: '2015-09-20T18:41:40+00:00',
+      date: '2015-09-20T18:41:40+00:00',
       authors: [
         {
           id: 2148,
@@ -804,7 +807,7 @@ export class CoursesService {
       description:
         'Test-3: Consequat do labore nisi ut amet pariatur fugiat ullamco minim velit irure. Excepteur labore incididunt sint ea nulla culpa aliqua non. Deserunt commodo cupidatat ex nostrud officia quis eu consequat voluptate.',
       isTopRated: false,
-      creationDate: '2015-09-21T18:41:40+00:00',
+      date: '2015-09-21T18:41:40+00:00',
       authors: [
         {
           id: 2148,
@@ -831,33 +834,54 @@ export class CoursesService {
     name: '',
     description: '',
     isTopRated: false,
-    creationDate: '',
+    date: '',
     authors: [],
     length: 0
   };
 
-  constructor() {}
+  coursesLoadStep: number = 4;
+  textFragment: string = '';
+  courseUpdated?: Course;
+  private courseUpdatedChange: Subject<Course> = new Subject<Course>();
 
-  getCoursesList(): Course[] {
-    return this.courses;
+  // eslint-disable-next-line no-unused-vars
+  constructor(private http: HttpClient) {}
+
+  getCoursesList(): Observable<Course[]> {
+    return this.http.get<Course[]>(
+      `${urls.base}/courses?start=0&count=${this.coursesLoadStep}`
+    );
   }
 
-  createCourse(course: Course): void {
-    console.log(`Course ${course.name} was successfully created`);
+  getUpdatedCourses(): Observable<Course> {
+    return this.courseUpdatedChange.asObservable();
   }
 
-  getCourse(id?: number): Course | undefined {
-    return id
-      ? this.courses.find((course) => course.id === id)
-      : this.emptyCourse;
+  getFilteredCoursesList(): Observable<Course[]> {
+    return this.http.get<Course[]>(
+      `${urls.base}/courses?textFragment=${this.textFragment}`
+    );
   }
 
-  updateCourse(id: number): void {
-    console.log(`Course ${id} was successfully updated`);
+  getCourse(id?: number): Observable<Course> {
+    return this.http.get<Course>(`${urls.base}/courses/${id}`);
   }
 
-  removeCourse(id: number): Course[] {
-    this.courses = this.courses.filter((course) => course.id !== id);
-    return this.courses;
+  createCourse(course: Course): Observable<Course> {
+    return this.http.post<Course>(`${urls.base}/courses`, { ...course });
+  }
+
+  updateCourse(course: Course): Observable<Course> {
+    return this.http.patch<Course>(`${urls.base}/courses/${course.id}`, {
+      ...course
+    });
+  }
+
+  setUpdatedCourse(course: Course): void {
+    this.courseUpdatedChange.next(course);
+  }
+
+  removeCourse(id: number): Observable<Object> {
+    return this.http.delete(`${urls.base}/courses/${id}`);
   }
 }

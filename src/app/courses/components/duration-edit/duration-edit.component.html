@@ -5,7 +5,7 @@
   <input
     id="course-edit-duration"
     type="text"
-    value="{{ duration }}"
+    value="{{ duration === 0 ? '' : duration }}"
     (input)="onInput($event)"
   />
   <span>{{ duration || 0 | duration }}</span>

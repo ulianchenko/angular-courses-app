@@ -33,6 +33,8 @@ import { PageNotFoundComponent } from './core/pages/page-not-found/page-not-foun
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { CustomReuseStrategy } from './app-custom-route-reuse-strategy';
 import { BreadcrumbService } from './core/services/breadcrumb.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { TokenInterceptor } from './core/interceptor/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,8 @@ import { BreadcrumbService } from './core/services/breadcrumb.service';
     BrowserModule,
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   providers: [
     FilterByNamePipe,
@@ -71,7 +74,8 @@ import { BreadcrumbService } from './core/services/breadcrumb.service';
     CoursesService,
     AuthenticationService,
     BreadcrumbService,
-    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }
+    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
