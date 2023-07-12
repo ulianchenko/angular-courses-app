@@ -841,8 +841,8 @@ export class CoursesService {
 
   coursesLoadStep: number = 4;
   textFragment: string = '';
-  courseUpdated?: Course;
   private courseUpdatedChange: Subject<Course> = new Subject<Course>();
+  private searchInputChange: Subject<string> = new Subject<string>();
 
   // eslint-disable-next-line no-unused-vars
   constructor(private http: HttpClient) {}
@@ -855,6 +855,10 @@ export class CoursesService {
 
   getUpdatedCourses(): Observable<Course> {
     return this.courseUpdatedChange.asObservable();
+  }
+
+  getSearchInputChange(): Observable<string> {
+    return this.searchInputChange.asObservable();
   }
 
   getFilteredCoursesList(): Observable<Course[]> {
@@ -879,6 +883,10 @@ export class CoursesService {
 
   setUpdatedCourse(course: Course): void {
     this.courseUpdatedChange.next(course);
+  }
+
+  setSearchInputChange(textFragment: string): void {
+    this.searchInputChange.next(textFragment);
   }
 
   removeCourse(id: number): Observable<Object> {

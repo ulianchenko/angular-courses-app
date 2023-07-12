@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
 
@@ -11,6 +12,7 @@ export class CoursesSearchComponent {
   inputText: string = '';
   showIcon: boolean = true;
   fullCoursesList: Course[];
+  private searchInputChange: Subject<string> = new Subject<string>();
   constructor(
     // eslint-disable-next-line no-unused-vars
     private coursesService: CoursesService
@@ -20,9 +22,8 @@ export class CoursesSearchComponent {
   @Input() courses: Course[] = [];
   @Output() searchText = new EventEmitter();
 
-  onClickSearch(): void {
+  onKeyUp(): void {
     this.searchText.emit(this.inputText);
-    this.inputText = '';
   }
   onInput(event: Event): void {
     this.inputText = (event.target as HTMLInputElement).value;

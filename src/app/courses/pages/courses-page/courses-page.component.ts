@@ -6,7 +6,8 @@ import {
   Output
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, switchMap } from 'rxjs';
+import { Subscription, debounceTime, filter, switchMap, tap } from 'rxjs';
+import { LoadingService } from '../../../core/services/loading.service';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
 
@@ -21,22 +22,54 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   subscriptions?: Subscription[];
   @Output() cardToEdit = new EventEmitter();
 
-  // eslint-disable-next-line no-unused-vars
-  constructor(private coursesService: CoursesService, private router: Router) {}
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private coursesService: CoursesService,
+    // eslint-disable-next-line no-unused-vars
+    private router: Router,
+    // eslint-disable-next-line no-unused-vars
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit() {
     const getCoursesListSub = this.coursesService
       .getCoursesList()
+      .pipe(tap(() => this.loadingService.setLoadingChange(true)))
       .subscribe((data: Course[]) => {
         this.courses = data;
+        this.loadingService.setLoadingChange(false);
       });
     this.subscriptions?.push(getCoursesListSub);
 
     const getUpdatedCoursesSub = this.coursesService
       .getUpdatedCourses()
-      .pipe(switchMap(() => this.coursesService.getCoursesList()))
-      .subscribe((courses: Course[]) => (this.courses = courses));
+      .pipe(
+        switchMap(() => {
+          this.loadingService.setLoadingChange(true);
+          return this.coursesService.getCoursesList();
+        })
+      )
+      .subscribe((courses: Course[]) => {
+        this.courses = courses;
+        this.loadingService.setLoadingChange(false);
+      });
     this.subscriptions?.push(getUpdatedCoursesSub);
+
+    const getSearchInputChangeSub = this.coursesService
+      .getSearchInputChange()
+      .pipe(
+        debounceTime(500),
+        filter((textFragment: string) => textFragment.length > 3),
+        switchMap(() => {
+          this.loadingService.setLoadingChange(true);
+          return this.coursesService.getFilteredCoursesList();
+        })
+      )
+      .subscribe((courses: Course[]) => {
+        this.courses = courses;
+        this.loadingService.setLoadingChange(false);
+      });
+    this.subscriptions?.push(getSearchInputChangeSub);
   }
 
   ngOnDestroy(): void {
@@ -81,11 +114,6 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
 
   handleSearchCourses(searchText: string): void {
     this.coursesService.textFragment = searchText;
-    const getFilteredCoursesListSub = this.coursesService
-      .getFilteredCoursesList()
-      .subscribe((data: Course[]) => {
-        this.courses = data;
-      });
-    this.subscriptions?.push(getFilteredCoursesListSub);
+    this.coursesService.setSearchInputChange(searchText);
   }
 }
