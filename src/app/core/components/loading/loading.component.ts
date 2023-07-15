@@ -9,7 +9,7 @@ import { LoadingService } from '../../services/loading.service';
 })
 export class LoadingComponent implements OnInit, OnDestroy {
   isDisplay: boolean = false;
-  subscriptions?: Subscription[];
+  subscriptions: Subscription[] = [];
 
   // eslint-disable-next-line no-unused-vars
   constructor(private loadingService: LoadingService) {}
@@ -20,10 +20,10 @@ export class LoadingComponent implements OnInit, OnDestroy {
       .subscribe((loadingStatus: boolean) => {
         this.isDisplay = loadingStatus;
       });
-    this.subscriptions?.push(loadingSub);
+    this.subscriptions.push(loadingSub);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

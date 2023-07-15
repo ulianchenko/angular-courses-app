@@ -1,37 +1,34 @@
-import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot
+  CanActivateFn,
+  RouterStateSnapshot,
+  UrlTree
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { BreadcrumbService } from '../services/breadcrumb.service';
 import { AuthenticationService } from '../services/authentication.service';
+import { Observable, map } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard implements CanActivate {
-  constructor(
-    // eslint-disable-next-line no-unused-vars
-    private breadcrumbService: BreadcrumbService,
-    // eslint-disable-next-line no-unused-vars
-    private authService: AuthenticationService,
-    // eslint-disable-next-line no-unused-vars
-    private router: Router
-  ) {}
+export const authGuard: CanActivateFn = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+):
+  | Observable<boolean | UrlTree>
+  | Promise<boolean | UrlTree>
+  | boolean
+  | UrlTree => {
+  const breadcrumbService = inject(BreadcrumbService);
+  const authService = inject(AuthenticationService);
+  const router = inject(Router);
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> {
-    if (this.authService.isAuthenticated()) {
-      this.breadcrumbService.setBreadcrumb(state.url);
-      return of(true);
-    } else {
-      this.router.navigate(['/login']);
-      return of(false);
-    }
-  }
-}
+  return authService.isAuthenticatedObserv().pipe(
+    map((auth: boolean) => {
+      if (auth) {
+        breadcrumbService.setBreadcrumb(state.url);
+        return true;
+      }
+      return router.parseUrl('/login');
+    })
+  );
+};

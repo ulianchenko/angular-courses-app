@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component } from '@angular/core';
+import { Subject, debounceTime, filter, switchMap } from 'rxjs';
+import { LoadingService } from '../../../core/services/loading.service';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
 
@@ -13,20 +14,32 @@ export class CoursesSearchComponent {
   showIcon: boolean = true;
   fullCoursesList: Course[];
   private searchInputChange: Subject<string> = new Subject<string>();
+
   constructor(
     // eslint-disable-next-line no-unused-vars
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    // eslint-disable-next-line no-unused-vars
+    private loadingService: LoadingService
   ) {
     this.fullCoursesList = this.coursesService.courses;
   }
-  @Input() courses: Course[] = [];
-  @Output() searchText = new EventEmitter();
-
   onKeyUp(): void {
-    this.searchText.emit(this.inputText);
+    this.searchInputChange
+      .pipe(
+        debounceTime(500),
+        filter((inputText: string) => inputText.length > 3),
+        switchMap(() => {
+          return this.coursesService.getFilteredCoursesList(this.inputText);
+        })
+      )
+      .subscribe((courses: Course[]) => {
+        this.coursesService.setUpdatedCoursesList(courses);
+        this.loadingService.setLoadingChange(false);
+      });
   }
   onInput(event: Event): void {
     this.inputText = (event.target as HTMLInputElement).value;
+    this.searchInputChange.next((event.target as HTMLInputElement).value);
   }
   onFocusInput(): void {
     this.showIcon = false;
