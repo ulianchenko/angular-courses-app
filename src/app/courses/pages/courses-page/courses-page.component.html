@@ -1,8 +1,6 @@
+<app-loading></app-loading>
 <main class="courses-page">
-  <app-courses-search
-    [courses]="courses"
-    (searchText)="handleSearchCourses($event)"
-  ></app-courses-search>
+  <app-courses-search></app-courses-search>
   <div class="courses-page__add-course">
     <button (click)="onClickAddCourse()">+ Add course</button>
   </div>

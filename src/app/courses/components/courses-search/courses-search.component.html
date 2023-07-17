@@ -7,14 +7,8 @@
     [value]="inputText"
     (input)="onFocusInput()"
     (input)="onInput($event)"
+    (keyup)="onKeyUp()"
     (blur)="onBlurInput()"
     data-input-function="search"
   />
-  <button
-    class="search__button"
-    data-button-function="search"
-    (click)="onClickSearch()"
-  >
-    Search
-  </button>
 </div>

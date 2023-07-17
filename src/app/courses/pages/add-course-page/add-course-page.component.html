@@ -23,8 +23,8 @@
         cols="30"
         rows="10"
         (input)="onInputDescription($event)"
-        >{{ course?.description }}</textarea
-      >
+        value="{{ course?.description }}"
+      ></textarea>
     </div>
     <app-date-edit *ngIf="isEdit" [date]="course?.date"></app-date-edit>
     <app-duration-edit

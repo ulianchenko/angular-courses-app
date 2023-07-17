@@ -40,7 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.user = user;
         this.authService.setUser(user);
       });
-    this.subscriptions?.push(getAuthChangeSub);
+    this.subscriptions.push(getAuthChangeSub);
     if (this.isAuth) {
       const getUserInfoSub = this.authService
         .getUserInfo()
@@ -48,12 +48,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.user = data;
           this.authService.setUser(data);
         });
-      this.subscriptions?.push(getUserInfoSub);
+      this.subscriptions.push(getUserInfoSub);
     }
   }
 
   ngOnDestroy(): void {
-    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   onClickLogOut(): void {

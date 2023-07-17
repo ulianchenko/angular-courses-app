@@ -35,6 +35,8 @@ import { CustomReuseStrategy } from './app-custom-route-reuse-strategy';
 import { BreadcrumbService } from './core/services/breadcrumb.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './core/interceptor/token.interceptor';
+import { LoadingComponent } from './core/components/loading/loading.component';
+import { LoadingService } from './core/services/loading.service';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,8 @@ import { TokenInterceptor } from './core/interceptor/token.interceptor';
     DateEditComponent,
     DurationEditComponent,
     AuthorsEditComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoadingComponent
   ],
   imports: [
     AppRoutingModule,
@@ -74,6 +77,7 @@ import { TokenInterceptor } from './core/interceptor/token.interceptor';
     CoursesService,
     AuthenticationService,
     BreadcrumbService,
+    LoadingService,
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],

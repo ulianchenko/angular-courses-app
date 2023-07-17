@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
+import { LoadingService } from '../../../core/services/loading.service';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
 
@@ -18,29 +19,51 @@ import { CoursesService } from '../../services/courses.service';
 export class CoursesPageComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
   deleteCourseConfirmation: boolean = false;
-  subscriptions?: Subscription[];
+  subscriptions: Subscription[] = [];
   @Output() cardToEdit = new EventEmitter();
 
-  // eslint-disable-next-line no-unused-vars
-  constructor(private coursesService: CoursesService, private router: Router) {}
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private coursesService: CoursesService,
+    // eslint-disable-next-line no-unused-vars
+    private router: Router,
+    // eslint-disable-next-line no-unused-vars
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit() {
     const getCoursesListSub = this.coursesService
       .getCoursesList()
       .subscribe((data: Course[]) => {
         this.courses = data;
+        this.loadingService.setLoadingChange(false);
       });
-    this.subscriptions?.push(getCoursesListSub);
+    this.subscriptions.push(getCoursesListSub);
 
     const getUpdatedCoursesSub = this.coursesService
-      .getUpdatedCourses()
-      .pipe(switchMap(() => this.coursesService.getCoursesList()))
-      .subscribe((courses: Course[]) => (this.courses = courses));
-    this.subscriptions?.push(getUpdatedCoursesSub);
+      .getUpdatedCourse()
+      .pipe(
+        switchMap(() => {
+          return this.coursesService.getCoursesList();
+        })
+      )
+      .subscribe((courses: Course[]) => {
+        this.courses = courses;
+        this.loadingService.setLoadingChange(false);
+      });
+    this.subscriptions.push(getUpdatedCoursesSub);
+
+    const getUpdatedCoursesListSub = this.coursesService
+      .getUpdatedCoursesList()
+      .subscribe((courses: Course[]) => {
+        this.courses = courses;
+        this.loadingService.setLoadingChange(false);
+      });
+    this.subscriptions.push(getUpdatedCoursesListSub);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions?.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   onClickAddCourse(): void {
@@ -53,8 +76,11 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
     this.coursesService.coursesLoadStep += 4;
     const getCoursesListSub = this.coursesService
       .getCoursesList()
-      .subscribe((data: Course[]) => (this.courses = data));
-    this.subscriptions?.push(getCoursesListSub);
+      .subscribe((data: Course[]) => {
+        this.courses = data;
+        this.loadingService.setLoadingChange(false);
+      });
+    this.subscriptions.push(getCoursesListSub);
   }
 
   onClickEditCard(id: number): void {
@@ -63,7 +89,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
       .subscribe((data: Course) => {
         this.cardToEdit.emit(data);
       });
-    this.subscriptions?.push(getCourseSub);
+    this.subscriptions.push(getCourseSub);
   }
 
   onClickDeleteCard(id: number): void {
@@ -76,16 +102,6 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
       .subscribe((data: Course[]) => {
         this.courses = data;
       });
-    this.subscriptions?.push(getCoursesListSub);
-  }
-
-  handleSearchCourses(searchText: string): void {
-    this.coursesService.textFragment = searchText;
-    const getFilteredCoursesListSub = this.coursesService
-      .getFilteredCoursesList()
-      .subscribe((data: Course[]) => {
-        this.courses = data;
-      });
-    this.subscriptions?.push(getFilteredCoursesListSub);
+    this.subscriptions.push(getCoursesListSub);
   }
 }

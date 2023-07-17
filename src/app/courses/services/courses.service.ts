@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { LoadingService } from '../../core/services/loading.service';
 import { urls } from '../../core/environment';
 import { Course } from '../models/course.model';
 
@@ -840,26 +841,37 @@ export class CoursesService {
   };
 
   coursesLoadStep: number = 4;
-  textFragment: string = '';
-  courseUpdated?: Course;
   private courseUpdatedChange: Subject<Course> = new Subject<Course>();
+  private coursesListUpdatedChange: Subject<Course[]> = new Subject<Course[]>();
 
-  // eslint-disable-next-line no-unused-vars
-  constructor(private http: HttpClient) {}
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private http: HttpClient,
+    // eslint-disable-next-line no-unused-vars
+    private loadingService: LoadingService
+  ) {}
 
   getCoursesList(): Observable<Course[]> {
+    this.loadingService.setLoadingChange(true);
     return this.http.get<Course[]>(
       `${urls.base}/courses?start=0&count=${this.coursesLoadStep}`
     );
   }
 
-  getUpdatedCourses(): Observable<Course> {
+  getUpdatedCourse(): Observable<Course> {
+    this.loadingService.setLoadingChange(true);
     return this.courseUpdatedChange.asObservable();
   }
 
-  getFilteredCoursesList(): Observable<Course[]> {
+  getUpdatedCoursesList(): Observable<Course[]> {
+    this.loadingService.setLoadingChange(true);
+    return this.coursesListUpdatedChange.asObservable();
+  }
+
+  getFilteredCoursesList(textFragment: string): Observable<Course[]> {
+    this.loadingService.setLoadingChange(true);
     return this.http.get<Course[]>(
-      `${urls.base}/courses?textFragment=${this.textFragment}`
+      `${urls.base}/courses?textFragment=${textFragment}`
     );
   }
 
@@ -879,6 +891,10 @@ export class CoursesService {
 
   setUpdatedCourse(course: Course): void {
     this.courseUpdatedChange.next(course);
+  }
+
+  setUpdatedCoursesList(courses: Course[]): void {
+    this.coursesListUpdatedChange.next(courses);
   }
 
   removeCourse(id: number): Observable<Object> {

@@ -1,8 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, catchError } from 'rxjs';
 import { Login } from '../../models/login.model';
 import { AuthenticationService } from '../../services/authentication.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-login-page',
@@ -19,17 +21,26 @@ export class LoginPageComponent implements OnDestroy {
     // eslint-disable-next-line no-unused-vars
     private authService: AuthenticationService,
     // eslint-disable-next-line no-unused-vars
+    private loadingService: LoadingService,
+    // eslint-disable-next-line no-unused-vars
     private router: Router
   ) {}
 
   onClickLogin(): void {
     const loginSub = this.authService
       .login(this.emailInputText, this.passwordInputText)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.loadingService.setLoadingChange(false);
+          throw 'Login request was returned with an error:' + error.error;
+        })
+      )
       .subscribe((data: Login) => {
         this.authService.setAuthToken(data.token);
+        this.loadingService.setLoadingChange(false);
         this.router.navigate([this.authService.redirectUrl]);
       });
-    this.subscriptions?.push(loginSub);
+    this.subscriptions.push(loginSub);
     this.emailInputText = '';
     this.passwordInputText = '';
   }
