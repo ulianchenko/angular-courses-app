@@ -1,8 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, catchError } from 'rxjs';
-import { Login } from '../../models/login.model';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { selectIsAuthenticated } from 'src/app/store/auth/auth.selectors';
+import { login } from '../../../store/auth/auth.actions';
 import { AuthenticationService } from '../../services/authentication.service';
 import { LoadingService } from '../../services/loading.service';
 
@@ -11,42 +12,44 @@ import { LoadingService } from '../../services/loading.service';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent implements OnDestroy {
+export class LoginPageComponent implements OnInit, OnDestroy {
   emailInputText: string = '';
   passwordInputText: string = '';
   subscriptions: Subscription[] = [];
 
-  @Output() loginClicked = new EventEmitter();
   constructor(
     // eslint-disable-next-line no-unused-vars
     private authService: AuthenticationService,
     // eslint-disable-next-line no-unused-vars
     private loadingService: LoadingService,
     // eslint-disable-next-line no-unused-vars
-    private router: Router
+    private router: Router,
+    // eslint-disable-next-line no-unused-vars
+    private store: Store
   ) {}
 
-  onClickLogin(): void {
-    const loginSub = this.authService
-      .login(this.emailInputText, this.passwordInputText)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.loadingService.setLoadingChange(false);
-          throw 'Login request was returned with an error:' + error.error;
-        })
-      )
-      .subscribe((data: Login) => {
-        this.authService.setAuthToken(data.token);
+  ngOnInit(): void {
+    const getAuthSub = this.store
+      .select(selectIsAuthenticated)
+      .subscribe((auth: boolean) => {
+        if (auth) {
+          this.router.navigate([this.authService.redirectUrl]);
+        }
         this.loadingService.setLoadingChange(false);
-        this.router.navigate([this.authService.redirectUrl]);
       });
-    this.subscriptions.push(loginSub);
-    this.emailInputText = '';
-    this.passwordInputText = '';
+    this.subscriptions.push(getAuthSub);
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  onClickLogin(): void {
+    this.store.dispatch(
+      login({ login: this.emailInputText, password: this.passwordInputText })
+    );
+    this.emailInputText = '';
+    this.passwordInputText = '';
   }
 
   onInputEmail(event: Event) {

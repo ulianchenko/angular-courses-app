@@ -1,12 +1,12 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, filter, switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { logout } from '../../../store/auth/auth.actions';
+import {
+  selectIsAuthenticated,
+  selectUser
+} from 'src/app/store/auth/auth.selectors';
 import { UserEntity } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -19,37 +19,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuth!: boolean;
   user!: UserEntity;
   subscriptions: Subscription[] = [];
-  @Output() logoutClicked = new EventEmitter();
+
   constructor(
     // eslint-disable-next-line no-unused-vars
     private authService: AuthenticationService,
     // eslint-disable-next-line no-unused-vars
-    private router: Router
+    private router: Router,
+    // eslint-disable-next-line no-unused-vars
+    private store: Store
   ) {}
 
   ngOnInit(): void {
-    this.isAuth = this.authService.isAuthenticated();
-    const getAuthChangeSub = this.authService
-      .getAuthChange()
-      .pipe(
-        tap((auth) => (this.isAuth = auth)),
-        filter((auth) => auth === true),
-        switchMap(() => this.authService.getUserInfo())
-      )
+    const getAuthSub = this.store
+      .select(selectIsAuthenticated)
+      .subscribe((auth: boolean) => {
+        this.isAuth = auth;
+      });
+    this.subscriptions.push(getAuthSub);
+
+    const getUserInfoSub = this.store
+      .select(selectUser)
       .subscribe((user: UserEntity) => {
         this.user = user;
-        this.authService.setUser(user);
       });
-    this.subscriptions.push(getAuthChangeSub);
-    if (this.isAuth) {
-      const getUserInfoSub = this.authService
-        .getUserInfo()
-        .subscribe((data: UserEntity) => {
-          this.user = data;
-          this.authService.setUser(data);
-        });
-      this.subscriptions.push(getUserInfoSub);
-    }
+    this.subscriptions.push(getUserInfoSub);
   }
 
   ngOnDestroy(): void {
@@ -57,7 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onClickLogOut(): void {
-    this.authService.logout();
+    this.store.dispatch(logout());
     if (!this.isAuth) {
       this.router.navigate(['/login']);
     }

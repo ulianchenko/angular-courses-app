@@ -7,7 +7,7 @@
       <input
         id="course-edit-title"
         type="text"
-        value="{{ course?.name }}"
+        value="{{ course.name }}"
         (input)="onInputTitle($event)"
       />
     </div>
@@ -23,12 +23,12 @@
         cols="30"
         rows="10"
         (input)="onInputDescription($event)"
-        value="{{ course?.description }}"
+        value="{{ course.description }}"
       ></textarea>
     </div>
-    <app-date-edit *ngIf="isEdit" [date]="course?.date"></app-date-edit>
+    <app-date-edit *ngIf="isEdit" [date]="course.date"></app-date-edit>
     <app-duration-edit
-      [duration]="course?.length || 0"
+      [duration]="course.length || 0"
       (durationInput)="onInputDuration($event)"
     ></app-duration-edit>
     <div *ngIf="isEdit" class="add-course__container_authors">

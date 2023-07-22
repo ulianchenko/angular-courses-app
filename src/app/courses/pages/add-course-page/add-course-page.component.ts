@@ -1,10 +1,17 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subscription, of, switchMap, tap } from 'rxjs';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { createCourse } from '../../helpers/createCourse';
 import { Course } from '../../models/course.model';
 import { CoursesService } from '../../services/courses.service';
+import {
+  createNewCourse,
+  updateCourse
+} from '../../../store/courses/courses.actions';
+import { selectUser } from 'src/app/store/auth/auth.selectors';
+import { UserEntity } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-add-course-page',
@@ -14,7 +21,9 @@ import { CoursesService } from '../../services/courses.service';
 export class AddCoursePageComponent implements OnInit, OnDestroy {
   isEdit: boolean = false;
   subscriptions: Subscription[] = [];
-  @Input() course?: Course;
+  course: Course;
+  user!: UserEntity;
+
   constructor(
     // eslint-disable-next-line no-unused-vars
     private route: ActivatedRoute,
@@ -23,15 +32,20 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line no-unused-vars
     private authService: AuthenticationService,
     // eslint-disable-next-line no-unused-vars
-    private router: Router
-  ) {}
+    private router: Router,
+    // eslint-disable-next-line no-unused-vars
+    private store: Store
+  ) {
+    this.course = this.coursesService.emptyCourse;
+  }
 
   ngOnInit() {
     const routeSub = this.route.params
       .pipe(
         switchMap((params) => {
-          if (Number(params['id'])) {
-            return this.coursesService.getCourse(Number(params['id'])).pipe(
+          const courseId: number = Number(params['id']);
+          if (courseId) {
+            return this.coursesService.fetchCourse(courseId).pipe(
               tap((data: Course) => {
                 this.course = data;
                 this.isEdit = true;
@@ -46,6 +60,13 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
       )
       .subscribe();
     this.subscriptions.push(routeSub);
+
+    const getUserInfoSub = this.store
+      .select(selectUser)
+      .subscribe((user: UserEntity) => {
+        this.user = user;
+      });
+    this.subscriptions.push(getUserInfoSub);
   }
 
   ngOnDestroy(): void {
@@ -53,25 +74,11 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(): void {
-    const courseForAdding = createCourse(
-      this.isEdit,
-      this.course!,
-      this.authService.user
-    );
+    const courseForAdding = createCourse(this.isEdit, this.course!, this.user);
     if (this.isEdit) {
-      const updateCourseSub = this.coursesService
-        .updateCourse(courseForAdding)
-        .subscribe((data: Course) => {
-          this.coursesService.setUpdatedCourse(data);
-        });
-      this.subscriptions.push(updateCourseSub);
+      this.store.dispatch(updateCourse({ newCourse: courseForAdding }));
     } else {
-      const createCourseSub = this.coursesService
-        .createCourse(courseForAdding)
-        .subscribe((data: Course) => {
-          this.coursesService.setUpdatedCourse(data);
-        });
-      this.subscriptions.push(createCourseSub);
+      this.store.dispatch(createNewCourse({ newCourse: courseForAdding }));
       this.course = this.coursesService.emptyCourse;
       this.isEdit = false;
     }

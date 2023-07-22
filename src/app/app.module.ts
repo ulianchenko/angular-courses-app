@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -37,6 +37,13 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './core/interceptor/token.interceptor';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingService } from './core/services/loading.service';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { authReducer } from './store/auth/auth.reducer';
+import { AuthEffects } from './store/auth/auth.effects';
+import { coursesReducer } from './store/courses/courses.reducer';
+import { CoursesEffects } from './store/courses/courses.effects';
 
 @NgModule({
   declarations: [
@@ -68,7 +75,13 @@ import { LoadingService } from './core/services/loading.service';
     CommonModule,
     FormsModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({
+      auth: authReducer,
+      courses: coursesReducer
+    }),
+    EffectsModule.forRoot([AuthEffects, CoursesEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [
     FilterByNamePipe,
