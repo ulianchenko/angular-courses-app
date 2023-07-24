@@ -22,7 +22,7 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
   isEdit: boolean = false;
   subscriptions: Subscription[] = [];
   course: Course;
-  user!: UserEntity;
+  user!: UserEntity | null;
 
   constructor(
     // eslint-disable-next-line no-unused-vars
@@ -63,7 +63,7 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
 
     const getUserInfoSub = this.store
       .select(selectUser)
-      .subscribe((user: UserEntity) => {
+      .subscribe((user: UserEntity | null) => {
         this.user = user;
       });
     this.subscriptions.push(getUserInfoSub);
@@ -74,7 +74,7 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(): void {
-    const courseForAdding = createCourse(this.isEdit, this.course!, this.user);
+    const courseForAdding = createCourse(this.isEdit, this.course!, this.user!);
     if (this.isEdit) {
       this.store.dispatch(updateCourse({ newCourse: courseForAdding }));
     } else {

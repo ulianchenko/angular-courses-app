@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { Name } from '../../core/models/name.model';
-import { authUser, logout, setUser } from './auth.actions';
+import { authUser, logout, setError, setUser } from './auth.actions';
 
 export interface AuthState {
   user: {
@@ -8,21 +8,15 @@ export interface AuthState {
     name: Name;
     login: string;
     token: string;
-  };
+  } | null;
   isAuthenticated: boolean;
+  errorStr: string;
 }
 
 export const initialState: AuthState = {
-  user: {
-    id: 0,
-    name: {
-      first: '',
-      last: ''
-    },
-    login: '',
-    token: ''
-  },
-  isAuthenticated: false
+  user: null,
+  isAuthenticated: false,
+  errorStr: ''
 };
 
 export const authReducer = createReducer(
@@ -41,16 +35,15 @@ export const authReducer = createReducer(
   }),
   on(logout, (): AuthState => {
     return {
-      user: {
-        id: 0,
-        name: {
-          first: '',
-          last: ''
-        },
-        login: '',
-        token: ''
-      },
-      isAuthenticated: false
+      user: null,
+      isAuthenticated: false,
+      errorStr: ''
+    };
+  }),
+  on(setError, (state, action): AuthState => {
+    return {
+      ...state,
+      errorStr: action.errorStr
     };
   })
 );

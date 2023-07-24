@@ -19,3 +19,8 @@ export const login = createAction(
   '[Auth] login',
   props<{ login: string; password: string }>()
 );
+
+export const setError = createAction(
+  '[Auth] setError',
+  props<{ errorStr: string }>()
+);

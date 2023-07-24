@@ -7,11 +7,12 @@ import {
   logout,
   setUser
 } from './auth.actions';
-import { catchError, concatMap, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { UserEntity } from '../../core/models/user.model';
 import { of } from 'rxjs';
 import { LoadingService } from '../../core/services/loading.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
@@ -21,7 +22,9 @@ export class AuthEffects {
     // eslint-disable-next-line no-unused-vars
     private loadingService: LoadingService,
     // eslint-disable-next-line no-unused-vars
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    // eslint-disable-next-line no-unused-vars
+    private router: Router
   ) {}
 
   checkToken$ = createEffect(() => {
@@ -53,10 +56,6 @@ export class AuthEffects {
                 token
               };
               return setUser({ user: userInfo });
-            }),
-            catchError((error) => {
-              console.error(`An error occurred: ${error.message}`);
-              return [];
             })
           );
         } else {
@@ -67,39 +66,34 @@ export class AuthEffects {
   });
 
   loginUser$ = createEffect(() => {
+    let loginStr: string, passwordStr: string, tokenStr: string;
     return this.actions.pipe(
       ofType(login),
       switchMap((action) => {
         this.loadingService.setLoadingChange(true);
-        const { login, password } = action;
-        return this.authService.getToken(login, password).pipe(
-          switchMap((tokenResponse) => {
-            const token = tokenResponse.token;
-            return this.authService.getUserInfo(token).pipe(
-              concatMap((userData) => {
-                const userInfo: UserEntity = {
-                  id: userData.id,
-                  name: {
-                    first: userData.name.first,
-                    last: userData.name.last
-                  },
-                  login,
-                  token
-                };
-                localStorage.setItem('token', userInfo.token);
-                const setUserAction = setUser({ user: userInfo });
-                const authUserAction = authUser({ isAuth: true });
-                this.loadingService.setLoadingChange(false);
-                return of(setUserAction, authUserAction);
-              }),
-              catchError((error) => {
-                this.loadingService.setLoadingChange(false);
-                console.error(`An error occurred: ${error.message}`);
-                return [];
-              })
-            );
-          })
-        );
+        loginStr = action.login;
+        passwordStr = action.password;
+        return this.authService.getToken(loginStr, passwordStr);
+      }),
+      switchMap((tokenResponse) => {
+        tokenStr = tokenResponse ? tokenResponse.token : '';
+        return this.authService.getUserInfo(tokenStr);
+      }),
+      switchMap((userData) => {
+        const userInfo: UserEntity = {
+          id: userData.id,
+          name: {
+            first: userData.name.first,
+            last: userData.name.last
+          },
+          login: loginStr,
+          token: tokenStr
+        };
+        localStorage.setItem('token', userInfo.token);
+        const setUserAction = setUser({ user: userInfo });
+        const authUserAction = authUser({ isAuth: true });
+        this.loadingService.setLoadingChange(false);
+        return of(setUserAction, authUserAction);
       })
     );
   });

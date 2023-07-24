@@ -17,7 +17,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isAuth!: boolean;
-  user!: UserEntity;
+  user!: UserEntity | null;
   subscriptions: Subscription[] = [];
 
   constructor(
@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     const getUserInfoSub = this.store
       .select(selectUser)
-      .subscribe((user: UserEntity) => {
+      .subscribe((user: UserEntity | null) => {
         this.user = user;
       });
     this.subscriptions.push(getUserInfoSub);

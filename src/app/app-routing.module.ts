@@ -5,6 +5,7 @@ import { PageNotFoundComponent } from './core/pages/page-not-found/page-not-foun
 import { authGuard } from './core/guards/auth.guard';
 import { AddCoursePageComponent } from './courses/pages/add-course-page/add-course-page.component';
 import { CoursesPageComponent } from './courses/pages/courses-page/courses-page.component';
+import { ErrorPageComponent } from './core/pages/error-page/error-page.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent
+  },
+  {
+    path: 'error',
+    component: ErrorPageComponent
   },
   { path: '', redirectTo: '/courses', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, Subscription, debounceTime, mergeMap, of } from 'rxjs';
+import { Subject, Subscription, debounceTime, of, switchMap } from 'rxjs';
 import {
   filterCourses,
   getCourses
@@ -24,7 +24,7 @@ export class CoursesSearchComponent implements OnInit, OnDestroy {
     const getUpdatedSearchInput = this.searchInputChange
       .pipe(
         debounceTime(500),
-        mergeMap((inputText: string) => {
+        switchMap((inputText: string) => {
           if (inputText.length > 3) {
             return of(
               this.store.dispatch(

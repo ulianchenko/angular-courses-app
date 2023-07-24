@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable, catchError } from 'rxjs';
+import { LoadingService } from 'src/app/core/services/loading.service';
+import { setError } from 'src/app/store/auth/auth.actions';
 import { urls } from '../../core/environment';
 import { Course } from '../models/course.model';
 
@@ -20,23 +24,48 @@ export class CoursesService {
 
   coursesLoadStep: number = 4;
 
-  // eslint-disable-next-line no-unused-vars
-  constructor(private http: HttpClient) {}
+  constructor(
+    // eslint-disable-next-line no-unused-vars
+    private http: HttpClient,
+    // eslint-disable-next-line no-unused-vars
+    private store: Store,
+    // eslint-disable-next-line no-unused-vars
+    private router: Router,
+    // eslint-disable-next-line no-unused-vars
+    private loadingService: LoadingService
+  ) {}
 
   fetchCourses(start = 0, count = 4) {
-    return this.http.get<Course[]>(
-      `${urls.base}/courses?start=${start}&count=${count}`
-    );
+    return this.http
+      .get<Course[]>(`${urls.base}/courses?start=${start}&count=${count}`)
+      .pipe(
+        catchError((error) => {
+          this.router.navigate(['/error']);
+          this.store.dispatch(setError({ errorStr: error.message }));
+          this.loadingService.setLoadingChange(false);
+          return [];
+        })
+      );
   }
 
   fetchCourse(id?: number) {
-    return this.http.get<Course>(`${urls.base}/courses/${id}`);
+    return this.http.get<Course>(`${urls.base}/courses/${id}`).pipe(
+      catchError((error) => {
+        this.router.navigate(['/error']);
+        this.store.dispatch(setError({ errorStr: error.message }));
+        this.loadingService.setLoadingChange(false);
+        return [];
+      })
+    );
   }
 
   removeCourse(id: number) {
     return this.http.delete<Course[]>(`${urls.base}/courses/${id}`).pipe(
       catchError((error) => {
-        throw new Error(`An error occurred: ${error.message}`);
+        this.router.navigate(['/error']);
+        this.store.dispatch(setError({ errorStr: error.message }));
+        this.loadingService.setLoadingChange(false);
+        return [];
       })
     );
   }
@@ -46,7 +75,10 @@ export class CoursesService {
       .get<Course[]>(`${urls.base}/courses?textFragment=${searchString}`)
       .pipe(
         catchError((error) => {
-          throw new Error(`An error occurred: ${error.message}`);
+          this.router.navigate(['/error']);
+          this.store.dispatch(setError({ errorStr: error.message }));
+          this.loadingService.setLoadingChange(false);
+          return [];
         })
       );
   }
@@ -54,7 +86,10 @@ export class CoursesService {
   createCourse(course: Course) {
     return this.http.post<Course>(`${urls.base}/courses/`, course).pipe(
       catchError((error) => {
-        throw new Error(`An error occurred: ${error.message}`);
+        this.router.navigate(['/error']);
+        this.store.dispatch(setError({ errorStr: error.message }));
+        this.loadingService.setLoadingChange(false);
+        return [];
       })
     );
   }
@@ -64,7 +99,10 @@ export class CoursesService {
       .patch(`${urls.base}/courses/${newCourse.id}`, newCourse)
       .pipe(
         catchError((error) => {
-          throw new Error(`An error occurred: ${error.message}`);
+          this.router.navigate(['/error']);
+          this.store.dispatch(setError({ errorStr: error.message }));
+          this.loadingService.setLoadingChange(false);
+          return [];
         })
       );
   }

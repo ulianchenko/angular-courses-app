@@ -11,7 +11,7 @@ import {
   setCourses,
   updateCourse
 } from './courses.actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 import { LoadingService } from '../../core/services/loading.service';
 import { CoursesService } from '../../courses/services/courses.service';
 
@@ -35,11 +35,6 @@ export class CoursesEffects {
           map((coursesData) => {
             this.loadingService.setLoadingChange(false);
             return setCourses({ courses: coursesData });
-          }),
-          catchError((error) => {
-            console.error(error.message);
-            this.loadingService.setLoadingChange(false);
-            return [];
           })
         );
       })
@@ -56,11 +51,6 @@ export class CoursesEffects {
           map((coursesData) => {
             this.loadingService.setLoadingChange(false);
             return addMoreCourses({ courses: coursesData });
-          }),
-          catchError((error) => {
-            console.error(error.message);
-            this.loadingService.setLoadingChange(false);
-            return [];
           })
         );
       })
@@ -80,11 +70,6 @@ export class CoursesEffects {
                 map((coursesData) => {
                   this.loadingService.setLoadingChange(false);
                   return setCourses({ courses: coursesData });
-                }),
-                catchError((error) => {
-                  console.error(error.message);
-                  this.loadingService.setLoadingChange(false);
-                  return [];
                 })
               );
             } else {
@@ -110,11 +95,6 @@ export class CoursesEffects {
                 map(() => {
                   this.loadingService.setLoadingChange(false);
                   return getCourses();
-                }),
-                catchError((error) => {
-                  console.error(error.message);
-                  this.loadingService.setLoadingChange(false);
-                  return [];
                 })
               );
             } else {
@@ -140,11 +120,6 @@ export class CoursesEffects {
                 map(() => {
                   this.loadingService.setLoadingChange(false);
                   return getCourses();
-                }),
-                catchError((error) => {
-                  console.error(error.message);
-                  this.loadingService.setLoadingChange(false);
-                  return [];
                 })
               );
             } else {
@@ -167,11 +142,6 @@ export class CoursesEffects {
           switchMap((coursesData: Course[]) => {
             this.loadingService.setLoadingChange(false);
             return of(setCourses({ courses: coursesData }));
-          }),
-          catchError((error) => {
-            this.loadingService.setLoadingChange(false);
-            console.error(error.message);
-            return [];
           })
         );
       })

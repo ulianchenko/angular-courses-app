@@ -44,6 +44,7 @@ import { authReducer } from './store/auth/auth.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
 import { coursesReducer } from './store/courses/courses.reducer';
 import { CoursesEffects } from './store/courses/courses.effects';
+import { ErrorPageComponent } from './core/pages/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { CoursesEffects } from './store/courses/courses.effects';
     DurationEditComponent,
     AuthorsEditComponent,
     PageNotFoundComponent,
-    LoadingComponent
+    LoadingComponent,
+    ErrorPageComponent
   ],
   imports: [
     AppRoutingModule,

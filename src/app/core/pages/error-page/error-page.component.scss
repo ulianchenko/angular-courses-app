@@ -1,0 +1,12 @@
+.error-page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 100px);
+  justify-content: center;
+  width: 100%;
+  & a {
+    color: blue;
+    cursor: pointer;
+  }
+}

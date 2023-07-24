@@ -7,17 +7,7 @@ export interface CoursesState {
 }
 
 export const initialState: CoursesState = {
-  courses: [
-    {
-      id: 0,
-      name: '',
-      date: '',
-      length: 0,
-      description: '',
-      isTopRated: false,
-      authors: [{ id: 0, name: '', lastName: '' }]
-    }
-  ]
+  courses: []
 };
 
 export const coursesReducer = createReducer(
