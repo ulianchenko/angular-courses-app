@@ -1,6 +1,6 @@
 <app-loading></app-loading>
 <main class="login-page">
-  <div class="login__container">
+  <form class="login__container">
     <h1 class="login__container_title">Login</h1>
     <div class="login__container_email">
       <div class="login__container_email_title">
@@ -8,11 +8,28 @@
         <span class="required">*required</span>
       </div>
       <input
+        id="user-login"
         type="text"
         placeholder="Enter email"
-        value="{{ emailInputText }}"
-        (input)="onInputEmail($event)"
+        name="email"
+        [formControl]="loginControl"
+        [ngClass]="
+          loginControl.invalid && (loginControl.touched || loginControl.dirty)
+            ? 'error-border'
+            : ''
+        "
       />
+      <div
+        *ngIf="
+          loginControl.invalid && (loginControl.touched || loginControl.dirty)
+        "
+        class="error-text"
+      >
+        <div *ngIf="loginControl.errors?.['required']">Login is required.</div>
+        <div *ngIf="loginControl.errors?.['minlength']">
+          Login length should be min 2 characters.
+        </div>
+      </div>
     </div>
     <div class="login__container_password">
       <div class="login__container_password_title">
@@ -20,17 +37,43 @@
         <span class="required">*required</span>
       </div>
       <input
+        id="user-password"
         type="text"
         placeholder="Enter password"
-        value="{{ passwordInputText }}"
-        (input)="onInputPassword($event)"
+        name="password"
+        [formControl]="passwordControl"
+        [ngClass]="
+          passwordControl.invalid &&
+          (passwordControl.touched || passwordControl.dirty)
+            ? 'error-border'
+            : ''
+        "
       />
+      <div
+        *ngIf="
+          passwordControl.invalid &&
+          (passwordControl.touched || passwordControl.dirty)
+        "
+        class="error-text"
+      >
+        <div *ngIf="passwordControl.errors?.['required']">
+          Password is required.
+        </div>
+        <div *ngIf="passwordControl.errors?.['minlength']">
+          Password length should be min 2 characters.
+        </div>
+      </div>
     </div>
     <div class="login__container_button">
       <a href="#" class="login__container_button_forgot-password"
         >Forgot password?</a
       >
-      <button (click)="onClickLogin()">Login</button>
+      <button
+        (click)="onClickLogin()"
+        [disabled]="loginControl.invalid || passwordControl.invalid"
+      >
+        Login
+      </button>
     </div>
-  </div>
+  </form>
 </main>

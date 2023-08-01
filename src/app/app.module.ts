@@ -23,6 +23,7 @@ import { OrderByCreationDatePipe } from './shared/pipes/order-by-creation-date.p
 import { FilterByNamePipe } from './shared/pipes/filter-by-name.pipe';
 
 import { CoursesService } from './courses/services/courses.service';
+import { AuthorsService } from './courses/services/authors.service';
 import { AuthenticationService } from './core/services/authentication.service';
 import { IfAuthenticatedDirective } from './shared/directives/if-authenticated.directive';
 import { AddCoursePageComponent } from './courses/pages/add-course-page/add-course-page.component';
@@ -45,6 +46,7 @@ import { AuthEffects } from './store/auth/auth.effects';
 import { coursesReducer } from './store/courses/courses.reducer';
 import { CoursesEffects } from './store/courses/courses.effects';
 import { ErrorPageComponent } from './core/pages/error-page/error-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,7 @@ import { ErrorPageComponent } from './core/pages/error-page/error-page.component
     FormsModule,
     RouterModule,
     HttpClientModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({
       auth: authReducer,
       courses: coursesReducer
@@ -90,6 +93,7 @@ import { ErrorPageComponent } from './core/pages/error-page/error-page.component
     OrderByCreationDatePipe,
     DurationPipe,
     CoursesService,
+    AuthorsService,
     AuthenticationService,
     BreadcrumbService,
     LoadingService,

@@ -6,6 +6,7 @@ import { selectIsAuthenticated } from 'src/app/store/auth/auth.selectors';
 import { login } from '../../../store/auth/auth.actions';
 import { AuthenticationService } from '../../services/authentication.service';
 import { LoadingService } from '../../services/loading.service';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
@@ -13,9 +14,9 @@ import { LoadingService } from '../../services/loading.service';
   styleUrls: ['./login-page.component.scss']
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
-  emailInputText: string = '';
-  passwordInputText: string = '';
   subscriptions: Subscription[] = [];
+  loginControl: FormControl;
+  passwordControl: FormControl;
 
   constructor(
     // eslint-disable-next-line no-unused-vars
@@ -26,7 +27,16 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     private router: Router,
     // eslint-disable-next-line no-unused-vars
     private store: Store
-  ) {}
+  ) {
+    this.loginControl = new FormControl('', [
+      Validators.required,
+      Validators.minLength(2)
+    ]);
+    this.passwordControl = new FormControl('', [
+      Validators.required,
+      Validators.minLength(2)
+    ]);
+  }
 
   ngOnInit(): void {
     const getAuthSub = this.store
@@ -45,18 +55,15 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   onClickLogin(): void {
-    this.store.dispatch(
-      login({ login: this.emailInputText, password: this.passwordInputText })
-    );
-    this.emailInputText = '';
-    this.passwordInputText = '';
-  }
-
-  onInputEmail(event: Event) {
-    this.emailInputText = (event.target as HTMLInputElement).value;
-  }
-
-  onInputPassword(event: Event) {
-    this.passwordInputText = (event.target as HTMLInputElement).value;
+    if (this.loginControl.valid && this.passwordControl.valid) {
+      this.store.dispatch(
+        login({
+          login: this.loginControl.value,
+          password: this.passwordControl.value
+        })
+      );
+    }
+    this.loginControl.reset();
+    this.passwordControl.reset();
   }
 }

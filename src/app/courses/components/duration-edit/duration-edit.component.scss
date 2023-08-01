@@ -5,6 +5,14 @@
   & input {
     box-sizing: border-box;
     margin-right: 10px;
+    outline: none;
     width: 20%;
+  }
+  & .error-text {
+    color: red;
+    font-size: 12px;
+  }
+  & .error-border {
+    border: 2px solid red;
   }
 }
