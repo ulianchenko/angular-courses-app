@@ -1,26 +1,17 @@
-import { Component } from '@angular/core';
-import { AuthenticationService } from './core/services/authentication.service';
-import { Course } from './courses/models/course.model';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { checkUserToken } from './store/auth/auth.actions';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'angular-courses-app';
-  courseToEdit?: Course;
-  isEditCourse: boolean = false;
+export class AppComponent implements OnInit {
   // eslint-disable-next-line no-unused-vars
-  constructor(private authService: AuthenticationService) {}
+  constructor(private store: Store) {}
 
-  handleLogoutClick(): void {
-    this.isEditCourse = false;
-    this.authService.logout();
-  }
-
-  handleEditCard(course: Course): void {
-    this.courseToEdit = course;
-    this.isEditCourse = true;
+  ngOnInit() {
+    this.store.dispatch(checkUserToken());
   }
 }

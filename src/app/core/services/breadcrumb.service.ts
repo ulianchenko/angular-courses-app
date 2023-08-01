@@ -2,20 +2,27 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Course } from '../../courses/models/course.model';
 import { BreadCrumb } from '../models/breadcrumb.model';
-import { CoursesService } from '../../courses/services/courses.service';
+import { Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
 })
+// export class BreadcrumbService implements OnDestroy {
 export class BreadcrumbService {
   breadcrumbs: BreadCrumb[] = [];
+  courses: Course[] = [];
+  // subscriptions: Subscription[] = [];
   private breadcrumbChange: Subject<BreadCrumb[]> = new Subject<BreadCrumb[]>();
 
   // eslint-disable-next-line no-unused-vars
-  constructor(private coursesService: CoursesService) {}
+  constructor(private store: Store) {}
 
   getBreadcrumbs(): Observable<BreadCrumb[]> {
     return this.breadcrumbChange.asObservable();
+  }
+
+  setCourses(courses: Course[]): void {
+    this.courses = courses;
   }
 
   setBreadcrumb(breadcrumb: string): void {
@@ -28,9 +35,10 @@ export class BreadcrumbService {
       .split('/')
       .map((breadcrumbItem) => {
         breadcrumbUrl += `/${breadcrumbItem}`;
-        courseById = this.coursesService.courses.find(
+        courseById = this.courses.find(
           (course: Course) => course.id === Number(breadcrumbItem)
         );
+
         courseName = courseById
           ? `Video course ${courseById.id}: ${courseById.name}`
           : '';

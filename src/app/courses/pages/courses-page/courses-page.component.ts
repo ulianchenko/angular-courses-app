@@ -1,15 +1,14 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, switchMap } from 'rxjs';
-import { LoadingService } from '../../../core/services/loading.service';
+import { Subscription } from 'rxjs';
 import { Course } from '../../models/course.model';
-import { CoursesService } from '../../services/courses.service';
+import { Store } from '@ngrx/store';
+import { selectCourses } from '../../../store/courses/courses.selectors';
+import {
+  deleteCourse,
+  getCourses,
+  loadMoreCourses
+} from '../../../store/courses/courses.actions';
 
 @Component({
   selector: 'app-courses-page',
@@ -19,47 +18,25 @@ import { CoursesService } from '../../services/courses.service';
 export class CoursesPageComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
   deleteCourseConfirmation: boolean = false;
+  coursesLoadStep: number = 4;
   subscriptions: Subscription[] = [];
-  @Output() cardToEdit = new EventEmitter();
 
   constructor(
     // eslint-disable-next-line no-unused-vars
-    private coursesService: CoursesService,
-    // eslint-disable-next-line no-unused-vars
     private router: Router,
     // eslint-disable-next-line no-unused-vars
-    private loadingService: LoadingService
+    private store: Store
   ) {}
 
   ngOnInit() {
-    const getCoursesListSub = this.coursesService
-      .getCoursesList()
+    this.store.dispatch(getCourses());
+
+    const getCoursesListSub = this.store
+      .select(selectCourses)
       .subscribe((data: Course[]) => {
         this.courses = data;
-        this.loadingService.setLoadingChange(false);
       });
     this.subscriptions.push(getCoursesListSub);
-
-    const getUpdatedCoursesSub = this.coursesService
-      .getUpdatedCourse()
-      .pipe(
-        switchMap(() => {
-          return this.coursesService.getCoursesList();
-        })
-      )
-      .subscribe((courses: Course[]) => {
-        this.courses = courses;
-        this.loadingService.setLoadingChange(false);
-      });
-    this.subscriptions.push(getUpdatedCoursesSub);
-
-    const getUpdatedCoursesListSub = this.coursesService
-      .getUpdatedCoursesList()
-      .subscribe((courses: Course[]) => {
-        this.courses = courses;
-        this.loadingService.setLoadingChange(false);
-      });
-    this.subscriptions.push(getUpdatedCoursesListSub);
   }
 
   ngOnDestroy(): void {
@@ -67,41 +44,27 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   }
 
   onClickAddCourse(): void {
-    const course = this.coursesService.emptyCourse;
-    this.cardToEdit.emit(course);
     this.router.navigateByUrl(`/courses/new`);
+    this.coursesLoadStep = 4;
   }
 
   onClickLoadMore(): void {
-    this.coursesService.coursesLoadStep += 4;
-    const getCoursesListSub = this.coursesService
-      .getCoursesList()
-      .subscribe((data: Course[]) => {
-        this.courses = data;
-        this.loadingService.setLoadingChange(false);
-      });
-    this.subscriptions.push(getCoursesListSub);
+    this.store.dispatch(
+      loadMoreCourses({ start: this.coursesLoadStep, count: 4 })
+    );
+    this.coursesLoadStep += 4;
   }
 
   onClickEditCard(id: number): void {
-    const getCourseSub = this.coursesService
-      .getCourse(id)
-      .subscribe((data: Course) => {
-        this.cardToEdit.emit(data);
-      });
-    this.subscriptions.push(getCourseSub);
+    this.coursesLoadStep = 4;
+    this.router.navigateByUrl(`/courses/${id}`);
   }
 
   onClickDeleteCard(id: number): void {
     this.deleteCourseConfirmation = confirm(
       'Do you really want to delete this course? Yes/No'
     );
-    const getCoursesListSub = this.coursesService
-      .removeCourse(id)
-      .pipe(switchMap(() => this.coursesService.getCoursesList()))
-      .subscribe((data: Course[]) => {
-        this.courses = data;
-      });
-    this.subscriptions.push(getCoursesListSub);
+    this.store.dispatch(deleteCourse({ id: id }));
+    this.coursesLoadStep = 4;
   }
 }
