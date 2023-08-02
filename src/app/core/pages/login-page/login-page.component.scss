@@ -32,6 +32,7 @@
       & input {
         box-sizing: border-box;
         height: 28px;
+        outline: none;
         width: 100%;
       }
     }
@@ -50,6 +51,7 @@
       & input {
         box-sizing: border-box;
         height: 28px;
+        outline: none;
         width: 100%;
       }
     }
@@ -64,6 +66,13 @@
         height: 25px;
         width: 70px;
       }
+    }
+    & .error-text {
+      color: red;
+      font-size: 12px;
+    }
+    & .error-border {
+      border: 2px solid red;
     }
   }
 }

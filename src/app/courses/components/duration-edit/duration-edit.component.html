@@ -2,11 +2,29 @@
   <label for="course-edit-duration" class="duration-edit__text"
     >Duration:</label
   >
+  <div
+    *ngIf="control.hasError('required') && control.touched"
+    class="error-text"
+  >
+    Duration is required.
+  </div>
+  <div *ngIf="invalidNumber && control.touched" class="error-text">
+    Only numbers more than 0 are allowed.
+  </div>
   <input
-    id="course-edit-duration"
-    type="text"
-    value="{{ duration === 0 ? '' : duration }}"
-    (input)="onInput($event)"
+    id="duration"
+    type="number"
+    placeholder="Enter course duration"
+    [formControl]="control"
+    min="1"
+    (input)="onInput(control.value)"
+    [ngClass]="
+      (invalidNumber && control.touched) ||
+      (control.hasError('required') && control.touched)
+        ? 'error-border'
+        : ''
+    "
+    required
   />
-  <span>{{ duration || 0 | duration }}</span>
+  <span>{{ control.value | duration }}</span>
 </div>

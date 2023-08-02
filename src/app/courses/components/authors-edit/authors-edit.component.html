@@ -1,4 +1,37 @@
-<div class="author-edit">
-  <p class="author-edit__name">{{ author?.name }} {{ author?.lastName }}</p>
-  <button class="author-edit__button_delete">✕</button>
+<div class="add-course__container_authors">
+  <div class="add-course__container_authors_search">
+    <label for="authors">Select authors:</label>
+    <input
+      #autocompleteInput
+      type="text"
+      placeholder="Start typing authors name"
+      id="authors"
+      [(ngModel)]="searchTerm"
+      (input)="searchAuthors(searchTerm)"
+    />
+    <ul *ngIf="showAutocomplete && filteredAuthors.length > 0">
+      <li
+        *ngFor="let author of filteredAuthors; let i = index"
+        (click)="selectAuthorFromList($event, author)"
+        class="add-course__container_authors_search_item"
+      >
+        {{ author.name }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="add-course__container_authors_selected">
+    <p class="add-course__container_authors_selected_text">Authors:</p>
+    <ul class="add-course__container_authors_selected_list">
+      <li
+        class="author-edit"
+        *ngFor="let author of selectedAuthors; let i = index"
+      >
+        {{ author.name }}
+        <button class="author-edit__button_delete" (click)="removeAuthor(i)">
+          ✕
+        </button>
+      </li>
+    </ul>
+  </div>
 </div>

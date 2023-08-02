@@ -1,9 +1,36 @@
 <div class="date-edit">
   <label for="course-edit-date" class="date-edit__text">Date:</label>
+  <div
+    *ngIf="!isValidDateFormat(date) && touched && date !== ''"
+    class="error-text"
+  >
+    <div *ngIf="!isValidDateFormat(date) && date !== ''">
+      Invalid date format. Use dd/mm/yyyy.
+    </div>
+    <div
+      *ngIf="
+        courseForm.controls['date'].errors?.['required'] &&
+        touched &&
+        courseForm.controls['date'].value === ''
+      "
+    >
+      Date is required.
+    </div>
+  </div>
   <input
-    id="course-edit-date"
+    name="date"
+    id="date"
     type="text"
+    placeholder="Enter course date"
     value="{{ date }}"
     (input)="onInput($event)"
+    (blur)="onTouchHandler()"
+    [ngClass]="
+      (!isValidDateFormat(date) && touched && date !== '') ||
+      (courseForm.controls['date'].errors?.['required'] && touched) ? 
+      'error-border' : 
+      ''
+    "
+    required
   />
 </div>

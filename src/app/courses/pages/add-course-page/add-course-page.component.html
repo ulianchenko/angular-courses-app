@@ -1,14 +1,39 @@
-<main class="add-course-page">
+<form
+  class="add-course-page"
+  [formGroup]="courseForm"
+  (ngSubmit)="onClickSave()"
+>
   <div class="add-course__container">
     <div class="add-course__container_title">
       <label for="course-edit-title" class="add-course__container_title_text"
         >Title:</label
       >
+      <div
+        *ngIf="
+          courseForm.get('title')?.invalid &&
+          (courseForm.get('title')?.touched || courseForm.get('title')?.dirty)
+        "
+        class="error-text"
+      >
+        <div *ngIf="courseForm.get('title')?.errors?.['required']">
+          Title is required.
+        </div>
+        <div *ngIf="courseForm.get('title')?.errors?.['maxlength']">
+          Title length shouldn't exceed 50 characters.
+        </div>
+      </div>
       <input
-        id="course-edit-title"
+        id="title"
         type="text"
-        value="{{ course.name }}"
-        (input)="onInputTitle($event)"
+        placeholder="Enter course title"
+        formControlName="title"
+        (change)="updateFormValidity()"
+        [ngClass]="
+          courseForm.get('title')?.invalid &&
+          (courseForm.get('title')?.touched || courseForm.get('title')?.dirty)
+            ? 'error-border'
+            : ''
+        "
       />
     </div>
     <div class="add-course__container_description">
@@ -17,33 +42,75 @@
         class="add-course__container_description_text"
         >Description:</label
       >
+      <div
+        *ngIf="
+          courseForm.get('description')?.invalid &&
+          (courseForm.get('description')?.touched ||
+            courseForm.get('description')?.dirty)
+        "
+        class="error-text"
+      >
+        <div *ngIf="courseForm.get('description')?.errors?.['required']">
+          Description is required.
+        </div>
+        <div *ngIf="courseForm.get('description')?.errors?.['maxlength']">
+          Description length shouldn't exceed 500 characters.
+        </div>
+      </div>
       <textarea
         name="description"
-        id="course-edit-description"
+        id="description"
         cols="30"
         rows="10"
-        (input)="onInputDescription($event)"
-        value="{{ course.description }}"
+        placeholder="Enter course description"
+        formControlName="description"
+        (change)="updateFormValidity()"
+        [ngClass]="
+          courseForm.get('description')?.invalid &&
+          (courseForm.get('description')?.touched ||
+            courseForm.get('description')?.dirty)
+            ? 'error-border'
+            : ''
+        "
       ></textarea>
     </div>
-    <app-date-edit *ngIf="isEdit" [date]="course.date"></app-date-edit>
+    <app-date-edit
+      [date]="courseForm.value.date"
+      (dateChanged)="onInputDate($event)"
+      [courseForm]="courseForm"
+    ></app-date-edit>
     <app-duration-edit
-      [duration]="course.length || 0"
+      [duration]="courseForm.value.duration"
       (durationInput)="onInputDuration($event)"
+      formControlName="duration"
     ></app-duration-edit>
-    <div *ngIf="isEdit" class="add-course__container_authors">
-      <p class="add-course__container_authors_text">Authors:</p>
-      <div class="add-course__container_authors_list">
-        <app-authors-edit
-          *ngFor="let authorItem of course?.authors"
-          [author]="authorItem"
-          (authorToDelete)="handleDeleteAuthor()"
-        ></app-authors-edit>
+    <app-authors-edit
+      [authors]="authors"
+      [selectedAuthors]="selectedAuthors ? selectedAuthors : []"
+      [form]="courseForm"
+      (authorsChanged)="updateFormAuthorsValidity($event)"
+    ></app-authors-edit>
+    <div
+      *ngIf="
+        courseForm.get('authors')?.invalid &&
+        (courseForm.get('authors')?.touched || courseForm.get('authors')?.dirty)
+      "
+      class="error-text"
+    >
+      <div *ngIf="courseForm.get('authors')?.errors?.['noAuthorsSelected']">
+        Please select at least one author.
       </div>
     </div>
     <div class="add-course__container_buttons">
-      <button (click)="onClickSave()">Save</button>
-      <button (click)="onClickCancel()">Cancel</button>
+      <button
+        type="submit"
+        (click)="onClickSave()"
+        [class.disabled-button]="!isFormDataValid"
+        [disabled]="!isFormDataValid"
+      >
+        Save
+      </button>
+      <button type="button" (click)="onClickCancel()">Cancel</button>
     </div>
   </div>
-</main>
+</form>
