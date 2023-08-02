@@ -108,11 +108,13 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
       });
     this.subscriptions.push(getAuthorsSub);
 
-    this.courseForm
+    const courseFormAuthorsSub = this.courseForm
       .get('authors')
       ?.valueChanges.subscribe((authors: Author[]) => {
         this.updateFormAuthorsValidity(authors);
       });
+    this.subscriptions.push(courseFormAuthorsSub!);
+
     this.updateFormValidity();
   }
 
@@ -138,7 +140,6 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
       this.isEdit = false;
     }
 
-    this.course = this.coursesService.emptyCourse;
     this.router.navigate([this.authService.redirectUrl]);
   }
 
@@ -161,10 +162,8 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
   updateFormAuthorsValidity(authors: Author[]) {
     const authorsControl = this.courseForm.get('authors');
     if (authorsControl) {
-      if (JSON.stringify(authors) !== JSON.stringify(this.selectedAuthors)) {
-        authorsControl.setValue(authors, { emitEvent: false });
-        this.selectedAuthors = authors;
-      }
+      authorsControl.setValue(authors, { emitEvent: false });
+      this.selectedAuthors = authors;
     }
     this.updateFormValidity();
   }
@@ -173,7 +172,6 @@ export class AddCoursePageComponent implements OnInit, OnDestroy {
     const authorsControl = this.courseForm.get('authors');
     const isAuthorsValid =
       authorsControl != null && authorsControl.value.length > 0;
-
     this.isFormDataValid = this.courseForm.valid && isAuthorsValid;
   }
 }
