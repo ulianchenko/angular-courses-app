@@ -1,5 +1,5 @@
 <div *ngIf="courses.length === 0" class="courses__no-data">
-  NO DATA. FEEL FREE TO ADD NEW COURSE
+  {{ 'no-courses' | translate }}
 </div>
 <ul *ngIf="courses.length > 0" class="courses">
   <app-course-card

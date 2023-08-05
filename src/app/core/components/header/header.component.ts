@@ -9,6 +9,7 @@ import {
 } from 'src/app/store/auth/auth.selectors';
 import { UserEntity } from '../../models/user.model';
 import { AuthenticationService } from '../../services/authentication.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -26,10 +27,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line no-unused-vars
     private router: Router,
     // eslint-disable-next-line no-unused-vars
-    private store: Store
+    private store: Store,
+    // eslint-disable-next-line no-unused-vars
+    public translate: TranslateService
   ) {}
 
   ngOnInit(): void {
+    this.translate.addLangs(['en', 'ua']);
+    this.translate.setDefaultLang('en');
+
     const getAuthSub = this.store
       .select(selectIsAuthenticated)
       .subscribe((auth: boolean) => {
@@ -54,5 +60,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (!this.isAuth) {
       this.router.navigate(['/login']);
     }
+  }
+
+  switchLang(lang: string): void {
+    this.translate.use(lang);
   }
 }

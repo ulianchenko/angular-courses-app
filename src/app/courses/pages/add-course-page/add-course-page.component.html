@@ -5,9 +5,9 @@
 >
   <div class="add-course__container">
     <div class="add-course__container_title">
-      <label for="course-edit-title" class="add-course__container_title_text"
-        >Title:</label
-      >
+      <label for="course-edit-title" class="add-course__container_title_text">{{
+        'title-title' | translate
+      }}</label>
       <div
         *ngIf="
           courseForm.get('title')?.invalid &&
@@ -16,16 +16,16 @@
         class="error-text"
       >
         <div *ngIf="courseForm.get('title')?.errors?.['required']">
-          Title is required.
+          {{ 'title-required' | translate }}
         </div>
         <div *ngIf="courseForm.get('title')?.errors?.['maxlength']">
-          Title length shouldn't exceed 50 characters.
+          {{ 'title-length' | translate }}
         </div>
       </div>
       <input
         id="title"
         type="text"
-        placeholder="Enter course title"
+        [placeholder]="'title-placeholder' | translate"
         formControlName="title"
         (change)="updateFormValidity()"
         [ngClass]="
@@ -40,7 +40,7 @@
       <label
         for="course-edit-description"
         class="add-course__container_description_text"
-        >Description:</label
+        >{{ 'description-title' | translate }}</label
       >
       <div
         *ngIf="
@@ -51,10 +51,10 @@
         class="error-text"
       >
         <div *ngIf="courseForm.get('description')?.errors?.['required']">
-          Description is required.
+          {{ 'description-required' | translate }}
         </div>
         <div *ngIf="courseForm.get('description')?.errors?.['maxlength']">
-          Description length shouldn't exceed 500 characters.
+          {{ 'description.length' | translate }}
         </div>
       </div>
       <textarea
@@ -62,7 +62,7 @@
         id="description"
         cols="30"
         rows="10"
-        placeholder="Enter course description"
+        [placeholder]="'description-placeholder' | translate"
         formControlName="description"
         (change)="updateFormValidity()"
         [ngClass]="
@@ -98,7 +98,7 @@
       class="error-text"
     >
       <div *ngIf="courseForm.get('authors')?.errors?.['noAuthorsSelected']">
-        Please select at least one author.
+        {{ 'select-one-author' | translate }}
       </div>
     </div>
     <div class="add-course__container_buttons">
@@ -108,9 +108,11 @@
         [class.disabled-button]="!isFormDataValid"
         [disabled]="!isFormDataValid"
       >
-        Save
+        {{ 'save' | translate }}
       </button>
-      <button type="button" (click)="onClickCancel()">Cancel</button>
+      <button type="button" (click)="onClickCancel()">
+        {{ 'cancel' | translate }}
+      </button>
     </div>
   </div>
 </form>

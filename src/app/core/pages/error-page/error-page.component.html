@@ -1,5 +1,5 @@
 <main class="error-page" *ngIf="errorStr.length > 0">
-  <h2>Some error was occurred:</h2>
+  <h2>{{ 'error' | translate }}</h2>
   <p>{{ errorStr }}</p>
-  <a (click)="handleClickBack()">Go back</a>
+  <a (click)="handleClickBack()">{{ 'go_back' | translate }}</a>
 </main>

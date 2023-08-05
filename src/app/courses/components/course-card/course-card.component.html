@@ -32,14 +32,14 @@
         (click)="editCard(coursesListItem.id)"
       >
         <img src="assets/icons/edit.svg" alt="edit" />
-        Edit
+        {{ 'edit' | translate }}
       </button>
       <button
         data-button-function="delete"
         (click)="deleteCard(coursesListItem.id)"
       >
         <img src="assets/icons/delete.svg" alt="delete" />
-        Delete
+        {{ 'delete' | translate }}
       </button>
     </div>
   </div>
