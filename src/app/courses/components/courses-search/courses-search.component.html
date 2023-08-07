@@ -3,7 +3,7 @@
   <input
     type="search"
     class="search__input"
-    placeholder="Text to search"
+    [placeholder]="'search-placeholder' | translate"
     [value]="inputText"
     (input)="onFocusInput()"
     (input)="onInput($event)"

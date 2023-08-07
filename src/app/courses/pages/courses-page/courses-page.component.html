@@ -2,7 +2,7 @@
 <main class="courses-page">
   <app-courses-search></app-courses-search>
   <div class="courses-page__add-course">
-    <button (click)="onClickAddCourse()">+ Add course</button>
+    <button (click)="onClickAddCourse()">{{ 'add-course' | translate }}</button>
   </div>
   <app-courses-list
     (cardIdToBeEdited)="onClickEditCard($event)"
@@ -10,6 +10,6 @@
     [courses]="courses"
   ></app-courses-list>
   <button class="courses-page__load-more" (click)="onClickLoadMore()">
-    LOAD MORE
+    {{ 'load-more' | translate }}
   </button>
 </main>

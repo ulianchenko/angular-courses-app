@@ -1,10 +1,10 @@
 <div class="add-course__container_authors">
   <div class="add-course__container_authors_search">
-    <label for="authors">Select authors:</label>
+    <label for="authors">{{ 'select-authors' | translate }}</label>
     <input
       #autocompleteInput
       type="text"
-      placeholder="Start typing authors name"
+      [placeholder]="'authors-placeholder' | translate"
       id="authors"
       [(ngModel)]="searchTerm"
       (input)="searchAuthors(searchTerm)"
@@ -21,7 +21,9 @@
   </div>
 
   <div class="add-course__container_authors_selected">
-    <p class="add-course__container_authors_selected_text">Authors:</p>
+    <p class="add-course__container_authors_selected_text">
+      {{ 'authors' | translate }}
+    </p>
     <ul class="add-course__container_authors_selected_list">
       <li
         class="author-edit"

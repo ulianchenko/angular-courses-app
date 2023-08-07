@@ -1,16 +1,16 @@
 <app-loading></app-loading>
 <main class="login-page">
   <form class="login__container">
-    <h1 class="login__container_title">Login</h1>
+    <h1 class="login__container_title">{{ 'login-title' | translate }}</h1>
     <div class="login__container_email">
       <div class="login__container_email_title">
-        <span class="email">Email:</span>
-        <span class="required">*required</span>
+        <span class="email">{{ 'email-title' | translate }}</span>
+        <span class="required">{{ 'required' | translate }}</span>
       </div>
       <input
         id="user-login"
         type="text"
-        placeholder="Enter email"
+        [placeholder]="'email-placeholder' | translate"
         name="email"
         [formControl]="loginControl"
         [ngClass]="
@@ -25,21 +25,23 @@
         "
         class="error-text"
       >
-        <div *ngIf="loginControl.errors?.['required']">Login is required.</div>
+        <div *ngIf="loginControl.errors?.['required']">
+          {{ 'login-required' | translate }}
+        </div>
         <div *ngIf="loginControl.errors?.['minlength']">
-          Login length should be min 2 characters.
+          {{ 'login-length' | translate }}
         </div>
       </div>
     </div>
     <div class="login__container_password">
       <div class="login__container_password_title">
-        <span class="password">Password:</span>
-        <span class="required">*required</span>
+        <span class="password">{{ 'password-title' | translate }}</span>
+        <span class="required">{{ 'required' | translate }}</span>
       </div>
       <input
         id="user-password"
         type="text"
-        placeholder="Enter password"
+        [placeholder]="'password-placeholder' | translate"
         name="password"
         [formControl]="passwordControl"
         [ngClass]="
@@ -57,22 +59,22 @@
         class="error-text"
       >
         <div *ngIf="passwordControl.errors?.['required']">
-          Password is required.
+          {{ 'password-required' | translate }}
         </div>
         <div *ngIf="passwordControl.errors?.['minlength']">
-          Password length should be min 2 characters.
+          {{ 'password-length' | translate }}
         </div>
       </div>
     </div>
     <div class="login__container_button">
-      <a href="#" class="login__container_button_forgot-password"
-        >Forgot password?</a
-      >
+      <a href="#" class="login__container_button_forgot-password">{{
+        'forgot-password' | translate
+      }}</a>
       <button
         (click)="onClickLogin()"
         [disabled]="loginControl.invalid || passwordControl.invalid"
       >
-        Login
+        {{ 'login' | translate }}
       </button>
     </div>
   </form>

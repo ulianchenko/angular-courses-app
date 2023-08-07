@@ -20,6 +20,7 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   deleteCourseConfirmation: boolean = false;
   coursesLoadStep: number = 4;
   subscriptions: Subscription[] = [];
+  deleteConfirmation: string = '';
 
   constructor(
     // eslint-disable-next-line no-unused-vars

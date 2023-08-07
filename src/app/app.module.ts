@@ -34,7 +34,11 @@ import { PageNotFoundComponent } from './core/pages/page-not-found/page-not-foun
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { CustomReuseStrategy } from './app-custom-route-reuse-strategy';
 import { BreadcrumbService } from './core/services/breadcrumb.service';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule
+} from '@angular/common/http';
 import { TokenInterceptor } from './core/interceptor/token.interceptor';
 import { LoadingComponent } from './core/components/loading/loading.component';
 import { LoadingService } from './core/services/loading.service';
@@ -47,6 +51,12 @@ import { coursesReducer } from './store/courses/courses.reducer';
 import { CoursesEffects } from './store/courses/courses.effects';
 import { ErrorPageComponent } from './core/pages/error-page/error-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/locale/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -86,7 +96,14 @@ import { ReactiveFormsModule } from '@angular/forms';
       courses: coursesReducer
     }),
     EffectsModule.forRoot([AuthEffects, CoursesEffects]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     FilterByNamePipe,

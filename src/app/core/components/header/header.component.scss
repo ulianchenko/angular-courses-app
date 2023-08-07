@@ -6,6 +6,23 @@ header {
   justify-content: space-between;
   padding: 0 50px;
 }
+
+.select-language__container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  & #select-language {
+    background-color: #414453;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+  & option {
+    cursor: pointer;
+  }
+}
 .login {
   align-items: center;
   display: flex;
